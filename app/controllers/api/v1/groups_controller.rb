@@ -9,7 +9,7 @@ class Api::V1::GroupsController < ApplicationController
 
 
     def show
-      render json: @group, include: ['users']
+      render json: @group, include: ['users', 'user_groups']
     end
 
    def update

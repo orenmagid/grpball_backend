@@ -4,13 +4,13 @@ class Api::V1::AuthController < ApplicationController
 
 
    def login
-     user = User.find_by(username: params[:username])
-     if user && user.authenticate(params[:password])
+     @current_user = User.find_by(username: params[:username])
+     if @current_user && @current_user.authenticate(params[:password])
 
-       token = encode({user_id: user.id})
+       token = encode({user_id: @current_user.id})
        render json: { token: token, success: true }
      else
-      
+
        render json: { success: false }, status: 401
      end
    end

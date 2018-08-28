@@ -3,7 +3,7 @@ require 'pry'
 class ApplicationController < ActionController::API
 include ActionController::HttpAuthentication::Token::ControllerMethods
 
-   # before_action :authenticate
+   before_action :authenticate
 
    private
 
@@ -25,7 +25,6 @@ include ActionController::HttpAuthentication::Token::ControllerMethods
    def secret_key
 
      ENV['TOKEN_AUTH_SECRET']
-     # 'secret'
    end
 
    def encode(payload)
