@@ -16,8 +16,13 @@ gem 'puma', '~> 3.11'
 # Use ActiveModel has_secure_password
 gem 'bcrypt', '~> 3.1.7'
 gem 'jwt'
+gem 'figaro'
 
+gem 'pry'
 gem 'active_model_serializers'
+
+gem 'faker', :git => 'https://github.com/stympy/faker.git', :branch => 'master'
+
 
 # Use ActiveStorage variant
 # gem 'mini_magick', '~> 4.8'

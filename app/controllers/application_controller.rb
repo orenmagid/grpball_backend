@@ -1,7 +1,9 @@
+require 'pry'
+
 class ApplicationController < ActionController::API
 include ActionController::HttpAuthentication::Token::ControllerMethods
 
-   before_action :authenticate
+   # before_action :authenticate
 
    private
 
@@ -15,13 +17,15 @@ include ActionController::HttpAuthentication::Token::ControllerMethods
          decoded = decode(token)
          @current_user = User.find_by(id: decoded[0]["user_id"])
        rescue JWT::DecodeError
-         render json: { authorized: false }, status: 401
+         return nil
        end
      end
    end
 
    def secret_key
+
      ENV['TOKEN_AUTH_SECRET']
+     # 'secret'
    end
 
    def encode(payload)

@@ -1,11 +1,20 @@
 class Api::V1::UsersController < ApplicationController
 
-  before_action :find_note, only: [:update]
+  before_action :find_user, only: [:show, :update]
 
    def index
      @users = User.all
      render json: @users
    end
+
+    def show
+      render json: @user, include: ['groups', 'user_groups']
+    end
+
+
+    def show_user
+      render json: { username: current_user.username, firstName: current_user.first_name, lastName: current_user.last_name, email: current_user.email, phoneNumber: current_user.phone_number, location: current_user.location, highestExperience: current_user.highest_experience}
+    end
 
    def update
      @user.update(user_params)
