@@ -4,6 +4,14 @@ body {
   font-family: sans-serif;
 }
 
-.ui.container {
+.ui.container.top-margin {
   margin-top: 25px;
+}
+
+.top-margin {
+  margin-top: 25px;
+}
+
+.margin-auto {
+  margin: auto;
 }
