@@ -12,14 +12,41 @@ class Api::V1::GroupsController < ApplicationController
       render json: @group, include: ['users', 'user_groups']
     end
 
-   def update
-     @group.update(group_params)
-     if @group.save
-       render json: @group, status: :accepted
-     else
-       render json: { errors: @group.errors.full_messages }, status: :unprocessible_entity
-     end
-   end
+    def create
+      @group = Group.new(group_params)
+      @user = User.find(params[:user_id])
+
+      if @group.save
+        @group.users << @user
+        @group.user_groups.last.update(is_administrator: true)
+        render json: @group, status: :accepted
+      else
+        render json: { errors: @group.errors.full_messages }, status: :unprocessible_entity
+      end
+    end
+
+    def update
+      if params[:user_id]
+          @user = User.find(params[:user_id])
+      elsif params[:username]
+        @user = User.find_by(username: params[:username])
+      end
+
+      if params[:name]
+        if params[:name] == @group.name
+          @group.users << @user
+          @group.save
+          render json: @group, status: :accepted
+        else
+          render json: { errors: @group.errors.full_messages }, status: :unprocessible_entity
+        end
+      end
+      if params[:username]
+        @group.users << @user
+        @group.save
+        render json: @group, status: :accepted
+      end
+    end
 
    private
 

@@ -48,7 +48,7 @@ ActiveRecord::Schema.define(version: 2018_08_28_123340) do
   create_table "user_groups", force: :cascade do |t|
     t.integer "user_id"
     t.integer "group_id"
-    t.boolean "is_administrator"
+    t.boolean "is_administrator", default: false, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end

@@ -1,6 +1,6 @@
 class Api::V1::UserGroupsController < ApplicationController
 
-  before_action :find_user_group, only: [:show, :update]
+  before_action :find_user_group, only: [:show, :update, :destroy]
 
    def index
      @user_groups = UserGroup.all
@@ -21,10 +21,16 @@ class Api::V1::UserGroupsController < ApplicationController
      end
    end
 
+   def destroy
+    @user_group.destroy
+
+
+  end
+
    private
 
    def user_group_params
-     params.require(:user_group).permit(:id, :user_id, :group_id)
+     params.require(:user_group).permit(:id, :user_id, :group_id, :is_administrator)
    end
 
    def find_user_group

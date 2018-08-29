@@ -26,6 +26,10 @@ while x <  16  do
   User.find(x).groups << Group.find(1)
   User.find(x).groups << Group.find(2)
   User.find(x).groups << Group.find(3)
+  User.find(x).groups << Group.find(4)
+  User.find(x).groups << Group.find(5)
 
   x += 1
 end
+
+UserGroup.find(4).update(is_administrator: true)
