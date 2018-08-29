@@ -95,6 +95,7 @@ export default class GroupCard extends Component {
           <img
             src="../noun_Basketball_1671463.svg"
             className="hidden content"
+            alt="basketball"
           />
         </div>
         <div>

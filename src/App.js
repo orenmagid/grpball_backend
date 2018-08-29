@@ -112,7 +112,7 @@ class App extends Component {
     return (
       <div className="App">
         <header className="App-header">
-          <div className="ui container">
+          <div className="ui container top-margin">
             <NavBar
               displayNewUserForm={this.state.displayNewUserForm}
               createNewUser={this.createNewUser}

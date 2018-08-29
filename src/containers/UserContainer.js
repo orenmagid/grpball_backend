@@ -3,6 +3,7 @@ import { Route } from "react-router-dom";
 import UserMenu from "../components/UserMenu";
 import UserDashboard from "../components/UserDashboard";
 import GroupDashboard from "../components/GroupDashboard";
+import SchedulingDashboard from "../components/SchedulingDashboard";
 
 const baseUrl = "http://localhost:3000/api/v1";
 
@@ -69,6 +70,18 @@ class UserContainer extends React.Component {
                 user={this.state.user}
                 handleForceUpdate={this.handleforceUpdate}
               />
+            )}
+          />
+        ) : (
+          <p>Loading...</p>
+        )}
+
+        {this.state.user ? (
+          <Route
+            exact
+            path="/schedulingdashboard"
+            render={routerProps => (
+              <SchedulingDashboard user={this.state.user} />
             )}
           />
         ) : (

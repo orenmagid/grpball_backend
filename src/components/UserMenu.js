@@ -26,6 +26,13 @@ export default class UserMenu extends Component {
             onClick={this.handleItemClick}
           />
         </Link>
+        <Link to={`/schedulingdashboard`}>
+          <Menu.Item
+            name="scheduling"
+            active={activeItem === "scheduling"}
+            onClick={this.handleItemClick}
+          />
+        </Link>
       </Menu>
     );
   }
