@@ -15,3 +15,7 @@ body {
 .margin-auto {
   margin: auto;
 }
+
+.ui.button {
+  margin: 15px;
+}

@@ -2,20 +2,13 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { Card, Icon, List, Image, Grid } from "semantic-ui-react";
 
-const extra = (
-  <a>
-    <Icon name="user" />
-    16 Friends
-  </a>
-);
-
 const UserDashboard = ({ user }) => (
   <Card fluid>
     <Image src="../noun_basketball_player_1646799-transparent-background.svg" />
     <Card.Content>
       <Card.Header>{user.first_name + " " + user.last_name}</Card.Header>
       <Card.Meta>
-        <div>{"Username:" + " " + user.username}</div>
+        <div>{"Username: " + user.username}</div>
       </Card.Meta>
       {/* <Card.Description>{user.first_name} is a baller!</Card.Description> */}
       <div className="top-margin">
@@ -71,13 +64,13 @@ const UserDashboard = ({ user }) => (
         </Grid>
       </div>
     </Card.Content>
-    <Card.Content extra={extra}>
+    <Card.Content extra>
       <Link to={`/groupdashboard`}>
-        <a>
-          <Icon name="group" />
-          {user.user_groups.length}{" "}
-          {user.user_groups.length > 1 ? "groups" : "group"}
-        </a>
+        <Icon name="group" />
+        {user.user_groups.length}{" "}
+        {user.user_groups.length > 1 || user.user_groups.length === 0
+          ? "groups"
+          : "group"}
       </Link>
     </Card.Content>
   </Card>

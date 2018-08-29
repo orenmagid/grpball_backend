@@ -11,6 +11,24 @@ class UserContainer extends React.Component {
     user: null
   };
 
+  handleforceUpdate = () => {
+    console.log("inside handleforceUpdate");
+    let token = localStorage.getItem("token");
+    if (token) {
+      fetch(baseUrl + "/user", {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      })
+        .then(res => res.json())
+        .then(data => {
+          console.log(data);
+          this.setState({ user: data });
+        })
+        .catch(e => console.error(e));
+    }
+  };
+
   componentDidMount() {
     let token = localStorage.getItem("token");
     if (token) {
@@ -46,7 +64,12 @@ class UserContainer extends React.Component {
           <Route
             exact
             path="/groupdashboard"
-            render={routerProps => <GroupDashboard user={this.state.user} />}
+            render={routerProps => (
+              <GroupDashboard
+                user={this.state.user}
+                handleForceUpdate={this.handleforceUpdate}
+              />
+            )}
           />
         ) : (
           <p>Loading...</p>
