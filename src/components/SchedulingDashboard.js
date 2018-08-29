@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import DatePicker from "react-datepicker";
 import moment from "moment";
-import { Dropdown, Divider } from "semantic-ui-react";
+import { Dropdown, Divider, Table } from "semantic-ui-react";
 
 import "react-datepicker/dist/react-datepicker.css";
 import "react-datepicker/dist/react-datepicker-cssmodules.css";
@@ -11,30 +11,14 @@ const baseUrl = "http://localhost:3000/api/v1";
 export default class SchedulingDashboard extends Component {
   state = {
     date: moment(),
-    startTime: moment(),
-    endTime: moment(),
     groupId: "",
     sessions: []
   };
 
-  handleSelectDate = date => {
+  handleDateChange = date => {
     console.log("inside handleSelect, date:", date);
     this.setState({
       date: date
-    });
-  };
-
-  handleSelectStartTime = date => {
-    console.log("inside handleSelectStartTime, date:", date);
-    this.setState({
-      startTime: date
-    });
-  };
-
-  handleSelectEndTime = date => {
-    console.log("inside handleSelectEndTime, date:", date);
-    this.setState({
-      endTime: date
     });
   };
 
@@ -44,12 +28,7 @@ export default class SchedulingDashboard extends Component {
     let data = {
       session: {
         group_id: this.state.groupId,
-        date: this.state.date.format("MMMM Do YYYY"),
-        start_time: moment(this.state.startTime.format("h:mm a"), [
-          "h:m a",
-          "H:m"
-        ]),
-        end_time: moment(this.state.endTime.format("h:mm a"), ["h:m a", "H:m"])
+        date: this.state.date
       }
     };
 
@@ -66,13 +45,12 @@ export default class SchedulingDashboard extends Component {
       })
         .then(response => response.json())
         .then(session => {
-          console.log(session);
-          // this.props.handleForceUpdate();
+          session.errors ? alert(session.errors) : this.fetchSessions();
         });
     }
   };
 
-  componentDidMount() {
+  fetchSessions = () => {
     let token = localStorage.getItem("token");
     if (token) {
       fetch(baseUrl + "/sessions", {
@@ -84,14 +62,23 @@ export default class SchedulingDashboard extends Component {
         .then(data => {
           console.log(data);
           this.setState({ sessions: data });
-        })
-        .catch(e => console.error(e));
+        });
+      // .catch(e => {
+      //   alert(e);
+      // });
     }
+  };
+
+  componentDidMount() {
+    this.fetchSessions();
   }
 
   render() {
     let groups = this.props.user.groups;
     const { value } = this.state;
+    const { sessions } = this.state;
+
+    console.log(sessions[0]);
 
     const options = groups.map(group => {
       return { key: group.id, text: group.name, value: group.id };
@@ -100,52 +87,32 @@ export default class SchedulingDashboard extends Component {
     return (
       <React.Fragment>
         <h3 classame="ui header centered">Schedule a Session</h3>
-        <div className="ui three column doubling stackable grid container">
-          <div className="row">
-            <div className="ui container">
-              <h4 classame="ui header">Select a Group</h4>
-              <Dropdown
-                onChange={this.handleGroupChange}
-                options={options}
-                placeholder="Choose an option"
-                selection
-                value={value}
-              />
-            </div>
-          </div>
+        <div className="ui two column doubling stackable grid container">
           <div className="column">
-            <h4 classame="ui header">Select a Date</h4>
-            <DatePicker
-              selected={this.state.date}
-              onSelect={this.handleSelectDate}
+            <h4 classame="ui header">Select a Group</h4>
+            <Dropdown
+              onChange={this.handleGroupChange}
+              options={options}
+              placeholder="Choose an option"
+              selection
+              value={value}
             />
           </div>
 
           <div className="column">
-            <h4 classame="ui header">Select a Start Time</h4>
+            <h4 classame="ui header">Select a Date and Time</h4>
             <DatePicker
-              selected={this.state.startTime}
-              onChange={this.handleSelectStartTime}
+              selected={this.state.date}
+              onChange={this.handleDateChange}
               showTimeSelect
-              showTimeSelectOnly
+              timeFormat="HH:mm"
               timeIntervals={15}
-              dateFormat="LT"
-              timeCaption="Time"
-            />
-          </div>
-          <div className="column">
-            <h4 classame="ui header">Select an End Time</h4>
-            <DatePicker
-              selected={this.state.endTime}
-              onChange={this.handleSelectEndTime}
-              showTimeSelect
-              showTimeSelectOnly
-              timeIntervals={15}
-              dateFormat="LT"
-              timeCaption="Time"
+              dateFormat="LLL"
+              timeCaption="time"
             />
           </div>
         </div>
+
         <div className="ui container">
           <button
             onClick={this.handleClick}
@@ -155,17 +122,39 @@ export default class SchedulingDashboard extends Component {
           </button>
         </div>
         <Divider />
-        <h3 classame="ui header centered">Your Sessions</h3>
-        <div className="ui three column doubling stackable grid container">
-          <div className="row">
-            <div className="ui container" />
-          </div>
-          <div className="column" />
+        <h3 classame="ui header">Your Sessions</h3>
+        <div className="ui container">
+          <Table celled>
+            <Table.Header>
+              <Table.Row>
+                <Table.HeaderCell>Group</Table.HeaderCell>
+                <Table.HeaderCell>Date</Table.HeaderCell>
+                <Table.HeaderCell>Location</Table.HeaderCell>
+                <Table.HeaderCell>Min # of Players</Table.HeaderCell>
+                <Table.HeaderCell># of RSVPs</Table.HeaderCell>
+                <Table.HeaderCell>Status</Table.HeaderCell>
+              </Table.Row>
+            </Table.Header>
 
-          <div className="column" />
-          <div className="column" />
+            <Table.Body>
+              {sessions.length > 0
+                ? sessions.map(session => {
+                    return (
+                      <Table.Row>
+                        <Table.Cell>{session.group.name}</Table.Cell>
+                        <Table.Cell>
+                          {moment(session.date).format("MMMM Do YYYY, h:mm a")}
+                        </Table.Cell>
+                        <Table.Cell>{session.location}</Table.Cell>
+                        <Table.Cell>{session.min_players}</Table.Cell>
+                        <Table.Cell>{session.min_players}</Table.Cell>
+                      </Table.Row>
+                    );
+                  })
+                : null}
+            </Table.Body>
+          </Table>
         </div>
-        <div className="ui container" />
       </React.Fragment>
     );
   }
