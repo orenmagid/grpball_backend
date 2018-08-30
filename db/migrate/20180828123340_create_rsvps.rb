@@ -4,8 +4,8 @@ class CreateRsvps < ActiveRecord::Migration[5.2]
       t.integer :user_id
       t.integer :session_id
       t.string :status
-      t.string :other_text
-      t.boolean :did_show
+      t.text :other_text
+      t.boolean :did_show, default: false
 
       t.timestamps
     end

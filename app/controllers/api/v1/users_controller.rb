@@ -9,12 +9,12 @@ class Api::V1::UsersController < ApplicationController
    end
 
     def show
-      render json: @current_user, include: ['groups', 'user_groups']
+      render json: @current_user, include: ['groups', 'user_groups', 'sessions']
     end
 
 
     def show_user
-      render json: @current_user, include: ['groups', 'user_groups']
+      render json: @current_user, include: ['groups', 'user_groups', 'sessions']
     end
 
     def create

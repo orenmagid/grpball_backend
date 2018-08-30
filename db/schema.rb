@@ -26,17 +26,15 @@ ActiveRecord::Schema.define(version: 2018_08_28_123340) do
     t.integer "user_id"
     t.integer "session_id"
     t.string "status"
-    t.string "other_text"
-    t.boolean "did_show"
+    t.text "other_text"
+    t.boolean "did_show", default: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
 
   create_table "sessions", force: :cascade do |t|
     t.integer "group_id"
-    t.date "date"
-    t.time "start_time"
-    t.time "end_time"
+    t.datetime "date"
     t.datetime "expiration_date_time"
     t.integer "min_players"
     t.string "location"

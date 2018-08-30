@@ -10,6 +10,17 @@ class Api::V1::RsvpsController < ApplicationController
      render json: @rsvp, include: ['rsvps']
    end
 
+   def create
+     @rsvp = Rsvp.new(rsvp_params)
+
+
+     if @rsvp.save
+       render json: @rsvp, status: :accepted
+     else
+       render json: { errors: @rsvp.errors.full_messages }, status: :unprocessible_entity
+     end
+   end
+
   def update
     @rsvp.update(rsvp_params)
     if @rsvp.save
@@ -28,7 +39,5 @@ class Api::V1::RsvpsController < ApplicationController
   def find_rsvp
     @rsvp = Rsvp.find(params[:id])
   end
-
-end
 
 end
