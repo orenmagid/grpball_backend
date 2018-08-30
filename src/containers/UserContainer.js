@@ -1,9 +1,9 @@
 import React from "react";
 import { Route } from "react-router-dom";
 import UserMenu from "../components/UserMenu";
-import UserDashboard from "../components/UserDashboard";
-import GroupDashboard from "../components/GroupDashboard";
-import SchedulingDashboard from "../components/SchedulingDashboard";
+import UserDashboard from "./UserDashboard";
+import GroupDashboard from "./GroupDashboard";
+import SessionsDashboard from "./SessionsDashboard";
 
 const baseUrl = "http://localhost:3000/api/v1";
 
@@ -12,7 +12,7 @@ class UserContainer extends React.Component {
     user: null
   };
 
-  handleforceUpdate = () => {
+  handleforceUserUpdate = () => {
     console.log("inside handleforceUpdate");
     let token = localStorage.getItem("token");
     if (token) {
@@ -50,12 +50,15 @@ class UserContainer extends React.Component {
   render() {
     return (
       <div>
-        <Route path="/" render={routerProps => <UserMenu />} />
+        <Route
+          path="/"
+          render={routerProps => <UserMenu user={this.state.user} />}
+        />
 
         {this.state.user ? (
           <Route
             exact
-            path="/userdashboard"
+            path="/user_dashboard"
             render={routerProps => <UserDashboard user={this.state.user} />}
           />
         ) : (
@@ -64,7 +67,7 @@ class UserContainer extends React.Component {
         {this.state.user ? (
           <Route
             exact
-            path="/groupdashboard"
+            path="/group_dashboard"
             render={routerProps => (
               <GroupDashboard
                 user={this.state.user}
@@ -79,10 +82,8 @@ class UserContainer extends React.Component {
         {this.state.user ? (
           <Route
             exact
-            path="/schedulingdashboard"
-            render={routerProps => (
-              <SchedulingDashboard user={this.state.user} />
-            )}
+            path="/sessions_and_games"
+            render={routerProps => <SessionsDashboard user={this.state.user} />}
           />
         ) : (
           <p>Loading...</p>

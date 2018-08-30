@@ -12,24 +12,25 @@ export default class UserMenu extends Component {
 
     return (
       <Menu tabular>
-        <Link to={`/userdashboard`}>
+        <Link to={`/user_dashboard`}>
           <Menu.Item
             name="user_information"
             active={activeItem === "user_information"}
             onClick={this.handleItemClick}
           />
         </Link>
-        <Link to={`/groupdashboard`}>
+        <Link to={`/group_dashboard`}>
           <Menu.Item
             name="your_groups"
             active={activeItem === "your_groups"}
             onClick={this.handleItemClick}
           />
         </Link>
-        <Link to={`/schedulingdashboard`}>
+
+        <Link to={`/sessions_and_games`}>
           <Menu.Item
-            name="scheduling"
-            active={activeItem === "scheduling"}
+            name="sessions_and_games"
+            active={activeItem === "sessions_and_games"}
             onClick={this.handleItemClick}
           />
         </Link>

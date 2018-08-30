@@ -65,7 +65,7 @@ const UserDashboard = ({ user }) => (
       </div>
     </Card.Content>
     <Card.Content extra>
-      <Link to={`/groupdashboard`}>
+      <Link to={`/group_dashboard`}>
         <Icon name="group" />
         {user.user_groups.length}{" "}
         {user.user_groups.length > 1 || user.user_groups.length === 0

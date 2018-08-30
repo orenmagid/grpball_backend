@@ -1,5 +1,7 @@
 import React, { Component } from "react";
-import { List, Message } from "semantic-ui-react";
+import { List, Message, Popup, Button, Card } from "semantic-ui-react";
+import moment from "moment";
+import SessionScheduler from "./SessionScheduler";
 
 const baseUrl = "http://localhost:3000/api/v1";
 
@@ -67,7 +69,7 @@ export default class GroupCard extends Component {
         headers: {
           Authorization: `Bearer ${token}`
         }
-      }).then(() => this.props.handleforceUpdate());
+      }).then(() => this.props.handleForceUpdate());
     }
   };
 
@@ -85,18 +87,16 @@ export default class GroupCard extends Component {
     }
 
     return (
-      <div className="card">
-        <div className="ui slide masked reveal image">
-          <img
-            src="../noun_Basketball_201883.svg"
-            alt="basketball-player"
-            className="visible content"
-          />
-          <img
-            src="../noun_Basketball_1671463.svg"
-            className="hidden content"
-            alt="basketball"
-          />
+      <React.Fragment>
+        <div className="ui two column grid">
+          <div className="column">
+            Created:{" "}
+            {userGroup ? moment(userGroup.created_at).calendar() : null}
+          </div>
+          <div className="column">
+            <i className="user icon" />
+            {users.length > 0 ? users.length + " members" : null}
+          </div>
         </div>
         <div>
           <button
@@ -106,52 +106,85 @@ export default class GroupCard extends Component {
             Leave Group
           </button>
         </div>
-        <div className="content">
-          <div className="header">{this.props.group.name}</div>
-          <div className="meta">{this.props.group.location}</div>
-          <div className="meta">Group #: {this.props.group.id}</div>
-          {userGroup !== undefined && userGroup.is_administrator ? (
-            <Message info>
-              <Message.Header>You're in charge!</Message.Header>
-              <p> You are an administrator of this group.</p>
-            </Message>
-          ) : null}
 
-          <List horizontal mini divided>
-            {users.map(user => {
-              return (
-                <List.Item key={user.id}>
-                  <List.Icon name="user" />
-                  <List.Content>
-                    {user.first_name + " " + user.last_name}
-                  </List.Content>
-                </List.Item>
-              );
-            })}
-          </List>
+        <div className="ui header">{this.props.group.name}</div>
+        <div className="meta">{this.props.group.location}</div>
+        <div className="meta">Group #: {this.props.group.id}</div>
+        {userGroup !== undefined && userGroup.is_administrator ? (
+          <Message info>
+            <Message.Header>You're in charge!</Message.Header>
+            <p> You are an administrator of this group.</p>
+          </Message>
+        ) : null}
+
+        <List horizontal mini divided>
+          {users.map(user => {
+            return (
+              <List.Item key={user.id}>
+                <List.Icon name="user" />
+                <List.Content>
+                  {user.first_name + " " + user.last_name}
+                </List.Content>
+              </List.Item>
+            );
+          })}
+        </List>
+
+        <div className="ui divider" />
+
+        <div className="ui two column grid">
+          <div className="column">
+            <Popup
+              trigger={
+                <Button secondary basic>
+                  Add User
+                </Button>
+              }
+              on="click"
+              basic
+            >
+              <Card centered>
+                <Card.Content>
+                  <form
+                    className="ui form"
+                    onSubmit={this.handleAddToGroupSubmit}
+                  >
+                    <div className="field">
+                      <h4>Add User By Username</h4>
+                      <input
+                        type="text"
+                        name="username"
+                        placeholder="username"
+                      />
+                    </div>
+
+                    <button type="submit" className="ui secondary basic button">
+                      Add User
+                    </button>
+                  </form>
+                </Card.Content>
+              </Card>
+            </Popup>
+          </div>
+          <div className="column">
+            <Popup
+              trigger={
+                <Button secondary basic>
+                  Suggest a Session
+                </Button>
+              }
+              on="click"
+              basic
+            >
+              <SessionScheduler
+                handleFetchSessions={this.props.handleFetchSessions}
+                group={group}
+                user={this.props.user}
+              />
+            </Popup>
+          </div>
         </div>
-        <div className="extra content">
-          <div className="ui divider" />
-
-          <form className="ui form" onSubmit={this.handleAddToGroupSubmit}>
-            <div className="field">
-              <label>Add User By Username</label>
-              <input type="text" name="username" placeholder="username" />
-            </div>
-
-            <button type="submit" className="ui secondary basic button">
-              Add User
-            </button>
-          </form>
-          <span className="right floated">
-            {userGroup ? userGroup.created_at.slice(0, 10) : null}
-          </span>
-          <span className="left floated">
-            <i className="user icon" />
-            {users.length > 0 ? users.length + " members" : null}
-          </span>
-        </div>
-      </div>
+      </React.Fragment>
     );
   }
 }
