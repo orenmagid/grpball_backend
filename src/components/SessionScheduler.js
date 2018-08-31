@@ -87,53 +87,51 @@ export default class SessionScheduler extends Component {
 
     return (
       <Card centered>
-        <Message color="black">
-          <i
-            className="window close icon"
-            onClick={this.props.handleCloseClick}
+        <i
+          className="window close icon"
+          onClick={this.props.handleCloseClick}
+        />
+        <Card.Content>
+          <h2> Schedule a Session</h2>
+          <h4> Session Date and Time</h4>
+
+          <DatePicker
+            placeholderText="Click to select"
+            selected={this.state.date}
+            onChange={this.handleDateChange}
+            showTimeSelect
+            timeFormat="HH:mm"
+            timeIntervals={15}
+            dateFormat="LLL"
+            timeCaption="time"
           />
-          <Card.Content>
-            <h2> Schedule a Session</h2>
-            <h4> Session Date and Time</h4>
 
-            <DatePicker
-              placeholderText="Click to select"
-              selected={this.state.date}
-              onChange={this.handleDateChange}
-              showTimeSelect
-              timeFormat="HH:mm"
-              timeIntervals={15}
-              dateFormat="LLL"
-              timeCaption="time"
+          <h4>Expiration Date and Time</h4>
+          <DatePicker
+            placeholderText="Click to select"
+            selected={this.state.expiration}
+            onChange={this.handleExpirationChange}
+            showTimeSelect
+            timeFormat="HH:mm"
+            timeIntervals={15}
+            dateFormat="LLL"
+            timeCaption="time"
+          />
+
+          <br />
+          <Form onSubmit={this.handleSubmit}>
+            <Form.Input
+              name="location"
+              fluid
+              label="Location"
+              placeholder="Location"
             />
 
-            <h4>Expiration Date and Time</h4>
-            <DatePicker
-              placeholderText="Click to select"
-              selected={this.state.expiration}
-              onChange={this.handleExpirationChange}
-              showTimeSelect
-              timeFormat="HH:mm"
-              timeIntervals={15}
-              dateFormat="LLL"
-              timeCaption="time"
-            />
-
-            <br />
-            <Form onSubmit={this.handleSubmit}>
-              <Form.Input
-                name="location"
-                fluid
-                label="Location"
-                placeholder="Location"
-              />
-
-              <Form.Button secondary basic>
-                Submit
-              </Form.Button>
-            </Form>
-          </Card.Content>
-        </Message>
+            <Form.Button secondary basic>
+              Submit
+            </Form.Button>
+          </Form>
+        </Card.Content>
       </Card>
     );
   }

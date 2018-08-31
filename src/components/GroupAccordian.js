@@ -2,14 +2,18 @@ import React, { Component } from "react";
 import { Accordion, Icon, Grid, Table, Popup, Button } from "semantic-ui-react";
 import moment from "moment";
 import Sessions from "./Sessions";
-import RsvpForm from "./RsvpForm";
+import InteractiveSegment from "./InteractiveSegment";
+
 const baseUrl = "http://localhost:3000/api/v1";
 
 export default class GroupAccordian extends Component {
   state = {
     activeIndex: 0,
     group: null,
-    users: []
+    users: [],
+    currentRsvp: null,
+    currentSession: null,
+    formToShow: "none"
   };
 
   componentDidMount() {
@@ -58,131 +62,199 @@ export default class GroupAccordian extends Component {
       }
     })
       .then(response => response.json())
-      .then(jsonData => this.handleFetchSessions());
+      .then(jsonData => {
+        this.handleCloseClick();
+        this.props.handleFetchSessions();
+      });
+  };
+
+  handleEditRsvp = (e, sessionId, otherText) => {
+    e.preventDefault();
+
+    let data = {
+      user_id: this.props.user.id,
+      session_id: sessionId,
+      status: e.target.status.value,
+      other_text: otherText
+    };
+    e.target.reset();
+    let token = localStorage.getItem("token");
+    fetch(baseUrl + `/rsvps/${this.state.currentRsvp.id}`, {
+      method: "PATCH",
+      body: JSON.stringify(data),
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`
+      }
+    })
+      .then(response => response.json())
+      .then(jsonData => {
+        this.props.handleFetchSessions();
+        this.handleCloseClick();
+      });
+  };
+
+  handleCloseClick = () => {
+    this.setState({
+      formToShow: "none"
+    });
   };
 
   render() {
     const { activeIndex, users } = this.state;
     const { sessions, group, user } = this.props;
+    let currentRsvp;
 
     return (
-      <Accordion fluid styled>
-        <Accordion.Title
-          active={activeIndex === 0}
-          index={0}
-          onClick={this.handleClick}
-        >
-          <Icon name="dropdown" />
-          This Group's Sessions
-        </Accordion.Title>
-        <Accordion.Content active={activeIndex === 0}>
-          <Table compact fixed striped singleLine size="small">
-            <Table.Header>
-              <Table.Row>
-                <Table.HeaderCell>Group</Table.HeaderCell>
-                <Table.HeaderCell>Date</Table.HeaderCell>
-                <Table.HeaderCell>Location</Table.HeaderCell>
-                <Table.HeaderCell>Min # of Players</Table.HeaderCell>
-                <Table.HeaderCell># of RSVPs</Table.HeaderCell>
-                <Table.HeaderCell>Status</Table.HeaderCell>
-                <Table.HeaderCell>Automatic Expiration</Table.HeaderCell>
-                <Table.HeaderCell>RSVP</Table.HeaderCell>
-              </Table.Row>
-            </Table.Header>
+      <React.Fragment>
+        <InteractiveSegment
+          handleCloseClick={this.handleCloseClick}
+          formToShow={this.state.formToShow}
+          session={this.state.currentSession}
+          rsvp={this.state.currentRsvp}
+          handleEditRsvp={this.handleEditRsvp}
+          handleNewRsvp={this.handleNewRsvp}
+        />
+        <Accordion fluid styled>
+          <Accordion.Title
+            active={activeIndex === 0}
+            index={0}
+            onClick={this.handleClick}
+          >
+            <Icon name="dropdown" />
+            This Group's Sessions
+          </Accordion.Title>
+          <Accordion.Content active={activeIndex === 0}>
+            <Table compact fixed striped singleLine size="small">
+              <Table.Header>
+                <Table.Row>
+                  <Table.HeaderCell>Group</Table.HeaderCell>
+                  <Table.HeaderCell>Date</Table.HeaderCell>
+                  <Table.HeaderCell>Location</Table.HeaderCell>
+                  <Table.HeaderCell>Min # of Players</Table.HeaderCell>
+                  <Table.HeaderCell># of RSVPs</Table.HeaderCell>
+                  <Table.HeaderCell>Status</Table.HeaderCell>
+                  <Table.HeaderCell>Automatic Expiration</Table.HeaderCell>
+                  <Table.HeaderCell>RSVP</Table.HeaderCell>
+                </Table.Row>
+              </Table.Header>
 
-            <Table.Body>
-              {sessions.map(session => {
-                if (session.group_id === group.id) {
-                  return (
-                    <Table.Row key={session.id}>
-                      <Table.Cell>{session.group.name}</Table.Cell>
-                      <Table.Cell>{moment(session.date).fromNow()}</Table.Cell>
-                      <Table.Cell>{session.location}</Table.Cell>
-                      <Table.Cell>{session.min_players}</Table.Cell>
-                      <Table.Cell>{session.rsvps.length}</Table.Cell>
-                      <Table.Cell>{session.status}</Table.Cell>
-                      <Table.Cell>
-                        {moment(session.expiration_date_time).fromNow()}
-                      </Table.Cell>
-                      <Table.Cell>
-                        {session.rsvps.map(rsvp => {
-                          if (rsvp.user_id === user.id) {
-                            return rsvp.status === "Accepted"
-                              ? `${rsvp.status}`
-                              : null;
-                          }
-                        })}
-                        {session.rsvps.filter(rsvp => {
-                          return rsvp.user_id === user.id;
-                        }).length === 0 ? (
-                          <Popup
-                            trigger={
-                              <Button mini basic secondary circular>
-                                RSVP
-                              </Button>
+              <Table.Body>
+                {sessions.map(session => {
+                  if (session.group_id === group.id) {
+                    return (
+                      <Table.Row key={session.id}>
+                        <Table.Cell>{session.group.name}</Table.Cell>
+                        <Table.Cell>
+                          {moment(session.date).fromNow()}
+                        </Table.Cell>
+                        <Table.Cell>{session.location}</Table.Cell>
+                        <Table.Cell>{session.min_players}</Table.Cell>
+                        <Table.Cell>{session.rsvps.length}</Table.Cell>
+                        <Table.Cell>
+                          <a
+                            href="#"
+                            onClick={() =>
+                              this.setState({
+                                formToShow: "sessionInfo",
+                                currentSession: session
+                              })
                             }
-                            on="click"
-                            basic
                           >
-                            <RsvpForm
-                              session={session}
-                              handleNewRsvp={this.handleNewRsvp}
-                            />
-                          </Popup>
-                        ) : null}
+                            {session.status}
+                          </a>
+                        </Table.Cell>
+                        <Table.Cell>
+                          {moment(session.expiration_date_time).fromNow()}
+                        </Table.Cell>
+                        <Table.Cell>
+                          {session.rsvps.map(rsvp => {
+                            if (rsvp.user_id === user.id) {
+                              return (
+                                <a
+                                  onClick={() =>
+                                    this.setState({
+                                      currentRsvp: rsvp,
+                                      currentSession: session,
+                                      formToShow: "editRsvp"
+                                    })
+                                  }
+                                  href="#"
+                                >
+                                  {rsvp.status}
+                                </a>
+                              );
+                            }
+                          })}
+                          {session.rsvps.filter(rsvp => {
+                            return rsvp.user_id === user.id;
+                          }).length === 0 ? (
+                            <a
+                              onClick={() =>
+                                this.setState({
+                                  formToShow: "newRsvp",
+                                  currentSession: session
+                                })
+                              }
+                              href="#"
+                            >
+                              RSVP
+                            </a>
+                          ) : null}
+                        </Table.Cell>
+                      </Table.Row>
+                    );
+                  }
+                })}
+              </Table.Body>
+            </Table>
+          </Accordion.Content>
+
+          <Accordion.Title
+            active={activeIndex === 1}
+            index={1}
+            onClick={this.handleClick}
+          >
+            <Icon name="dropdown" />
+            This Group's Users
+          </Accordion.Title>
+          <Accordion.Content active={activeIndex === 1}>
+            <Table compact fixed striped singleLine size="small">
+              <Table.Header>
+                <Table.Row>
+                  <Table.HeaderCell>Name</Table.HeaderCell>
+                  <Table.HeaderCell>Username</Table.HeaderCell>
+                  <Table.HeaderCell>Email</Table.HeaderCell>
+                  <Table.HeaderCell>Phone Number</Table.HeaderCell>
+                  <Table.HeaderCell>Location</Table.HeaderCell>
+                  <Table.HeaderCell>Age</Table.HeaderCell>
+                  <Table.HeaderCell>Height</Table.HeaderCell>
+                  <Table.HeaderCell>Highest Experience</Table.HeaderCell>
+                </Table.Row>
+              </Table.Header>
+
+              <Table.Body>
+                {users.map(user => {
+                  return (
+                    <Table.Row key={user.id}>
+                      <Table.Cell>
+                        {user.first_name + " " + user.last_name}
                       </Table.Cell>
+                      <Table.Cell>{user.username}</Table.Cell>
+                      <Table.Cell>{user.email}</Table.Cell>
+                      <Table.Cell>{user.phone_number}</Table.Cell>
+                      <Table.Cell>{user.location}</Table.Cell>
+                      <Table.Cell>{user.age}</Table.Cell>
+                      <Table.Cell>{user.height_in_inches} inches</Table.Cell>
+                      <Table.Cell>{user.highest_experience}</Table.Cell>
                     </Table.Row>
                   );
-                }
-              })}
-            </Table.Body>
-          </Table>
-        </Accordion.Content>
-
-        <Accordion.Title
-          active={activeIndex === 1}
-          index={1}
-          onClick={this.handleClick}
-        >
-          <Icon name="dropdown" />
-          This Group's Users
-        </Accordion.Title>
-        <Accordion.Content active={activeIndex === 1}>
-          <Table compact fixed striped singleLine size="small">
-            <Table.Header>
-              <Table.Row>
-                <Table.HeaderCell>Name</Table.HeaderCell>
-                <Table.HeaderCell>Username</Table.HeaderCell>
-                <Table.HeaderCell>Email</Table.HeaderCell>
-                <Table.HeaderCell>Phone Number</Table.HeaderCell>
-                <Table.HeaderCell>Location</Table.HeaderCell>
-                <Table.HeaderCell>Age</Table.HeaderCell>
-                <Table.HeaderCell>Height</Table.HeaderCell>
-                <Table.HeaderCell>Highest Experience</Table.HeaderCell>
-              </Table.Row>
-            </Table.Header>
-
-            <Table.Body>
-              {users.map(user => {
-                return (
-                  <Table.Row key={user.id}>
-                    <Table.Cell>
-                      {user.first_name + " " + user.last_name}
-                    </Table.Cell>
-                    <Table.Cell>{user.username}</Table.Cell>
-                    <Table.Cell>{user.email}</Table.Cell>
-                    <Table.Cell>{user.phone_number}</Table.Cell>
-                    <Table.Cell>{user.location}</Table.Cell>
-                    <Table.Cell>{user.age}</Table.Cell>
-                    <Table.Cell>{user.height_in_inches} inches</Table.Cell>
-                    <Table.Cell>{user.highest_experience}</Table.Cell>
-                  </Table.Row>
-                );
-              })}
-            </Table.Body>
-          </Table>
-        </Accordion.Content>
-      </Accordion>
+                })}
+              </Table.Body>
+            </Table>
+          </Accordion.Content>
+        </Accordion>
+      </React.Fragment>
     );
   }
 }
