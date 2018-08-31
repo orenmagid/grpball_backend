@@ -5,6 +5,7 @@ import NewRsvpForm from "./NewRsvpForm";
 import SessionInfo from "./SessionInfo";
 
 const InteractiveSegment = ({
+  group,
   session,
   rsvp,
   formToShow,
@@ -32,7 +33,13 @@ const InteractiveSegment = ({
       />
     ) : null}
 
-    {formToShow === "sessionInfo" ? <SessionInfo session={session} /> : null}
+    {formToShow === "sessionInfo" ? (
+      <SessionInfo
+        group={group}
+        handleCloseClick={handleCloseClick}
+        session={session}
+      />
+    ) : null}
   </Segment>
 );
 

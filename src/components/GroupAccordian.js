@@ -114,6 +114,7 @@ export default class GroupAccordian extends Component {
           rsvp={this.state.currentRsvp}
           handleEditRsvp={this.handleEditRsvp}
           handleNewRsvp={this.handleNewRsvp}
+          group={this.state.group}
         />
         <Accordion fluid styled>
           <Accordion.Title

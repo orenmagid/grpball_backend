@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import CreateGroup from "../components/CreateGroup";
+
 import JoinGroup from "../components/JoinGroup";
 
 import GroupCard from "../components/GroupCard";

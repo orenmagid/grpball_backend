@@ -27,7 +27,7 @@ export default class RsvpForm extends Component {
 
         <form
           className="ui form"
-          onSubmit={e => this.props.handleNewRsvp(e, this.props.session.id)}
+          onSubmit={e => this.props.handleRsvp(e, this.props.session.id)}
         >
           <div class="field">
             <select name="status">

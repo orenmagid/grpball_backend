@@ -99,6 +99,7 @@ export default class SessionScheduler extends Component {
             placeholderText="Click to select"
             selected={this.state.date}
             onChange={this.handleDateChange}
+            minDate={moment()}
             showTimeSelect
             timeFormat="HH:mm"
             timeIntervals={15}
@@ -111,6 +112,8 @@ export default class SessionScheduler extends Component {
             placeholderText="Click to select"
             selected={this.state.expiration}
             onChange={this.handleExpirationChange}
+            minDate={moment()}
+            maxDate={moment(this.state.date)}
             showTimeSelect
             timeFormat="HH:mm"
             timeIntervals={15}
