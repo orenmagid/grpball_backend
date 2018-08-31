@@ -1,0 +1,15 @@
+import React, { Component } from "react";
+import { Segment } from "semantic-ui-react";
+import CreateGroup from "./CreateGroup";
+import JoinGroup from "./JoinGroup";
+
+export default class FormCard extends Component {
+  render() {
+    return (
+      <Segment padded>
+        <CreateGroup handleNewGroupSubmit={this.handleNewGroupSubmit} />
+        <JoinGroup handleJoinGroupSubmit={this.handleJoinGroupSubmit} />
+      </Segment>
+    );
+  }
+}

@@ -5,10 +5,30 @@ import Sessions from "./Sessions";
 import RsvpForm from "./RsvpForm";
 const baseUrl = "http://localhost:3000/api/v1";
 
-export default class GroupSessionAccordian extends Component {
+export default class GroupAccordian extends Component {
   state = {
-    activeIndex: 0
+    activeIndex: 0,
+    group: null,
+    users: []
   };
+
+  componentDidMount() {
+    let token = localStorage.getItem("token");
+    if (token) {
+      fetch(baseUrl + `/groups/${this.props.group.id}`, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      })
+        .then(res => res.json())
+        .then(group => {
+          this.setState({
+            group: group,
+            users: group.users
+          });
+        });
+    }
+  }
 
   handleClick = (e, titleProps) => {
     const { index } = titleProps;
@@ -42,9 +62,8 @@ export default class GroupSessionAccordian extends Component {
   };
 
   render() {
-    const { activeIndex } = this.state;
-    const { sessions, group } = this.props;
-    const { user } = this.props;
+    const { activeIndex, users } = this.state;
+    const { sessions, group, user } = this.props;
 
     return (
       <Accordion fluid styled>
@@ -54,10 +73,10 @@ export default class GroupSessionAccordian extends Component {
           onClick={this.handleClick}
         >
           <Icon name="dropdown" />
-          This Groups Sessions
+          This Group's Sessions
         </Accordion.Title>
         <Accordion.Content active={activeIndex === 0}>
-          <Table compact singleLine size="small">
+          <Table compact fixed striped singleLine size="small">
             <Table.Header>
               <Table.Row>
                 <Table.HeaderCell>Group</Table.HeaderCell>
@@ -126,36 +145,42 @@ export default class GroupSessionAccordian extends Component {
           onClick={this.handleClick}
         >
           <Icon name="dropdown" />
-          What kinds of dogs are there?
+          This Group's Users
         </Accordion.Title>
         <Accordion.Content active={activeIndex === 1}>
-          <p>
-            There are many breeds of dogs. Each breed varies in size and
-            temperament. Owners often select a breed of dog that they find to be
-            compatible with their own lifestyle and desires from a companion.
-          </p>
-        </Accordion.Content>
+          <Table compact fixed striped singleLine size="small">
+            <Table.Header>
+              <Table.Row>
+                <Table.HeaderCell>Name</Table.HeaderCell>
+                <Table.HeaderCell>Username</Table.HeaderCell>
+                <Table.HeaderCell>Email</Table.HeaderCell>
+                <Table.HeaderCell>Phone Number</Table.HeaderCell>
+                <Table.HeaderCell>Location</Table.HeaderCell>
+                <Table.HeaderCell>Age</Table.HeaderCell>
+                <Table.HeaderCell>Height</Table.HeaderCell>
+                <Table.HeaderCell>Highest Experience</Table.HeaderCell>
+              </Table.Row>
+            </Table.Header>
 
-        <Accordion.Title
-          active={activeIndex === 2}
-          index={2}
-          onClick={this.handleClick}
-        >
-          <Icon name="dropdown" />
-          How do you acquire a dog?
-        </Accordion.Title>
-        <Accordion.Content active={activeIndex === 2}>
-          <p>
-            Three common ways for a prospective owner to acquire a dog is from
-            pet shops, private owners, or shelters.
-          </p>
-          <p>
-            A pet shop may be the most convenient way to buy a dog. Buying a dog
-            from a private owner allows you to assess the pedigree and
-            upbringing of your dog before choosing to take it home. Lastly,
-            finding your dog from a shelter, helps give a good home to a dog who
-            may not find one so readily.
-          </p>
+            <Table.Body>
+              {users.map(user => {
+                return (
+                  <Table.Row key={user.id}>
+                    <Table.Cell>
+                      {user.first_name + " " + user.last_name}
+                    </Table.Cell>
+                    <Table.Cell>{user.username}</Table.Cell>
+                    <Table.Cell>{user.email}</Table.Cell>
+                    <Table.Cell>{user.phone_number}</Table.Cell>
+                    <Table.Cell>{user.location}</Table.Cell>
+                    <Table.Cell>{user.age}</Table.Cell>
+                    <Table.Cell>{user.height_in_inches} inches</Table.Cell>
+                    <Table.Cell>{user.highest_experience}</Table.Cell>
+                  </Table.Row>
+                );
+              })}
+            </Table.Body>
+          </Table>
         </Accordion.Content>
       </Accordion>
     );

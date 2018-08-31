@@ -2,14 +2,18 @@ import React, { Component } from "react";
 import { List, Message, Popup, Button, Card } from "semantic-ui-react";
 import moment from "moment";
 import SessionScheduler from "./SessionScheduler";
+import CreateOrJoinFormCard from "./CreateOrJoinFormCard";
+import AddUserFormCard from "./AddUserFormCard";
 
 const baseUrl = "http://localhost:3000/api/v1";
 
 export default class GroupCard extends Component {
   state = {
     group: null,
-    users: []
+    users: [],
+    formToShow: "none"
   };
+
   componentDidMount() {
     let token = localStorage.getItem("token");
     if (token) {
@@ -27,6 +31,24 @@ export default class GroupCard extends Component {
         });
     }
   }
+
+  handleOpenAddUserClick = () => {
+    this.setState({
+      formToShow: "addUser"
+    });
+  };
+
+  handleOpenSuggestSessionClick = () => {
+    this.setState({
+      formToShow: "suggestSession"
+    });
+  };
+
+  handleCloseClick = () => {
+    this.setState({
+      formToShow: "none"
+    });
+  };
 
   handleAddToGroupSubmit = e => {
     e.preventDefault();
@@ -51,7 +73,8 @@ export default class GroupCard extends Component {
         .then(group => {
           this.setState({
             group: group,
-            users: group.users
+            users: group.users,
+            formToShow: "none"
           });
         });
     }
@@ -116,74 +139,39 @@ export default class GroupCard extends Component {
             <p> You are an administrator of this group.</p>
           </Message>
         ) : null}
+        {this.state.formToShow === "addUser" ? (
+          <AddUserFormCard
+            handleCloseClick={this.handleCloseClick}
+            handleAddToGroupSubmit={this.handleAddToGroupSubmit}
+          />
+        ) : null}
 
-        <List horizontal mini divided>
-          {users.map(user => {
-            return (
-              <List.Item key={user.id}>
-                <List.Icon name="user" />
-                <List.Content>
-                  {user.first_name + " " + user.last_name}
-                </List.Content>
-              </List.Item>
-            );
-          })}
-        </List>
-
-        <div className="ui divider" />
-
-        <div className="ui two column grid">
-          <div className="column">
-            <Popup
-              trigger={
-                <Button secondary basic>
-                  Add User
-                </Button>
-              }
-              on="click"
-              basic
-            >
-              <Card centered>
-                <Card.Content>
-                  <form
-                    className="ui form"
-                    onSubmit={this.handleAddToGroupSubmit}
-                  >
-                    <div className="field">
-                      <h4>Add User By Username</h4>
-                      <input
-                        type="text"
-                        name="username"
-                        placeholder="username"
-                      />
-                    </div>
-
-                    <button type="submit" className="ui secondary basic button">
-                      Add User
-                    </button>
-                  </form>
-                </Card.Content>
-              </Card>
-            </Popup>
-          </div>
-          <div className="column">
-            <Popup
-              trigger={
-                <Button secondary basic>
-                  Suggest a Session
-                </Button>
-              }
-              on="click"
-              basic
-            >
-              <SessionScheduler
-                handleFetchSessions={this.props.handleFetchSessions}
-                group={group}
-                user={this.props.user}
-              />
-            </Popup>
-          </div>
-        </div>
+        {this.state.formToShow === "suggestSession" ? (
+          <SessionScheduler
+            handleCloseClick={this.handleCloseClick}
+            handleFetchSessions={this.props.handleFetchSessions}
+            group={group}
+            user={this.props.user}
+          />
+        ) : null}
+        {this.state.formToShow === "none" ? (
+          <button
+            onClick={this.handleOpenAddUserClick}
+            type="submit"
+            className="ui secondary basic button"
+          >
+            Add User
+          </button>
+        ) : null}
+        {this.state.formToShow === "none" ? (
+          <button
+            onClick={this.handleOpenSuggestSessionClick}
+            type="submit"
+            className="ui secondary basic button"
+          >
+            Suggest Session
+          </button>
+        ) : null}
       </React.Fragment>
     );
   }

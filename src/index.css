@@ -27,3 +27,7 @@ body {
   padding-left: 0;
   padding-right: 0;
 }
+
+.window.close.icon {
+  margin: 10;
+}

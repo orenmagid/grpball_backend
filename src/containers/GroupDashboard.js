@@ -5,7 +5,8 @@ import JoinGroup from "../components/JoinGroup";
 import GroupCard from "../components/GroupCard";
 import { Grid, Menu, Segment, Popup, Button } from "semantic-ui-react";
 import SessionScheduler from "../components/SessionScheduler";
-import GroupSessionAccordian from "../components/GroupSessionAccordian";
+import GroupAccordian from "../components/GroupAccordian";
+import CreateOrJoinFormCard from "../components/CreateOrJoinFormCard";
 
 const baseUrl = "http://localhost:3000/api/v1";
 
@@ -101,32 +102,10 @@ class GroupDashboard extends Component {
             <Segment>
               {activeItem === "create_or_join" ? (
                 <React.Fragment>
-                  <Popup
-                    trigger={
-                      <Button secondary basic>
-                        Create a Group
-                      </Button>
-                    }
-                    on="click"
-                    basic
-                  >
-                    <CreateGroup
-                      handleNewGroupSubmit={this.handleNewGroupSubmit}
-                    />
-                  </Popup>
-                  <Popup
-                    trigger={
-                      <Button secondary basic>
-                        Join a Group
-                      </Button>
-                    }
-                    on="click"
-                    basic
-                  >
-                    <JoinGroup
-                      handleJoinGroupSubmit={this.handleJoinGroupSubmit}
-                    />
-                  </Popup>
+                  <CreateOrJoinFormCard
+                    handleNewGroupSubmit={this.handleNewGroupSubmit}
+                    handleJoinGroupSubmit={this.handleJoinGroupSubmit}
+                  />
                 </React.Fragment>
               ) : null}
 
@@ -139,10 +118,12 @@ class GroupDashboard extends Component {
                         key={group.id}
                         group={group}
                         user={user}
+                        handleJoinGroupSubmit={this.handleJoinGroupSubmit}
+                        handleNewGroupSubmit={this.handleNewGroupSubmit}
                         handleForceUpdate={handleForceUpdate}
                         handleFetchSessions={this.handleFetchSessions}
                       />
-                      <GroupSessionAccordian
+                      <GroupAccordian
                         group={group}
                         sessions={sessions}
                         handleForceUpdate={handleForceUpdate}
