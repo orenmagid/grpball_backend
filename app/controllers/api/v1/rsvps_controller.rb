@@ -1,4 +1,5 @@
 class Api::V1::RsvpsController < ApplicationController
+    before_action :find_rsvp, only: [:show, :update]
 
   def index
     @rsvps = Rsvp.all
@@ -12,9 +13,15 @@ class Api::V1::RsvpsController < ApplicationController
 
    def create
      @rsvp = Rsvp.new(rsvp_params)
-
+     @session = Session.find(params[:session_id])
+     @num_of_accepted = @session.rsvps.select {|rsvp| rsvp.status == "Accepted"}.length
 
      if @rsvp.save
+       if @num_of_accepted >= @session.min_players
+         @session.update(status: "Confirmed")
+       elsif @num_of_accepted < @session.min_players
+         @session.update(status: "Pending")
+       end
        render json: @rsvp, status: :accepted
      else
        render json: { errors: @rsvp.errors.full_messages }, status: :unprocessible_entity
@@ -23,7 +30,15 @@ class Api::V1::RsvpsController < ApplicationController
 
   def update
     @rsvp.update(rsvp_params)
+    @session = Session.find(params[:session_id])
+    @num_of_accepted = @session.rsvps.select {|rsvp| rsvp.status == "Accepted"}.length
+
     if @rsvp.save
+      if @num_of_accepted >= @session.min_players
+        @session.update(status: "Confirmed")
+      elsif @num_of_accepted < @session.min_players
+        @session.update(status: "Pending")
+      end
       render json: @rsvp, status: :accepted
     else
       render json: { errors: @rsvp.errors.full_messages }, status: :unprocessible_entity
