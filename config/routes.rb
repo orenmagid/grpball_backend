@@ -8,6 +8,14 @@ Rails.application.routes.draw do
      resources :user_groups
      resources :rsvps
      resources :sessions
+
    end
  end
+
+ get '/me', to: 'feeds#user'
+ get '/notification', to: 'feeds#notification'
+ get '/flat', to: 'feeds#flat'
+ get '/aggregated', to: 'feeds#aggregated'
+ get '/group/:id', to: 'feeds#group'
+
 end
