@@ -5,6 +5,7 @@ import { Card, Statistic, Label } from "semantic-ui-react";
 export default class SessionInfo extends Component {
   render() {
     const { session, group } = this.props;
+
     const acceptedRsvps = session.rsvps.filter(rsvp => {
       return rsvp.status === "Accepted";
     });

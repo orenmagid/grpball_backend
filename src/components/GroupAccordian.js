@@ -3,17 +3,20 @@ import { Accordion, Icon, Grid, Table, Popup, Button } from "semantic-ui-react";
 import moment from "moment";
 import Sessions from "./Sessions";
 import InteractiveSegment from "./InteractiveSegment";
+import InfoSegment from "./InfoSegment";
+import GroupFeed from "./GroupFeed";
 
 const baseUrl = "http://localhost:3000/api/v1";
 
 export default class GroupAccordian extends Component {
   state = {
-    activeIndex: 0,
+    activeIndex: "",
     group: null,
     users: [],
     currentRsvp: null,
     currentSession: null,
-    formToShow: "none"
+    formToShow: "none",
+    groupFeed: []
   };
 
   componentDidMount() {
@@ -31,6 +34,18 @@ export default class GroupAccordian extends Component {
             users: group.users
           });
         });
+      // Fetch group feed
+      fetch(`http://localhost:3000/group/${this.props.group.id}`, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      })
+        .then(res => res.json())
+        .then(groupFeed => {
+          console.log("groupFeed", groupFeed);
+          this.setState({ groupFeed: groupFeed });
+        })
+        .catch(e => console.error(e));
     }
   }
 
@@ -94,9 +109,21 @@ export default class GroupAccordian extends Component {
       });
   };
 
-  handleCloseClick = () => {
+  handleFormCloseClick = () => {
     this.setState({
       formToShow: "none"
+    });
+  };
+
+  handleSessionCloseClick = () => {
+    this.setState({
+      currentSession: null
+    });
+  };
+
+  handleShowSession = session => {
+    this.setState({
+      currentSession: session
     });
   };
 
@@ -108,7 +135,7 @@ export default class GroupAccordian extends Component {
     return (
       <React.Fragment>
         <InteractiveSegment
-          handleCloseClick={this.handleCloseClick}
+          handleCloseClick={this.handleFormCloseClick}
           formToShow={this.state.formToShow}
           session={this.state.currentSession}
           rsvp={this.state.currentRsvp}
@@ -116,6 +143,13 @@ export default class GroupAccordian extends Component {
           handleNewRsvp={this.handleNewRsvp}
           group={this.state.group}
         />
+        <InfoSegment
+          handleCloseClick={this.handleSessionCloseClick}
+          session={this.state.currentSession}
+          rsvp={this.state.currentRsvp}
+          group={this.state.group}
+        />
+
         <Accordion fluid styled>
           <Accordion.Title
             active={activeIndex === 0}
@@ -155,12 +189,7 @@ export default class GroupAccordian extends Component {
                         <Table.Cell>
                           <a
                             href="#"
-                            onClick={() =>
-                              this.setState({
-                                formToShow: "sessionInfo",
-                                currentSession: session
-                              })
-                            }
+                            onClick={() => this.handleShowSession(session)}
                           >
                             {session.status}
                           </a>
@@ -255,6 +284,7 @@ export default class GroupAccordian extends Component {
             </Table>
           </Accordion.Content>
         </Accordion>
+        <GroupFeed groupFeed={this.state.groupFeed} />
       </React.Fragment>
     );
   }

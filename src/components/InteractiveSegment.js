@@ -32,14 +32,6 @@ const InteractiveSegment = ({
         handleRsvp={handleNewRsvp}
       />
     ) : null}
-
-    {formToShow === "sessionInfo" ? (
-      <SessionInfo
-        group={group}
-        handleCloseClick={handleCloseClick}
-        session={session}
-      />
-    ) : null}
   </Segment>
 );
 

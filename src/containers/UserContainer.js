@@ -4,18 +4,21 @@ import UserMenu from "../components/UserMenu";
 import UserDashboard from "./UserDashboard";
 import GroupDashboard from "./GroupDashboard";
 import SessionsDashboard from "./SessionsDashboard";
+import UserFeed from "../components/UserFeed";
 
 const baseUrl = "http://localhost:3000/api/v1";
 
 class UserContainer extends React.Component {
   state = {
-    user: null
+    user: null,
+    userFeed: []
   };
 
   handleforceUserUpdate = () => {
     console.log("inside handleforceUpdate");
     let token = localStorage.getItem("token");
     if (token) {
+      // Fetch user information
       fetch(baseUrl + "/user", {
         headers: {
           Authorization: `Bearer ${token}`
@@ -27,12 +30,25 @@ class UserContainer extends React.Component {
           this.setState({ user: data });
         })
         .catch(e => console.error(e));
+      // Fetch user feed
+      fetch("http://localhost:3000/me", {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      })
+        .then(res => res.json())
+        .then(userFeed => {
+          console.log("userFeed", userFeed);
+          this.setState({ userFeed: userFeed });
+        })
+        .catch(e => console.error(e));
     }
   };
 
   componentDidMount() {
     let token = localStorage.getItem("token");
     if (token) {
+      // Fetch user information
       fetch(baseUrl + "/user", {
         headers: {
           Authorization: `Bearer ${token}`
@@ -42,6 +58,18 @@ class UserContainer extends React.Component {
         .then(data => {
           console.log(data);
           this.setState({ user: data });
+        })
+        .catch(e => console.error(e));
+      // Fetch user feed
+      fetch("http://localhost:3000/me", {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      })
+        .then(res => res.json())
+        .then(userFeed => {
+          console.log("userFeed", userFeed);
+          this.setState({ userFeed: userFeed });
         })
         .catch(e => console.error(e));
     }
@@ -59,7 +87,12 @@ class UserContainer extends React.Component {
           <Route
             exact
             path="/user_dashboard"
-            render={routerProps => <UserDashboard user={this.state.user} />}
+            render={routerProps => (
+              <React.Fragment>
+                <UserDashboard user={this.state.user} />
+                <UserFeed userFeed={this.state.userFeed} />
+              </React.Fragment>
+            )}
           />
         ) : (
           <p>Loading...</p>
