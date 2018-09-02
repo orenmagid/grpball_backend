@@ -13,10 +13,11 @@ export default class GroupAccordian extends Component {
     activeIndex: "",
     group: null,
     users: [],
-    currentRsvp: null,
+    currentRsvp: "",
     currentSession: null,
     formToShow: "none",
-    groupFeed: []
+    groupFeed: [],
+    groupNotifications: []
   };
 
   componentDidMount() {
@@ -44,6 +45,19 @@ export default class GroupAccordian extends Component {
         .then(groupFeed => {
           console.log("groupFeed", groupFeed);
           this.setState({ groupFeed: groupFeed });
+        })
+        .catch(e => console.error(e));
+
+      // Fetch user notifications
+      fetch(`http://localhost:3000/notification_group/${this.props.group.id}`, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      })
+        .then(res => res.json())
+        .then(groupNotifications => {
+          console.log("groupNotifications", groupNotifications);
+          this.setState({ groupNotifications: groupNotifications });
         })
         .catch(e => console.error(e));
     }
@@ -78,7 +92,8 @@ export default class GroupAccordian extends Component {
     })
       .then(response => response.json())
       .then(jsonData => {
-        this.handleCloseClick();
+        this.handleFormCloseClick();
+        this.handleShowSession(this.state.currentSession);
         this.props.handleFetchSessions();
       });
   };
@@ -105,7 +120,8 @@ export default class GroupAccordian extends Component {
       .then(response => response.json())
       .then(jsonData => {
         this.props.handleFetchSessions();
-        this.handleCloseClick();
+        this.handleShowSession(this.state.currentSession);
+        this.handleFormCloseClick();
       });
   };
 
@@ -121,34 +137,70 @@ export default class GroupAccordian extends Component {
     });
   };
 
-  handleShowSession = session => {
-    this.setState({
-      currentSession: session
-    });
+  handleShowSession = currentSession => {
+    let token = localStorage.getItem("token");
+    if (token) {
+      fetch(baseUrl + `/sessions/${currentSession.id}`, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      })
+        .then(res => res.json())
+        .then(session => {
+          let myRsvp = session.rsvps.find(
+            rsvp => rsvp.user_id === this.props.user.id
+          );
+          console.log("myRsvp", myRsvp);
+          this.setState({
+            currentSession: session,
+            currentRsvp: myRsvp
+          });
+        });
+    }
+  };
+
+  handleRsvpClick = (rsvp = null) => {
+    if (rsvp) {
+      this.setState({
+        currentRsvp: rsvp,
+        formToShow: "editRsvp"
+      });
+    } else {
+      this.setState({
+        formToShow: "newRsvp"
+      });
+    }
   };
 
   render() {
-    const { activeIndex, users } = this.state;
+    const { activeIndex, users, formToShow, currentSession } = this.state;
     const { sessions, group, user } = this.props;
     let currentRsvp;
 
     return (
       <React.Fragment>
-        <InteractiveSegment
-          handleCloseClick={this.handleFormCloseClick}
-          formToShow={this.state.formToShow}
-          session={this.state.currentSession}
-          rsvp={this.state.currentRsvp}
-          handleEditRsvp={this.handleEditRsvp}
-          handleNewRsvp={this.handleNewRsvp}
-          group={this.state.group}
-        />
-        <InfoSegment
-          handleCloseClick={this.handleSessionCloseClick}
-          session={this.state.currentSession}
-          rsvp={this.state.currentRsvp}
-          group={this.state.group}
-        />
+        {currentSession ? (
+          <InfoSegment
+            handleRsvpClick={this.handleRsvpClick}
+            handleCloseClick={this.handleSessionCloseClick}
+            session={this.state.currentSession}
+            rsvp={this.state.currentRsvp}
+            group={this.state.group}
+            user={user}
+          />
+        ) : null}
+
+        {formToShow === "editRsvp" || formToShow === "newRsvp" ? (
+          <InteractiveSegment
+            handleCloseClick={this.handleFormCloseClick}
+            formToShow={this.state.formToShow}
+            session={this.state.currentSession}
+            rsvp={this.state.currentRsvp}
+            handleEditRsvp={this.handleEditRsvp}
+            handleNewRsvp={this.handleNewRsvp}
+            group={this.state.group}
+          />
+        ) : null}
 
         <Accordion fluid styled>
           <Accordion.Title
@@ -163,10 +215,9 @@ export default class GroupAccordian extends Component {
             <Table compact fixed striped singleLine size="small">
               <Table.Header>
                 <Table.Row>
-                  <Table.HeaderCell>Group</Table.HeaderCell>
                   <Table.HeaderCell>Date</Table.HeaderCell>
                   <Table.HeaderCell>Location</Table.HeaderCell>
-                  <Table.HeaderCell>Min # of Players</Table.HeaderCell>
+                  <Table.HeaderCell>Min Players</Table.HeaderCell>
                   <Table.HeaderCell># of RSVPs</Table.HeaderCell>
                   <Table.HeaderCell>Status</Table.HeaderCell>
                   <Table.HeaderCell>Automatic Expiration</Table.HeaderCell>
@@ -179,7 +230,6 @@ export default class GroupAccordian extends Component {
                   if (session.group_id === group.id) {
                     return (
                       <Table.Row key={session.id}>
-                        <Table.Cell>{session.group.name}</Table.Cell>
                         <Table.Cell>
                           {moment(session.date).fromNow()}
                         </Table.Cell>

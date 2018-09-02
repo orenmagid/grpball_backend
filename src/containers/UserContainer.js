@@ -5,13 +5,17 @@ import UserDashboard from "./UserDashboard";
 import GroupDashboard from "./GroupDashboard";
 import SessionsDashboard from "./SessionsDashboard";
 import UserFeed from "../components/UserFeed";
+import { Segment } from "semantic-ui-react";
+import { ActionCable } from "react-actioncable-provider";
+import { API_ROOT } from "../constants";
 
 const baseUrl = "http://localhost:3000/api/v1";
 
 class UserContainer extends React.Component {
   state = {
     user: null,
-    userFeed: []
+    userFeed: [],
+    userNotifications: []
   };
 
   handleforceUserUpdate = () => {
@@ -40,6 +44,19 @@ class UserContainer extends React.Component {
         .then(userFeed => {
           console.log("userFeed", userFeed);
           this.setState({ userFeed: userFeed });
+        })
+        .catch(e => console.error(e));
+
+      // Fetch user notifications
+      fetch("http://localhost:3000/notification_user", {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      })
+        .then(res => res.json())
+        .then(userNotifications => {
+          console.log("userNotifications", userNotifications);
+          this.setState({ userNotifications: userNotifications });
         })
         .catch(e => console.error(e));
     }
@@ -72,12 +89,41 @@ class UserContainer extends React.Component {
           this.setState({ userFeed: userFeed });
         })
         .catch(e => console.error(e));
+
+      // Fetch user notifications
+      fetch("http://localhost:3000/notification_user", {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      })
+        .then(res => res.json())
+        .then(userNotifications => {
+          console.log("userNotifications", userNotifications);
+          this.setState({ userNotifications: userNotifications });
+        })
+        .catch(e => console.error(e));
+
+      // Fetch user feed from actioncable
+      // fetch(`${API_ROOT}/me`)
+      //   .then(res => res.json())
+      //   .then(userFeed => this.setState({ userFeed }));
     }
   }
+
+  handleReceivedUserFeed = response => {
+    // const { userFeed } = response;
+    this.setState({
+      userFeed: [...this.state.userFeed, response]
+    });
+  };
 
   render() {
     return (
       <div>
+        {/* <ActionCable
+          channel={{ channel: "UserChannel" }}
+          onReceived={this.handleReceivedUserFeed}
+        /> */}
         <Route
           path="/"
           render={routerProps => <UserMenu user={this.state.user} />}
@@ -86,12 +132,12 @@ class UserContainer extends React.Component {
         {this.state.user ? (
           <Route
             exact
-            path="/user_dashboard"
+            path="/"
             render={routerProps => (
-              <React.Fragment>
+              <Segment>
                 <UserDashboard user={this.state.user} />
                 <UserFeed userFeed={this.state.userFeed} />
-              </React.Fragment>
+              </Segment>
             )}
           />
         ) : (

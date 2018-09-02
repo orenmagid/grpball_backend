@@ -9,7 +9,6 @@ const baseUrl = "http://localhost:3000/api/v1";
 
 class App extends Component {
   state = {
-    user: null,
     displayNewUserForm: false,
     error: ""
   };
@@ -86,7 +85,6 @@ class App extends Component {
           this.displayErrors(jsonData.errors);
         } else {
           this.setState({
-            user: jsonData.user,
             displayNewUserForm: false
           });
           window.history.back();

@@ -48,7 +48,8 @@ export default class SessionScheduler extends Component {
         status: "Pending",
         location: e.currentTarget.location.value,
         min_players: 6,
-        expiration_date_time: this.state.expiration
+        expiration_date_time: this.state.expiration,
+        creator_id: this.props.user.id
       }
     };
 

@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { Card, Icon, List, Image, Grid } from "semantic-ui-react";
+import { Card, Icon, List, Image, Grid, Segment } from "semantic-ui-react";
 
 const UserDashboard = ({ user }) => (
   <Card fluid>

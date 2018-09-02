@@ -8,7 +8,8 @@ const Info = ({
   group,
   session,
   rsvp,
-
+  user,
+  handleRsvpClick,
   handleCloseClick
 }) => (
   <Segment>
@@ -16,7 +17,10 @@ const Info = ({
       <SessionInfo
         group={group}
         handleCloseClick={handleCloseClick}
+        handleRsvpClick={handleRsvpClick}
         session={session}
+        rsvp={rsvp}
+        user={user}
       />
     ) : null}
   </Segment>

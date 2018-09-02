@@ -14,9 +14,24 @@ const GroupFeed = ({ groupFeed }) => (
             <Feed.Date>{moment(feed.time).calendar()}</Feed.Date>
             <Feed.Summary>
               <Feed.User>{feed.actor.name || feed.actor.first_name}</Feed.User>{" "}
-              {feed.verb} ({feed.object.status.toLowerCase()}) at{" "}
-              {feed.object.location},{" "}
-              {moment(feed.object.date).format("[on ]MMM Do YYYY, [at] h:mm a")}
+              {feed.verb}{" "}
+              {feed.foreign_id.startsWith("UserGroup")
+                ? feed.object.name
+                : null}
+              {feed.foreign_id.startsWith("Session") && feed.object.status
+                ? `(${feed.object.status.toLowerCase()}) at ${
+                    feed.object.location
+                  }, ${moment(feed.object.date).format(
+                    "[on ]MMM Do YYYY, [at] h:mm a"
+                  )}`
+                : null}
+              {feed.foreign_id.startsWith("Rsvp") && feed.object.status
+                ? `for a session (${feed.object.status.toLowerCase()}) at ${
+                    feed.object.location
+                  }, ${moment(feed.object.date).format(
+                    "[on ]MMM Do YYYY, [at] h:mm a"
+                  )}`
+                : null}
             </Feed.Summary>
             <Feed.Meta>
               {/* <Feed.Like>

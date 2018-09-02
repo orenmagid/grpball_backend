@@ -12,7 +12,7 @@ export default class UserMenu extends Component {
 
     return (
       <Menu tabular>
-        <Link to={`/user_dashboard`}>
+        <Link to={`/`}>
           <Menu.Item
             name="user_information"
             active={activeItem === "user_information"}
