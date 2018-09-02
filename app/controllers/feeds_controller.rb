@@ -12,6 +12,12 @@ class FeedsController < ApplicationController
     @activities = @enricher.enrich_activities(results)
 
     render json: @activities
+
+    # serialized_data = ActiveModelSerializers::Adapter::Json.new(
+    #     ConversationSerializer.new(conversation)
+    #   ).serializable_hash
+      # ActionCable.server.broadcast 'user_channel', ActiveModelSerializers::Adapter::Json.new(@activities).serializable_hash
+      # head :ok
   end
 
   def group
@@ -35,8 +41,15 @@ class FeedsController < ApplicationController
     render json: @activities
   end
 
-  def notification
-    feed = StreamRails.feed_manager.get_notification_feed(current_user.id)
+  def notification_group
+    feed = StreamRails.feed_manager.get_notification_feed(params[:id])
+    results = feed.get()['results']
+    @activities = @enricher.enrich_aggregated_activities(results)
+    render json: @activities
+  end
+
+  def notification_user
+    feed = StreamRails.feed_manager.get_notification_feed(@current_user.id)
     results = feed.get()['results']
     @activities = @enricher.enrich_aggregated_activities(results)
     render json: @activities

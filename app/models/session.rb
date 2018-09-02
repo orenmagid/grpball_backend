@@ -8,6 +8,17 @@ class Session < ApplicationRecord
   include StreamRails::Activity
   as_activity
 
+    def self.update_session_status
+      Session.all.each do |session|
+         if session.expiration_date_time.past? && session.status == "Pending"
+           session.update(status: "Cancelled")
+           session.save
+
+         end
+      end
+
+    end
+
     def activity_actor
       self.group
     end
@@ -20,8 +31,12 @@ class Session < ApplicationRecord
       "proposed a session"
     end
 
-    def activity_extra_data
-      @extra_data
+    # def activity_extra_data
+    #   @extra_data
+    # end
+
+    def activity_notify
+        [StreamRails.feed_manager.get_notification_feed(self.group_id)]
     end
 
     # def activity_extra_data

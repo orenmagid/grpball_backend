@@ -14,12 +14,17 @@ class Rsvp < ApplicationRecord
     end
 
     def activity_verb
-      "RSVP'd for the session"
+      "rsvp'd"
     end
 
-    def activity_extra_data
-      @extra_data
+    # def activity_extra_data
+    #   @extra_data
+    # end
+
+    def activity_notify
+        [StreamRails.feed_manager.get_notification_feed(self.user_id)]
     end
+
 
     # def activity_extra_data
     #   {'is_retweet' => self.is_retweet}

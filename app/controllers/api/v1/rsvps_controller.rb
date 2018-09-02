@@ -17,9 +17,9 @@ class Api::V1::RsvpsController < ApplicationController
      @num_of_accepted = @session.rsvps.select {|rsvp| rsvp.status == "Accepted"}.length
 
      if @rsvp.save
-       if @num_of_accepted >= @session.min_players
+       if @session.status != "Confirmed" && @num_of_accepted >= @session.min_players
          @session.update(status: "Confirmed")
-       elsif @num_of_accepted < @session.min_players
+       elsif @session.status != "Pending" && @num_of_accepted < @session.min_players
          @session.update(status: "Pending")
        end
        render json: @rsvp, status: :accepted
@@ -34,9 +34,9 @@ class Api::V1::RsvpsController < ApplicationController
     @num_of_accepted = @session.rsvps.select {|rsvp| rsvp.status == "Accepted"}.length
 
     if @rsvp.save
-      if @num_of_accepted >= @session.min_players
+      if @session.status != "Confirmed" && @num_of_accepted >= @session.min_players
         @session.update(status: "Confirmed")
-      elsif @num_of_accepted < @session.min_players
+      elsif @session.status != "Pending" && @num_of_accepted < @session.min_players
         @session.update(status: "Pending")
       end
       render json: @rsvp, status: :accepted

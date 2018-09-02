@@ -34,6 +34,7 @@ ActiveRecord::Schema.define(version: 2018_08_28_123340) do
 
   create_table "sessions", force: :cascade do |t|
     t.integer "group_id"
+    t.integer "creator_id"
     t.datetime "date"
     t.datetime "expiration_date_time"
     t.integer "min_players"

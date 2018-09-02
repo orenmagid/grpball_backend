@@ -33,3 +33,19 @@ while x <  16  do
 end
 
 UserGroup.find(4).update(is_administrator: true)
+
+x = 1
+while x <  10  do
+  Session.create(group_id: x, creator_id: x, date: "2018-09-13 18:15:00", expiration_date_time: "2018-09-05 18:00:00", min_players: 6, location: Faker::Address.city, status: "Pending")
+  x += 1
+end
+
+x = 1
+while x <  6  do
+  Rsvp.create(user_id: x, session_id: 1, status: "Accepted")
+  Rsvp.create(user_id: x, session_id: 2, status: "Accepted")
+  Rsvp.create(user_id: x, session_id: 3, status: "Accepted")
+  Rsvp.create(user_id: x, session_id: 4, status: "Accepted")
+  Rsvp.create(user_id: x, session_id: 5, status: "Accepted")
+  x += 1
+end

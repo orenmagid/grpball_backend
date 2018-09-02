@@ -1,24 +1,32 @@
+require 'pry'
+
 class Api::V1::SessionsController < ApplicationController
   before_action :find_session, only: [:show, :update]
 
    def index
+     Session.update_session_status
      @sessions = Session.all
      render json: @sessions, include: ['group', 'rsvps']
    end
 
 
     def show
+      Session.update_session_status
       render json: @session, include: ['group', 'rsvps']
     end
 
     def create
+      Session.update_session_status
       @session = Session.new(session_params)
 
 
       if @session.save
+
+        # @session.rsvps << Rsvp.create(user_id: @current_user.id, status: "Accepted")
         @session.users << @current_user
-        @session.save
-        @session.rsvps[0].update(status: "Accepted")
+
+        @session.rsvps.last.update(status: "Accepted")
+
         render json: @session, status: :accepted
       else
         render json: { errors: @session.errors.full_messages }, status: :unprocessible_entity
@@ -26,6 +34,7 @@ class Api::V1::SessionsController < ApplicationController
     end
 
    def update
+     Session.update_session_status
      @session.update(session_params)
      if @session.save
        render json: @session, status: :accepted
@@ -37,11 +46,11 @@ class Api::V1::SessionsController < ApplicationController
    private
 
    def session_params
-     params.require(:session).permit(:id, :group_id, :date, :expiration_date_time, :min_players, :location, :status)
+     params.require(:session).permit(:id, :group_id, :date, :expiration_date_time, :min_players, :location, :status, :creator_id)
    end
 
    def find_session
-     @session = session.find(params[:id])
+     @session = Session.find(params[:id])
    end
 
 end
