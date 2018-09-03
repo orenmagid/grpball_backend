@@ -26,18 +26,25 @@ export default class UserMenu extends Component {
             onClick={this.handleItemClick}
           />
         </Link>
+        <Link to={`/calendar`}>
+          <Menu.Item
+            name="calendar"
+            active={activeItem === "calendar"}
+            onClick={this.handleItemClick}
+          />
+        </Link>
+        <Link to={`/map`}>
+          <Menu.Item
+            name="map"
+            active={activeItem === "map"}
+            onClick={this.handleItemClick}
+          />
+        </Link>
 
         <Link to={`/notifications`}>
           <Menu.Item
             name="notifications"
             active={activeItem === "notifications"}
-            onClick={this.handleItemClick}
-          />
-        </Link>
-        <Link to={`/calendar`}>
-          <Menu.Item
-            name="calendar"
-            active={activeItem === "calendar"}
             onClick={this.handleItemClick}
           />
         </Link>

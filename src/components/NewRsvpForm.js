@@ -22,7 +22,7 @@ export default class RsvpForm extends Component {
           className="ui form"
           onSubmit={e => this.props.handleRsvp(e, this.props.session.id)}
         >
-          <div class="field">
+          <div className="field">
             <select name="status">
               <option
                 selected={status === "Accepted" ? "selected" : null}
@@ -45,7 +45,7 @@ export default class RsvpForm extends Component {
             </select>
           </div>
 
-          <div class="field">
+          <div className="field">
             <label>Text</label>
             <textarea name="otherText" value={this.state.other_text} />
           </div>

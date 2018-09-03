@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import DatePicker from "react-datepicker";
 import moment from "moment";
-import { Form, Card } from "semantic-ui-react";
+import { Form, Card, Select, Segment } from "semantic-ui-react";
 
 import "react-datepicker/dist/react-datepicker.css";
 import "react-datepicker/dist/react-datepicker-cssmodules.css";
@@ -11,7 +11,8 @@ const baseUrl = "http://localhost:3000/api/v1";
 export default class SessionScheduler extends Component {
   state = {
     date: "",
-    expiration: ""
+    expiration: "",
+    group_id: ""
   };
 
   handleDateChange = date => {
@@ -28,15 +29,15 @@ export default class SessionScheduler extends Component {
     });
   };
 
-  handleGroupChange = (e, { value }) => this.setState({ groupId: value });
+  handleChange = (e, { value }) => this.setState({ group_id: value });
 
   handleSubmit = e => {
     e.preventDefault();
 
     let data = {
       session: {
-        group_id: this.props.group.id,
-        date: this.state.date,
+        group_id: this.state.group_id,
+        date: this.props.date ? moment(this.props.date) : this.state.date,
         status: "Pending",
         location: e.currentTarget.location.value,
         min_players: 6,
@@ -65,64 +66,82 @@ export default class SessionScheduler extends Component {
           session.errors
             ? alert(session.errors)
             : this.props.handleFetchSessions();
+          this.props.handleCloseClick();
         });
     }
   };
 
   render() {
-    // let groups = this.props.user.groups;
+    const { date, group, user } = this.props;
+
+    const options = user.groups.map(group => {
+      return {
+        key: `${group.id}`,
+        text: `${group.name}`,
+        value: `${group.id}`
+      };
+    });
 
     return (
-      <Card centered>
+      <Segment>
         <i
           className="window close icon"
           onClick={this.props.handleCloseClick}
         />
-        <Card.Content>
-          <h2> Schedule a Session</h2>
-          <h4> Session Date and Time</h4>
+        {/* <Card.Content> */}
+        <h2> Schedule a Session</h2>
+        <h4> Session Date and Time</h4>
 
-          <DatePicker
-            placeholderText="Click to select"
-            selected={this.state.date}
-            onChange={this.handleDateChange}
-            minDate={moment()}
-            showTimeSelect
-            timeFormat="HH:mm"
-            timeIntervals={15}
-            dateFormat="LLL"
-            timeCaption="time"
-          />
+        <DatePicker
+          placeholderText="Click to select"
+          selected={date ? moment(date) : this.state.date}
+          onChange={this.handleDateChange}
+          minDate={moment()}
+          showTimeSelect
+          timeFormat="HH:mm"
+          timeIntervals={15}
+          dateFormat="LLL"
+          timeCaption="time"
+        />
 
-          <h4>Expiration Date and Time</h4>
-          <DatePicker
-            placeholderText="Click to select"
-            selected={this.state.expiration}
-            onChange={this.handleExpirationChange}
-            minDate={moment()}
-            maxDate={moment(this.state.date)}
-            showTimeSelect
-            timeFormat="HH:mm"
-            timeIntervals={15}
-            dateFormat="LLL"
-            timeCaption="time"
-          />
+        <h4>Expiration Date and Time</h4>
+        <DatePicker
+          placeholderText="Click to select"
+          selected={this.state.expiration}
+          onChange={this.handleExpirationChange}
+          minDate={moment()}
+          maxDate={date ? moment(date) : this.state.date}
+          showTimeSelect
+          timeFormat="HH:mm"
+          timeIntervals={15}
+          dateFormat="LLL"
+          timeCaption="time"
+        />
 
-          <br />
-          <Form onSubmit={this.handleSubmit}>
-            <Form.Input
-              name="location"
-              fluid
-              label="Location"
-              placeholder="Location"
+        <br />
+        <Form onSubmit={this.handleSubmit}>
+          {group ? null : (
+            <Form.Field
+              control={Select}
+              label="Group"
+              options={options}
+              placeholder="Group"
+              onChange={this.handleChange}
             />
+          )}
+          <Form.Input
+            name="location"
+            fluid
+            label="Location"
+            placeholder="Location"
+          />
 
-            <Form.Button secondary basic>
-              Submit
-            </Form.Button>
-          </Form>
-        </Card.Content>
-      </Card>
+          <Form.Button secondary basic>
+            Submit
+          </Form.Button>
+        </Form>
+        {/* </Card.Content> */}
+      </Segment>
     );
   }
 }

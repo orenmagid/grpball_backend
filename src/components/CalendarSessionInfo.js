@@ -3,11 +3,32 @@ import moment from "moment";
 import RsvpsTable from "./RsvpsTable";
 import { Card, Statistic, Label, Icon } from "semantic-ui-react";
 
+const baseUrl = "http://localhost:3000/api/v1";
+
 export default class CalendarSessionInfo extends Component {
   state = {
     statusToDisplay: "",
-    rsvps: []
+    rsvps: [],
+    groupUsers: []
   };
+
+  componentDidMount() {
+    let token = localStorage.getItem("token");
+    if (token) {
+      fetch(baseUrl + `/groups/${this.props.session.group.id}`, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      })
+        .then(res => res.json())
+        .then(group => {
+          console.log("group", group);
+          this.setState({
+            groupUsers: group.users
+          });
+        });
+    }
+  }
 
   handleShowStatus = (e, statusToDisplay, rsvps = []) => {
     e.preventDefault();
@@ -34,6 +55,8 @@ export default class CalendarSessionInfo extends Component {
       handleRsvpClick
     } = this.props;
 
+    const { groupUsers } = this.state;
+
     const acceptedRsvps = session.rsvps.filter(rsvp => {
       return rsvp.status === "Accepted";
     });
@@ -48,7 +71,7 @@ export default class CalendarSessionInfo extends Component {
 
     const numOfPlayersNeeded = session.min_players - acceptedRsvps.length;
     const playerOrPlayers = numOfPlayersNeeded > 1 ? "players" : "player";
-    const sessionCreator = group.users.find(user => {
+    const sessionCreator = groupUsers.find(user => {
       return user.id === session.creator_id;
     });
 
@@ -90,17 +113,18 @@ export default class CalendarSessionInfo extends Component {
           {label}
 
           <Card.Content>
+            <Card.Header>Group: {group.name}</Card.Header>
             <Card.Header>
               {moment(session.date).format("MMMM Do YYYY, [at] h:mm a")}, at{" "}
               {session.location}
             </Card.Header>
-            <Card.Meta>
+            {/* <Card.Meta>
               {" "}
               Created by:{" "}
               {sessionCreator.id === user.id
                 ? "You"
                 : sessionCreator.first_name}
-            </Card.Meta>
+            </Card.Meta> */}
 
             <Card.Description>
               <Statistic size="mini">
@@ -160,17 +184,17 @@ export default class CalendarSessionInfo extends Component {
               <Statistic size="mini">
                 <Statistic.Label>No Response</Statistic.Label>
                 <Statistic.Value>
-                  {group.users.length - session.rsvps.length > 0 ? (
+                  {groupUsers.length - session.rsvps.length > 0 ? (
                     <a
                       onClick={e =>
                         this.handleShowStatus(e, "none", session.rsvps)
                       }
                       href="none"
                     >
-                      {group.users.length - session.rsvps.length}
+                      {groupUsers.length - session.rsvps.length}
                     </a>
                   ) : (
-                    group.users.length - session.rsvps.length
+                    groupUsers.length - session.rsvps.length
                   )}
                 </Statistic.Value>
               </Statistic>
@@ -179,7 +203,7 @@ export default class CalendarSessionInfo extends Component {
           <RsvpsTable
             statusToDisplay={this.state.statusToDisplay}
             rsvps={this.state.rsvps}
-            users={group.users}
+            users={groupUsers}
             session={session}
           />
           <Card.Content extra>

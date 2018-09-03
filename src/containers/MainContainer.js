@@ -5,9 +5,10 @@ import UserDashboard from "./UserDashboard";
 import GroupDashboard from "./GroupDashboard";
 import NotificationsDashboard from "./NotificationsDashboard";
 import CalendarDashboard from "./CalendarDashboard";
+import MapDashboard from "./MapDashboard";
 
 import UserFeed from "../components/UserFeed";
-import { Segment } from "semantic-ui-react";
+import { Segment, Loader } from "semantic-ui-react";
 // import { ActionCable } from "react-actioncable-provider";
 // import { API_ROOT } from "../constants";
 
@@ -142,7 +143,7 @@ class UserContainer extends React.Component {
 
   render() {
     return (
-      <div>
+      <div className="ui container">
         {/* <ActionCable
           channel={{ channel: "UserChannel" }}
           onReceived={this.handleReceivedUserFeed}
@@ -164,7 +165,7 @@ class UserContainer extends React.Component {
             )}
           />
         ) : (
-          <p>Loading...</p>
+          <Loader active size="huge" inline="centered" />
         )}
         {this.state.user ? (
           <Route
@@ -174,13 +175,39 @@ class UserContainer extends React.Component {
               <GroupDashboard
                 user={this.state.user}
                 handleForceUserUpdate={this.handleforceUserUpdate}
+                handleFetchSessions={this.handleFetchSessions}
                 sessions={this.state.sessions}
               />
             )}
           />
-        ) : (
-          <p>Loading...</p>
-        )}
+        ) : null}
+        {this.state.user ? (
+          <Route
+            exact
+            path="/calendar"
+            render={routerProps => (
+              <CalendarDashboard
+                user={this.state.user}
+                sessions={this.state.sessions}
+                handleFetchSessions={this.handleFetchSessions}
+              />
+            )}
+          />
+        ) : null}
+
+        {this.state.user ? (
+          <Route
+            exact
+            path="/map"
+            render={routerProps => (
+              <MapDashboard
+                user={this.state.user}
+                sessions={this.state.sessions}
+                handleFetchSessions={this.handleFetchSessions}
+              />
+            )}
+          />
+        ) : null}
 
         {this.state.user ? (
           <Route
@@ -193,24 +220,7 @@ class UserContainer extends React.Component {
               />
             )}
           />
-        ) : (
-          <p>Loading...</p>
-        )}
-
-        {this.state.user ? (
-          <Route
-            exact
-            path="/calendar"
-            render={routerProps => (
-              <CalendarDashboard
-                user={this.state.user}
-                sessions={this.state.sessions}
-              />
-            )}
-          />
-        ) : (
-          <p>Loading...</p>
-        )}
+        ) : null}
       </div>
     );
   }

@@ -31,3 +31,7 @@ body {
 .window.close.icon {
   margin: 10;
 }
+
+.ui.raised.container.map.segment {
+  height: 400px;
+}

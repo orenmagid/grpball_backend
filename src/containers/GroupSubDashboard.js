@@ -8,7 +8,7 @@ import InfoSegment from "../components/InfoSegment";
 
 const baseUrl = "http://localhost:3000/api/v1";
 
-export default class GroupAccordian extends Component {
+export default class GroupSubDashboard extends Component {
   state = {
     group: null,
     users: [],

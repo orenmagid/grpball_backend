@@ -83,8 +83,8 @@ class GroupDashboard extends Component {
 
   render() {
     let user = this.props.user;
-    let sessions = this.props.sessions;
-    let handleForceUserUpdate = this.props.handleForceUserUpdate;
+    let { sessions, handleForceUserUpdate, handleFetchSessions } = this.props;
+
     const { activeItem, activeIndex } = this.state;
 
     return (
@@ -115,7 +115,7 @@ class GroupDashboard extends Component {
                         handleJoinGroupSubmit={this.handleJoinGroupSubmit}
                         handleNewGroupSubmit={this.handleNewGroupSubmit}
                         handleForceUserUpdate={handleForceUserUpdate}
-                        handleFetchSessions={this.handleFetchSessions}
+                        handleFetchSessions={handleFetchSessions}
                       />
                       <GroupSubDashboard
                         group={group}
@@ -123,7 +123,7 @@ class GroupDashboard extends Component {
                         activeIndex={activeIndex}
                         handleAccordianDisplay={this.handleAccordianDisplay}
                         handleForceUserUpdate={handleForceUserUpdate}
-                        handleFetchSessions={this.handleFetchSessions}
+                        handleFetchSessions={handleFetchSessions}
                         user={user}
                       />
                     </React.Fragment>
