@@ -9,6 +9,9 @@ class User < ApplicationRecord
 
   has_secure_password
 
+  geocoded_by :location
+  after_validation :geocode
+
 
 
 

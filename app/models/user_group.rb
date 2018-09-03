@@ -17,12 +17,12 @@ class UserGroup < ApplicationRecord
       "joined"
     end
 
-    # def activity_extra_data
-    #   @extra_data
-    # end
+
 
     def activity_notify
-        [StreamRails.feed_manager.get_notification_feed(self.group_id)]
+      self.group.users.map do |user|
+        StreamRails.feed_manager.get_notification_feed(user.id)
+      end
     end
 
 

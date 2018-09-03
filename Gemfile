@@ -24,6 +24,9 @@ gem 'active_model_serializers'
 gem 'faker', :git => 'https://github.com/stympy/faker.git', :branch => 'master'
 
 gem 'stream_rails'
+gem "stream-ruby"
+
+gem "geocoder"
 
 
 # Use ActiveStorage variant

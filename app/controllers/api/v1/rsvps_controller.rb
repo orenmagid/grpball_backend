@@ -1,3 +1,5 @@
+
+
 class Api::V1::RsvpsController < ApplicationController
     before_action :find_rsvp, only: [:show, :update]
 

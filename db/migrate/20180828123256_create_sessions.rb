@@ -7,6 +7,8 @@ class CreateSessions < ActiveRecord::Migration[5.2]
       t.datetime :expiration_date_time
       t.integer :min_players
       t.string :location
+      t.decimal :latitude
+      t.decimal :longitude
       t.string :status
 
 

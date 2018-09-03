@@ -3,6 +3,9 @@ class Group < ApplicationRecord
   has_many :users, through: :user_groups
   has_many :sessions
 
+  geocoded_by :location
+  after_validation :geocode
+
   # include StreamRails::Activity
   # as_activity
   #

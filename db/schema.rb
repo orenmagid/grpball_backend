@@ -18,6 +18,8 @@ ActiveRecord::Schema.define(version: 2018_08_28_123340) do
   create_table "groups", force: :cascade do |t|
     t.string "name"
     t.string "location"
+    t.decimal "latitude"
+    t.decimal "longitude"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
@@ -39,6 +41,8 @@ ActiveRecord::Schema.define(version: 2018_08_28_123340) do
     t.datetime "expiration_date_time"
     t.integer "min_players"
     t.string "location"
+    t.decimal "latitude"
+    t.decimal "longitude"
     t.string "status"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -60,6 +64,8 @@ ActiveRecord::Schema.define(version: 2018_08_28_123340) do
     t.string "password_digest", null: false
     t.string "phone_number"
     t.string "location"
+    t.decimal "latitude"
+    t.decimal "longitude"
     t.integer "age"
     t.integer "height_in_inches"
     t.string "highest_experience"

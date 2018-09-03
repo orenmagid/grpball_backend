@@ -16,7 +16,7 @@ oren = User.create(first_name: "Oren", last_name: "Magid", username: "odog", ema
   User.create(first_name: Faker::Name.first_name, last_name: Faker::Name.last_name, username: Faker::Internet.username, email: Faker::Internet.email, password: "test", phone_number: Faker::PhoneNumber.cell_phone, location: Faker::Address.city, highest_experience: "Pickup", height_in_inches: Faker::Number.between(50, 80), age: Faker::Number.between(14, 60))
 end
 
-5.times do
+10.times do
   Group.create(name: Faker::Company.name, location: Faker::Address.city)
 end
 

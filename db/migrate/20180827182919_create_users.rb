@@ -8,6 +8,8 @@ class CreateUsers < ActiveRecord::Migration[5.2]
       t.string :password_digest, null: false
       t.string :phone_number
       t.string :location
+      t.decimal :latitude
+      t.decimal :longitude
       t.integer :age
       t.integer :height_in_inches
       t.string :highest_experience

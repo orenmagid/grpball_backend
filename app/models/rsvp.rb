@@ -2,6 +2,7 @@ class Rsvp < ApplicationRecord
   belongs_to :session, optional: true
   belongs_to :user, optional: true
 
+
   include StreamRails::Activity
   as_activity
 
@@ -17,12 +18,12 @@ class Rsvp < ApplicationRecord
       "rsvp'd"
     end
 
-    # def activity_extra_data
-    #   @extra_data
-    # end
+
 
     def activity_notify
-        [StreamRails.feed_manager.get_notification_feed(self.user_id)]
+      self.session.group.users.map do |user|
+        StreamRails.feed_manager.get_notification_feed(user.id)
+      end
     end
 
 

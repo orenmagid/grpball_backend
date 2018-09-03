@@ -5,6 +5,9 @@ class Session < ApplicationRecord
 
   validates_presence_of :group_id, :location, :date, :expiration_date_time, :min_players
 
+  geocoded_by :location
+  after_validation :geocode
+
   include StreamRails::Activity
   as_activity
 
@@ -20,7 +23,7 @@ class Session < ApplicationRecord
     end
 
     def activity_actor
-      self.group
+      User.find(self.creator_id)
     end
 
     def activity_object
@@ -31,12 +34,12 @@ class Session < ApplicationRecord
       "proposed a session"
     end
 
-    # def activity_extra_data
-    #   @extra_data
-    # end
 
     def activity_notify
-        [StreamRails.feed_manager.get_notification_feed(self.group_id)]
+      self.group.users.map do |user|
+        StreamRails.feed_manager.get_notification_feed(user.id)
+      end
+
     end
 
     # def activity_extra_data
