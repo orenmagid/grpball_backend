@@ -3,7 +3,7 @@ import moment from "moment";
 import RsvpsTable from "./RsvpsTable";
 import { Card, Statistic, Label, Icon } from "semantic-ui-react";
 
-export default class SessionInfo extends Component {
+export default class CalendarSessionInfo extends Component {
   state = {
     statusToDisplay: "",
     rsvps: []

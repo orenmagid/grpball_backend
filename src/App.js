@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { Route } from "react-router-dom";
 import "./App.css";
-import UserContainer from "./containers/UserContainer";
+import MainContainer from "./containers/MainContainer";
 import NavBar from "./components/NavBar";
 import NewUserForm from "./components/NewUserForm";
 
@@ -131,7 +131,7 @@ class App extends Component {
             )}
           />
           {localStorage.getItem("token") ? (
-            <Route path="/" render={routerProps => <UserContainer />} />
+            <Route path="/" render={routerProps => <MainContainer />} />
           ) : null}
         </div>
       </div>

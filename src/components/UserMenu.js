@@ -27,10 +27,17 @@ export default class UserMenu extends Component {
           />
         </Link>
 
-        <Link to={`/sessions_and_games`}>
+        <Link to={`/notifications`}>
           <Menu.Item
-            name="sessions_and_games"
-            active={activeItem === "sessions_and_games"}
+            name="notifications"
+            active={activeItem === "notifications"}
+            onClick={this.handleItemClick}
+          />
+        </Link>
+        <Link to={`/calendar`}>
+          <Menu.Item
+            name="calendar"
+            active={activeItem === "calendar"}
             onClick={this.handleItemClick}
           />
         </Link>

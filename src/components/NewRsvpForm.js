@@ -1,17 +1,10 @@
 import React, { Component } from "react";
-import { Form, Button } from "semantic-ui-react";
 
 export default class RsvpForm extends Component {
   state = {
     other_Text: this.props.rsvp ? this.props.rsvp.other_text : ""
   };
   render() {
-    const options = [
-      { key: 1, text: "I'll be there", value: "Accepted" },
-      { key: 2, text: "I won't be there", value: "Declined" },
-      { key: 3, text: "I'm not sure", value: "Delayed" }
-    ];
-
     let status;
     if (this.props.rsvp) {
       status = this.props.rsvp.status;

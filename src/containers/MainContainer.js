@@ -3,11 +3,13 @@ import { Route } from "react-router-dom";
 import UserMenu from "../components/UserMenu";
 import UserDashboard from "./UserDashboard";
 import GroupDashboard from "./GroupDashboard";
-import SessionsDashboard from "./SessionsDashboard";
+import NotificationsDashboard from "./NotificationsDashboard";
+import CalendarDashboard from "./CalendarDashboard";
+
 import UserFeed from "../components/UserFeed";
 import { Segment } from "semantic-ui-react";
-import { ActionCable } from "react-actioncable-provider";
-import { API_ROOT } from "../constants";
+// import { ActionCable } from "react-actioncable-provider";
+// import { API_ROOT } from "../constants";
 
 const baseUrl = "http://localhost:3000/api/v1";
 
@@ -15,7 +17,26 @@ class UserContainer extends React.Component {
   state = {
     user: null,
     userFeed: [],
-    userNotifications: []
+    userNotifications: [],
+    sessions: []
+  };
+
+  handleFetchSessions = () => {
+    let token = localStorage.getItem("token");
+    if (token) {
+      fetch(baseUrl + "/sessions", {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      })
+        .then(res => res.json())
+        .then(sessions => {
+          this.setState({ sessions: sessions });
+        })
+        .catch(e => {
+          alert(e);
+        });
+    }
   };
 
   handleforceUserUpdate = () => {
@@ -103,6 +124,8 @@ class UserContainer extends React.Component {
         })
         .catch(e => console.error(e));
 
+      this.handleFetchSessions();
+
       // Fetch user feed from actioncable
       // fetch(`${API_ROOT}/me`)
       //   .then(res => res.json())
@@ -110,12 +133,12 @@ class UserContainer extends React.Component {
     }
   }
 
-  handleReceivedUserFeed = response => {
-    // const { userFeed } = response;
-    this.setState({
-      userFeed: [...this.state.userFeed, response]
-    });
-  };
+  // handleReceivedUserFeed = response => {
+  //   // const { userFeed } = response;
+  //   this.setState({
+  //     userFeed: [...this.state.userFeed, response]
+  //   });
+  // };
 
   render() {
     return (
@@ -150,7 +173,8 @@ class UserContainer extends React.Component {
             render={routerProps => (
               <GroupDashboard
                 user={this.state.user}
-                handleForceUpdate={this.handleforceUpdate}
+                handleForceUserUpdate={this.handleforceUserUpdate}
+                sessions={this.state.sessions}
               />
             )}
           />
@@ -161,8 +185,28 @@ class UserContainer extends React.Component {
         {this.state.user ? (
           <Route
             exact
-            path="/sessions_and_games"
-            render={routerProps => <SessionsDashboard user={this.state.user} />}
+            path="/notifications"
+            render={routerProps => (
+              <NotificationsDashboard
+                userNotifications={this.state.userNotifications}
+                user={this.state.user}
+              />
+            )}
+          />
+        ) : (
+          <p>Loading...</p>
+        )}
+
+        {this.state.user ? (
+          <Route
+            exact
+            path="/calendar"
+            render={routerProps => (
+              <CalendarDashboard
+                user={this.state.user}
+                sessions={this.state.sessions}
+              />
+            )}
           />
         ) : (
           <p>Loading...</p>

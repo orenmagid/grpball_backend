@@ -2,7 +2,6 @@ import React from "react";
 import { Segment } from "semantic-ui-react";
 import EditRsvpForm from "./EditRsvpForm";
 import NewRsvpForm from "./NewRsvpForm";
-import SessionInfo from "./SessionInfo";
 
 const InteractiveSegment = ({
   group,

@@ -1,14 +1,16 @@
 import React from "react";
-import { Link } from "react-router-dom";
-import { Card, Icon, List, Image, Grid } from "semantic-ui-react";
 
-const UserDashboard = ({ user }) => (
+import { Card, List, Image, Grid } from "semantic-ui-react";
+
+const UserInfo = ({ displayedUser, user, handleCloseClick }) => (
   <Card fluid>
     <Image src="../noun_basketball_player_1646799-transparent-background.svg" />
     <Card.Content>
-      <Card.Header>{user.first_name + " " + user.last_name}</Card.Header>
+      <Card.Header>
+        {displayedUser.first_name + " " + displayedUser.last_name}
+      </Card.Header>
       <Card.Meta>
-        <div>{"Username: " + user.username}</div>
+        <div>{"Username: " + displayedUser.username}</div>
       </Card.Meta>
       {/* <Card.Description>{user.first_name} is a baller!</Card.Description> */}
       <div className="top-margin">
@@ -18,43 +20,45 @@ const UserDashboard = ({ user }) => (
               <List horizontal>
                 <List.Item>
                   <List.Icon name="marker" />
-                  <List.Content>{user.location}</List.Content>
+                  <List.Content>{displayedUser.location}</List.Content>
                 </List.Item>
                 <List.Item>
                   <List.Icon name="mail" />
                   <List.Content>
-                    <a href={"mailto:" + user.email}>{user.email}</a>
+                    <a href={"mailto:" + displayedUser.email}>
+                      {displayedUser.email}
+                    </a>
                   </List.Content>
                 </List.Item>
-                {user.phone_number ? (
+                {displayedUser.phone_number ? (
                   <List.Item>
                     <List.Icon name="phone" />
-                    <List.Content>{user.phone_number}</List.Content>
+                    <List.Content>{displayedUser.phone_number}</List.Content>
                   </List.Item>
                 ) : null}
               </List>
             </Grid.Column>
             <Grid.Column>
               <List horizontal>
-                {user.age ? (
+                {displayedUser.age ? (
                   <List.Item>
                     <List.Icon name="basketball ball" />
-                    <List.Content>{user.age} years old</List.Content>
+                    <List.Content>{displayedUser.age} years old</List.Content>
                   </List.Item>
                 ) : null}
-                {user.height_in_inches ? (
+                {displayedUser.height_in_inches ? (
                   <List.Item>
                     <List.Icon name="basketball ball" />
                     <List.Content>
-                      {user.height_in_inches} inches tall
+                      {displayedUser.height_in_inches} inches tall
                     </List.Content>
                   </List.Item>
                 ) : null}
-                {user.highest_experience ? (
+                {displayedUser.highest_experience ? (
                   <List.Item>
                     <List.Icon name="basketball ball" />
                     <List.Content>
-                      Level of experience: {user.highest_experience}
+                      Level of experience: {displayedUser.highest_experience}
                     </List.Content>
                   </List.Item>
                 ) : null}
@@ -64,16 +68,7 @@ const UserDashboard = ({ user }) => (
         </Grid>
       </div>
     </Card.Content>
-    <Card.Content extra>
-      <Link to={`/group_dashboard`}>
-        <Icon name="group" />
-        {user.user_groups.length}{" "}
-        {user.user_groups.length > 1 || user.user_groups.length === 0
-          ? "groups"
-          : "group"}
-      </Link>
-    </Card.Content>
   </Card>
 );
 
-export default UserDashboard;
+export default UserInfo;

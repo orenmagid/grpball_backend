@@ -1,15 +1,7 @@
 import React, { Component } from "react";
 import DatePicker from "react-datepicker";
 import moment from "moment";
-import {
-  Dropdown,
-  Divider,
-  Form,
-  Input,
-  Select,
-  Card,
-  Message
-} from "semantic-ui-react";
+import { Form, Card } from "semantic-ui-react";
 
 import "react-datepicker/dist/react-datepicker.css";
 import "react-datepicker/dist/react-datepicker-cssmodules.css";
@@ -78,13 +70,7 @@ export default class SessionScheduler extends Component {
   };
 
   render() {
-    let groups = this.props.user.groups;
-    const { value } = this.state;
-    const { sessions } = this.state;
-
-    const options = groups.map(group => {
-      return { key: group.id, text: group.name, value: group.id };
-    });
+    // let groups = this.props.user.groups;
 
     return (
       <Card centered>

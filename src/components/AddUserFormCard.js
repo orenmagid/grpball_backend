@@ -1,7 +1,5 @@
 import React, { Component } from "react";
-import { Segment, Card, Icon, Message } from "semantic-ui-react";
-import CreateGroup from "./CreateGroup";
-import JoinGroup from "./JoinGroup";
+import { Card } from "semantic-ui-react";
 
 export default class AddUserFormCard extends Component {
   render() {

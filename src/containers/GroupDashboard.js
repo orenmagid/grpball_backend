@@ -1,17 +1,17 @@
 import React, { Component } from "react";
 
-import JoinGroup from "../components/JoinGroup";
-
 import GroupCard from "../components/GroupCard";
-import { Grid, Menu, Segment, Popup, Button } from "semantic-ui-react";
-import SessionScheduler from "../components/SessionScheduler";
-import GroupAccordian from "../components/GroupAccordian";
+import { Grid, Menu, Segment } from "semantic-ui-react";
+import GroupSubDashboard from "./GroupSubDashboard";
 import CreateOrJoinFormCard from "../components/CreateOrJoinFormCard";
 
 const baseUrl = "http://localhost:3000/api/v1";
 
 class GroupDashboard extends Component {
-  state = { activeItem: this.props.user.groups[0].name, sessions: [] };
+  state = {
+    activeItem: this.props.user.groups[0].name,
+    activeIndex: ""
+  };
 
   handleJoinGroupSubmit = e => {
     e.preventDefault();
@@ -37,7 +37,7 @@ class GroupDashboard extends Component {
         .then(response => response.json())
         .then(jsonData => {
           console.log(jsonData);
-          this.props.handleForceUpdate();
+          this.props.handleForceUserUpdate();
         });
     }
   };
@@ -63,37 +63,29 @@ class GroupDashboard extends Component {
       }
     })
       .then(response => response.json())
-      .then(jsonData => this.props.handleForceUpdate());
+      .then(jsonData => this.props.handleForceUserUpdate());
   };
 
   handleItemClick = (e, { name }) => this.setState({ activeItem: name });
 
-  handleFetchSessions = () => {
-    let token = localStorage.getItem("token");
-    if (token) {
-      fetch(baseUrl + "/sessions", {
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
-      })
-        .then(res => res.json())
-        .then(sessions => {
-          this.setState({ sessions: sessions });
-        })
-        .catch(e => {
-          alert(e);
-        });
+  handleAccordianDisplay = (e, activeIndex) => {
+    e.preventDefault();
+    if (activeIndex === this.state.activeIndex) {
+      this.setState({
+        activeIndex: "activeIndex"
+      });
+    } else {
+      this.setState({
+        activeIndex: activeIndex
+      });
     }
   };
 
-  componentDidMount() {
-    this.handleFetchSessions();
-  }
-
   render() {
     let user = this.props.user;
-    let handleForceUpdate = this.props.handleForceUpdate;
-    const { activeItem, sessions } = this.state;
+    let sessions = this.props.sessions;
+    let handleForceUserUpdate = this.props.handleForceUserUpdate;
+    const { activeItem, activeIndex } = this.state;
 
     return (
       <React.Fragment>
@@ -112,23 +104,26 @@ class GroupDashboard extends Component {
               {user.groups.map(
                 group =>
                   activeItem === group.name ? (
-                    <React.Fragment>
+                    <React.Fragment key={group.id}>
                       <GroupCard
                         sessions={sessions}
                         key={group.id}
                         group={group}
                         user={user}
+                        activeIndex={activeIndex}
+                        handleAccordianDisplay={this.handleAccordianDisplay}
                         handleJoinGroupSubmit={this.handleJoinGroupSubmit}
                         handleNewGroupSubmit={this.handleNewGroupSubmit}
-                        handleForceUpdate={handleForceUpdate}
+                        handleForceUserUpdate={handleForceUserUpdate}
                         handleFetchSessions={this.handleFetchSessions}
                       />
-                      <GroupAccordian
+                      <GroupSubDashboard
                         group={group}
                         sessions={sessions}
-                        handleForceUpdate={handleForceUpdate}
+                        activeIndex={activeIndex}
+                        handleAccordianDisplay={this.handleAccordianDisplay}
+                        handleForceUserUpdate={handleForceUserUpdate}
                         handleFetchSessions={this.handleFetchSessions}
-                        group={group}
                         user={user}
                       />
                     </React.Fragment>

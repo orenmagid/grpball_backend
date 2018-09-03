@@ -1,8 +1,7 @@
 import React, { Component } from "react";
-import { List, Message, Popup, Button, Card } from "semantic-ui-react";
+import { Message } from "semantic-ui-react";
 import moment from "moment";
 import SessionScheduler from "./SessionScheduler";
-import CreateOrJoinFormCard from "./CreateOrJoinFormCard";
 import AddUserFormCard from "./AddUserFormCard";
 
 const baseUrl = "http://localhost:3000/api/v1";
@@ -72,6 +71,7 @@ export default class GroupCard extends Component {
       })
         .then(response => response.json())
         .then(group => {
+          this.props.handleForceUserUpdate();
           this.setState({
             group: group,
             users: group.users,
@@ -93,12 +93,12 @@ export default class GroupCard extends Component {
         headers: {
           Authorization: `Bearer ${token}`
         }
-      }).then(() => this.props.handleForceUpdate());
+      }).then(() => this.props.handleForceUserUpdate());
     }
   };
 
   render() {
-    const { user } = this.props;
+    const { user, handleAccordianDisplay } = this.props;
     let group = this.state.group;
     let users = this.state.users;
 
@@ -114,12 +114,15 @@ export default class GroupCard extends Component {
       <React.Fragment>
         <div className="ui two column grid">
           <div className="column">
-            Created:{" "}
-            {userGroup ? moment(userGroup.created_at).calendar() : null}
+            Joined: {userGroup ? moment(userGroup.created_at).calendar() : null}
           </div>
           <div className="column">
             <i className="user icon" />
-            {users.length > 0 ? users.length + " members" : null}
+            {users.length > 0 ? (
+              <a href="0" onClick={e => handleAccordianDisplay(e, 1)}>
+                {users.length} members
+              </a>
+            ) : null}
           </div>
         </div>
         <div>
