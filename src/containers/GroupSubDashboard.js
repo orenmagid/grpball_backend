@@ -6,7 +6,8 @@ import InteractiveSegment from "../components/InteractiveSegment";
 import SessionsTable from "../components/SessionsTable";
 import InfoSegment from "../components/InfoSegment";
 
-const baseUrl = "http://localhost:3000/api/v1";
+// const baseUrl = "http://localhost:3000/api/v1";
+const baseUrl = "https://grpball.herokuapp.com/api/v1/";
 
 export default class GroupSubDashboard extends Component {
   state = {
@@ -200,12 +201,16 @@ export default class GroupSubDashboard extends Component {
             This Group's Sessions
           </Accordion.Title>
           <Accordion.Content active={activeIndex === 0}>
-            <SessionsTable
-              group={group}
-              sessions={sessions}
-              user={user}
-              handleShowSession={this.handleShowSession}
-            />
+            {group.sessions && group.sessions.length > 0 ? (
+              <SessionsTable
+                group={group}
+                sessions={sessions}
+                user={user}
+                handleShowSession={this.handleShowSession}
+              />
+            ) : (
+              "No sessions yet! Schedule one by clicking 'Suggest Session' above."
+            )}
           </Accordion.Content>
 
           <Accordion.Title
@@ -217,7 +222,7 @@ export default class GroupSubDashboard extends Component {
             This Group's Users
           </Accordion.Title>
           <Accordion.Content active={activeIndex === 1}>
-            <List>
+            <List horizontal>
               {users.map(user => {
                 return (
                   <List.Item key={user.id}>

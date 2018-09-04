@@ -9,7 +9,7 @@ const NavBar = ({
   handleLogin,
   handleLogout
 }) => (
-  <Grid container columns={2} divided>
+  <Grid container columns={2}>
     <Grid.Row>
       <Grid.Column width={4}>
         <div className="margin-auto">
@@ -22,21 +22,30 @@ const NavBar = ({
                 Create Account
               </button>
             </Link>
-          ) : (
-            <Link to={`/`}>
-              <button
-                onClick={handleLogout}
-                className="ui inverted basic button"
-              >
-                Logout
-              </button>
-            </Link>
-          )}
+          ) : null}
         </div>
       </Grid.Column>
-      <Grid.Column width={12}>
-        {localStorage.token ? null : <LoginForm handleLogin={handleLogin} />}
-      </Grid.Column>
+
+      {localStorage.token ? null : (
+        <Grid.Column width={12}>
+          <LoginForm handleLogin={handleLogin} />
+        </Grid.Column>
+      )}
+
+      {localStorage.token ? (
+        <Grid.Column width={12}>
+          <Link to={`/`}>
+            <button
+              onClick={handleLogout}
+              className="ui inverted basic right floated button"
+            >
+              Logout
+            </button>
+          </Link>
+        </Grid.Column>
+      ) : (
+        <Grid.Column width={12} />
+      )}
     </Grid.Row>
   </Grid>
 );

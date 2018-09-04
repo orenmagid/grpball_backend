@@ -4,8 +4,10 @@ import "./App.css";
 import MainContainer from "./containers/MainContainer";
 import NavBar from "./components/NavBar";
 import NewUserForm from "./components/NewUserForm";
+import LoginForm from "./components/LoginForm";
 
-const baseUrl = "http://localhost:3000/api/v1";
+// const baseUrl = "http://localhost:3000/api/v1";
+const baseUrl = "https://grpball.herokuapp.com/api/v1/";
 
 class App extends Component {
   state = {
@@ -112,7 +114,7 @@ class App extends Component {
     return (
       <div className="App">
         <header className="App-header">
-          <div className="ui container top-margin">
+          <div className="ui container">
             <NavBar
               displayNewUserForm={this.state.displayNewUserForm}
               createNewUser={this.createNewUser}

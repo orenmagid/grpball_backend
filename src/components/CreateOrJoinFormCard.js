@@ -7,8 +7,8 @@ export default class FormCard extends Component {
   render() {
     return (
       <Segment padded>
-        <CreateGroup handleNewGroupSubmit={this.handleNewGroupSubmit} />
-        <JoinGroup handleJoinGroupSubmit={this.handleJoinGroupSubmit} />
+        <CreateGroup handleNewGroupSubmit={this.props.handleNewGroupSubmit} />
+        <JoinGroup handleJoinGroupSubmit={this.props.handleJoinGroupSubmit} />
       </Segment>
     );
   }
