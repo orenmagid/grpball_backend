@@ -3,6 +3,8 @@ import { Route } from "react-router-dom";
 import UserMenu from "../components/UserMenu";
 import UserDashboard from "./UserDashboard";
 import GroupDashboard from "./GroupDashboard";
+import EditUserProfile from "../components/EditUserProfile";
+import NewUserForm from "../components/NewUserForm";
 import NotificationsDashboard from "./NotificationsDashboard";
 import CalendarDashboard from "./CalendarDashboard";
 import MapDashboard from "./MapDashboard";
@@ -14,12 +16,16 @@ import { Segment, Loader } from "semantic-ui-react";
 
 const baseUrl = "http://localhost:3000/api/v1";
 
-class UserContainer extends React.Component {
+class MainContainer extends React.Component {
   state = {
     user: null,
     userFeed: [],
     userNotifications: [],
-    sessions: []
+    sessions: [],
+    groups: [],
+    users: [],
+    formToShow: "",
+    activeItem: ""
   };
 
   handleFetchSessions = () => {
@@ -125,6 +131,32 @@ class UserContainer extends React.Component {
         })
         .catch(e => console.error(e));
 
+      // fetch all groups
+      fetch(baseUrl + `/groups`, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      })
+        .then(res => res.json())
+        .then(groups => {
+          this.setState({
+            groups: groups
+          });
+        });
+
+      // fetch all users
+      fetch(baseUrl + `/users`, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      })
+        .then(res => res.json())
+        .then(users => {
+          this.setState({
+            users: users
+          });
+        });
+
       this.handleFetchSessions();
 
       // Fetch user feed from actioncable
@@ -140,6 +172,68 @@ class UserContainer extends React.Component {
   //     userFeed: [...this.state.userFeed, response]
   //   });
   // };
+
+  handleEditProfile = e => {
+    e.preventDefault();
+    this.state.formToShow === "editProfile"
+      ? this.setState({ formToShow: "" })
+      : this.setState({ formToShow: "editProfile" });
+  };
+
+  handlePatchUser = (e, user) => {
+    e.preventDefault();
+    let data = {
+      user: {
+        first_name: e.currentTarget.first_name.value,
+        last_name: e.currentTarget.last_name.value,
+        username: e.currentTarget.username.value,
+        email: e.currentTarget.email.value,
+        // password: e.currentTarget.password.value,
+        location: e.currentTarget.location.value,
+        age: e.currentTarget.age.value,
+        height_in_inches: e.currentTarget.height.value,
+        phone_number: e.currentTarget.phone.value
+        // experience: e.currentTarget.experience.value
+      }
+    };
+    let token = localStorage.getItem("token");
+    if (token) {
+      fetch(baseUrl + `/users/${user.id}`, {
+        method: "PATCH",
+        body: JSON.stringify(data),
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`
+        }
+      })
+        .then(response => response.json())
+        .then(updatedUser => {
+          console.log(updatedUser);
+
+          if (updatedUser.errors) {
+            this.displayErrors(updatedUser.errors);
+          } else {
+            this.setState({
+              user: updatedUser,
+              formToShow: ""
+            });
+          }
+        });
+    }
+  };
+
+  handleFormCloseClick = () => {
+    this.setState({
+      formToShow: ""
+    });
+  };
+
+  displayErrors = errors => {
+    let errorlist = errors.map(error => {
+      return `-${error} \n`;
+    });
+    alert(errorlist.join(" "));
+  };
 
   render() {
     return (
@@ -159,7 +253,17 @@ class UserContainer extends React.Component {
             path="/"
             render={routerProps => (
               <Segment>
-                <UserDashboard user={this.state.user} />
+                <UserDashboard
+                  user={this.state.user}
+                  handleEditProfile={this.handleEditProfile}
+                />
+                {this.state.user && this.state.formToShow === "editProfile" ? (
+                  <EditUserProfile
+                    handleCreateOrEditUser={this.handlePatchUser}
+                    user={this.state.user}
+                    handleCloseClick={this.handleFormCloseClick}
+                  />
+                ) : null}
                 <UserFeed userFeed={this.state.userFeed} />
               </Segment>
             )}
@@ -204,6 +308,8 @@ class UserContainer extends React.Component {
                 user={this.state.user}
                 sessions={this.state.sessions}
                 handleFetchSessions={this.handleFetchSessions}
+                groups={this.state.groups}
+                users={this.state.users}
               />
             )}
           />
@@ -226,4 +332,4 @@ class UserContainer extends React.Component {
   }
 }
 
-export default UserContainer;
+export default MainContainer;

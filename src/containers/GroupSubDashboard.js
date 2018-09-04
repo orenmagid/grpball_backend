@@ -98,7 +98,8 @@ export default class GroupSubDashboard extends Component {
 
   handleSessionCloseClick = () => {
     this.setState({
-      currentSession: null
+      currentSession: null,
+      displayedUser: null
     });
   };
 
@@ -128,7 +129,11 @@ export default class GroupSubDashboard extends Component {
 
   handleRsvpClick = (e, rsvp = null) => {
     e.preventDefault();
-    if (rsvp) {
+    if (this.state.formToShow !== "none") {
+      this.setState({
+        formToShow: "none"
+      });
+    } else if (rsvp) {
       this.setState({
         currentRsvp: rsvp,
         formToShow: "editRsvp"

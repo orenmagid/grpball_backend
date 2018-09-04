@@ -1,8 +1,5 @@
 import React, { Component } from "react";
 import { Table } from "semantic-ui-react";
-import moment from "moment";
-
-const baseUrl = "http://localhost:3000/api/v1";
 
 export default class RsvpsTable extends Component {
   userRsvpd = user => {
@@ -10,7 +7,7 @@ export default class RsvpsTable extends Component {
   };
 
   render() {
-    const { statusToDisplay, session, rsvps, users } = this.props;
+    const { statusToDisplay, rsvps, users } = this.props;
 
     let noRsvpUsers = users.filter(user => {
       return !this.userRsvpd(user);

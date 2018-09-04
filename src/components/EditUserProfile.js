@@ -2,9 +2,39 @@ import React, { Component } from "react";
 import { Redirect } from "react-router-dom";
 import { Button, Form, Segment } from "semantic-ui-react";
 
-export default class NewUserForm extends Component {
+export default class EditUserProfile extends Component {
+  state = {
+    first_name: "",
+    last_name: "",
+    username: "",
+    email: "",
+    location: "",
+    phone: "",
+    age: "",
+    height: ""
+  };
+
+  componentDidMount() {
+    this.setState({
+      first_name: this.props.user.first_name,
+      last_name: this.props.user.last_name,
+      username: this.props.user.username,
+      email: this.props.user.email,
+      phone: this.props.user.phone_number,
+      location: this.props.user.location,
+      age: this.props.user.age,
+      height: this.props.user.height_in_inches
+    });
+  }
+
+  handleChange = e => this.setState({ [e.target.name]: e.target.value });
+
   render() {
-    let { handleCreateOrEditUser, displayNewUserForm } = this.props;
+    let {
+      handleCloseClick,
+      handleCreateOrEditUser,
+      displayNewUserForm
+    } = this.props;
     // const options = [
     //   { key: "tb", text: "Total Beginner", value: "Total Beginner" },
     //   { key: "pu", text: "Only Pickup", value: "Only Pickup" },
@@ -20,19 +50,24 @@ export default class NewUserForm extends Component {
     return (
       <div className="ui container">
         <Segment>
-          <Form onSubmit={handleCreateOrEditUser}>
+          <i className="window close icon" onClick={handleCloseClick} />
+          <Form onSubmit={e => handleCreateOrEditUser(e, this.props.user)}>
             <Form.Group widths="equal">
               <Form.Input
                 name="first_name"
                 fluid
                 label="First name"
                 placeholder="First name"
+                value={this.state.first_name}
+                onChange={this.handleChange}
               />
               <Form.Input
                 name="last_name"
                 fluid
                 label="Last name"
                 placeholder="Last name"
+                value={this.state.last_name}
+                onChange={this.handleChange}
               />
             </Form.Group>
             <Form.Group widths="equal">
@@ -41,6 +76,8 @@ export default class NewUserForm extends Component {
                 fluid
                 label="Username"
                 placeholder="Username"
+                value={this.state.username}
+                onChange={this.handleChange}
               />
               <Form.Input
                 name="email"
@@ -48,30 +85,20 @@ export default class NewUserForm extends Component {
                 label="Email Address"
                 placeholder="Email
                 Address"
+                value={this.state.email}
+                onChange={this.handleChange}
               />
             </Form.Group>
             <Form.Group widths="equal">
-              <Form.Input
-                name="password"
-                fluid
-                label="Password"
-                placeholder="Password"
-                type="password"
-              />
               <Form.Input
                 name="phone"
                 fluid
                 label="Phone Number"
                 placeholder="Phone Number"
                 type="Phone Number"
+                value={this.state.phone}
+                onChange={this.handleChange}
               />
-              {/* <Form.Input
-                name="password_confirmation"
-                fluid
-                label="Password Confirmation"
-                placeholder="Password Confirmation"
-                type="password"
-              /> */}
             </Form.Group>
             <Form.Group widths="equal">
               <Form.Input
@@ -79,6 +106,8 @@ export default class NewUserForm extends Component {
                 fluid
                 label="Location"
                 placeholder="Location"
+                value={this.state.location}
+                onChange={this.handleChange}
               />
             </Form.Group>
             <Form.Group widths="equal">
@@ -88,6 +117,8 @@ export default class NewUserForm extends Component {
                 label="Age"
                 placeholder="Age"
                 type="number"
+                value={this.state.age}
+                onChange={this.handleChange}
               />
 
               <Form.Input
@@ -96,6 +127,8 @@ export default class NewUserForm extends Component {
                 label="Height (in Inches)"
                 placeholder="Height (in Inches)"
                 type="number"
+                value={this.state.height}
+                onChange={this.handleChange}
               />
             </Form.Group>
             {/* <Form.Group widths="equal">

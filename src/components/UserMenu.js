@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { Menu } from "semantic-ui-react";
 
 export default class UserMenu extends Component {
-  state = { activeItem: "user_information" };
+  state = { activeItem: "" };
 
   handleItemClick = (e, { name }) => this.setState({ activeItem: name });
 
@@ -11,11 +11,11 @@ export default class UserMenu extends Component {
     const { activeItem } = this.state;
 
     return (
-      <Menu tabular>
+      <Menu tabular stackable size="small">
         <Link to={`/`}>
           <Menu.Item
-            name="user_information"
-            active={activeItem === "user_information"}
+            name="you"
+            active={activeItem === "you"}
             onClick={this.handleItemClick}
           />
         </Link>

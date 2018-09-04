@@ -68,28 +68,30 @@ class App extends Component {
       }
     };
 
-    const baseUrl = "http://localhost:3000/api/v1";
-
-    fetch(baseUrl + "/users", {
-      method: "POST",
-      body: JSON.stringify(data),
-      headers: {
-        "Content-Type": "application/json"
-      }
-    })
-      .then(response => response.json())
-      .then(jsonData => {
-        console.log(jsonData);
-        console.log(data);
-        if (jsonData.errors) {
-          this.displayErrors(jsonData.errors);
-        } else {
-          this.setState({
-            displayNewUserForm: false
-          });
-          window.history.back();
+    let token = localStorage.getItem("token");
+    if (token) {
+      fetch(baseUrl + "/users", {
+        method: "POST",
+        body: JSON.stringify(data),
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`
         }
-      });
+      })
+        .then(response => response.json())
+        .then(newUser => {
+          console.log(newUser);
+          console.log(newUser);
+          if (newUser.errors) {
+            this.displayErrors(newUser.errors);
+          } else {
+            this.setState({
+              displayNewUserForm: false
+            });
+            window.history.back();
+          }
+        });
+    }
   };
 
   displayErrors = errors => {
@@ -125,7 +127,7 @@ class App extends Component {
             path="/newuser"
             render={routerProps => (
               <NewUserForm
-                handleCreateUser={this.handleCreateUser}
+                handleCreateOrEditUser={this.handleCreateUser}
                 displayNewUserForm={this.state.displayNewUserForm}
               />
             )}

@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Message } from "semantic-ui-react";
+import { Message, Segment } from "semantic-ui-react";
 import moment from "moment";
 import SessionScheduler from "./SessionScheduler";
 import AddUserFormCard from "./AddUserFormCard";
@@ -9,7 +9,6 @@ const baseUrl = "http://localhost:3000/api/v1";
 export default class GroupCard extends Component {
   state = {
     group: null,
-
     users: [],
     formToShow: "none"
   };
@@ -32,17 +31,17 @@ export default class GroupCard extends Component {
     }
   }
 
-  handleOpenAddUserClick = () => {
-    this.setState({
-      formToShow: "addUser"
-    });
-  };
-
-  handleOpenSuggestSessionClick = () => {
-    this.setState({
-      formToShow: "suggestSession"
-    });
-  };
+  // handleOpenAddUserClick = () => {
+  //   this.setState({
+  //     formToShow: "addUser"
+  //   });
+  // };
+  //
+  // handleOpenSuggestSessionClick = () => {
+  //   this.setState({
+  //     formToShow: "suggestSession"
+  //   });
+  // };
 
   handleCloseClick = () => {
     this.setState({
@@ -50,36 +49,36 @@ export default class GroupCard extends Component {
     });
   };
 
-  handleAddToGroupSubmit = e => {
-    e.preventDefault();
-
-    let username = e.target.username.value;
-    e.target.reset();
-    let data = {
-      username: username
-    };
-
-    let token = localStorage.getItem("token");
-    if (token) {
-      fetch(baseUrl + `/groups/${this.props.group.id}`, {
-        method: "PATCH",
-        body: JSON.stringify(data),
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`
-        }
-      })
-        .then(response => response.json())
-        .then(group => {
-          this.props.handleForceUserUpdate();
-          this.setState({
-            group: group,
-            users: group.users,
-            formToShow: "none"
-          });
-        });
-    }
-  };
+  // handleAddToGroupSubmit = e => {
+  //   e.preventDefault();
+  //
+  //   let username = e.target.username.value;
+  //   e.target.reset();
+  //   let data = {
+  //     username: username
+  //   };
+  //
+  //   let token = localStorage.getItem("token");
+  //   if (token) {
+  //     fetch(baseUrl + `/groups/${this.props.group.id}`, {
+  //       method: "PATCH",
+  //       body: JSON.stringify(data),
+  //       headers: {
+  //         "Content-Type": "application/json",
+  //         Authorization: `Bearer ${token}`
+  //       }
+  //     })
+  //       .then(response => response.json())
+  //       .then(group => {
+  //         this.props.handleForceUserUpdate();
+  //         this.setState({
+  //           group: group,
+  //           users: group.users,
+  //           formToShow: "none"
+  //         });
+  //       });
+  //   }
+  // };
 
   handleLeaveGroup = (group, user) => {
     let token = localStorage.getItem("token");
@@ -111,27 +110,29 @@ export default class GroupCard extends Component {
     }
 
     return (
-      <React.Fragment>
+      <Segment>
         <div className="ui two column grid">
           <div className="column">
-            Joined: {userGroup ? moment(userGroup.created_at).calendar() : null}
+            {userGroup
+              ? "Joined: " + moment(userGroup.created_at).calendar()
+              : null}
           </div>
           <div className="column">
             <i className="user icon" />
-            {users.length > 0 ? (
-              <a href="0" onClick={e => handleAccordianDisplay(e, 1)}>
-                {users.length} members
-              </a>
-            ) : null}
+            {/* <a href="0" onClick={e => handleAccordianDisplay(e, 1)}> */}
+            {users.length} members
+            {/* </a> */}
           </div>
         </div>
         <div>
-          <button
-            onClick={() => this.handleLeaveGroup(group, user)}
-            className="ui circular mini basic button"
-          >
-            Leave Group
-          </button>
+          {userGroup ? (
+            <button
+              onClick={() => this.handleLeaveGroup(group, user)}
+              className="ui circular mini basic button"
+            >
+              Leave Group
+            </button>
+          ) : null}
         </div>
 
         <div className="ui header">{this.props.group.name}</div>
@@ -159,8 +160,8 @@ export default class GroupCard extends Component {
           />
         ) : null}
 
-        {this.state.formToShow === "none" ? (
-          <div className="ui two column grid">
+        {/* <div className="ui two column grid">
+          {this.state.formToShow === "none" ? (
             <div className="column">
               <button
                 onClick={this.handleOpenAddUserClick}
@@ -170,7 +171,8 @@ export default class GroupCard extends Component {
                 Add User
               </button>
             </div>
-
+          ) : null}
+          {this.state.formToShow === "none" ? (
             <div className="column">
               <button
                 onClick={this.handleOpenSuggestSessionClick}
@@ -180,9 +182,9 @@ export default class GroupCard extends Component {
                 Suggest Session
               </button>
             </div>
-          </div>
-        ) : null}
-      </React.Fragment>
+          ) : null}
+        </div> */}
+      </Segment>
     );
   }
 }

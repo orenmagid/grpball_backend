@@ -4,6 +4,7 @@ import { Card, List, Image, Grid } from "semantic-ui-react";
 
 const UserInfo = ({ displayedUser, user, handleCloseClick }) => (
   <Card fluid>
+    <i className="window close icon" onClick={handleCloseClick} />
     <Image src="../noun_basketball_player_1646799-transparent-background.svg" />
     <Card.Content>
       <Card.Header>

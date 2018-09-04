@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import DatePicker from "react-datepicker";
 import moment from "moment";
-import { Form, Card, Select, Segment } from "semantic-ui-react";
+import { Form, Select, Segment } from "semantic-ui-react";
 
 import "react-datepicker/dist/react-datepicker.css";
 import "react-datepicker/dist/react-datepicker-cssmodules.css";
@@ -36,7 +36,7 @@ export default class SessionScheduler extends Component {
 
     let data = {
       session: {
-        group_id: this.state.group_id,
+        group_id: this.props.group ? this.props.group.id : this.state.group_id,
         date: this.props.date ? moment(this.props.date) : this.state.date,
         status: "Pending",
         location: e.currentTarget.location.value,
@@ -88,7 +88,7 @@ export default class SessionScheduler extends Component {
           className="window close icon"
           onClick={this.props.handleCloseClick}
         />
-        {/* <Card.Content> */}
+
         <h2> Schedule a Session</h2>
         <h4> Session Date and Time</h4>
 
@@ -140,7 +140,6 @@ export default class SessionScheduler extends Component {
             Submit
           </Form.Button>
         </Form>
-        {/* </Card.Content> */}
       </Segment>
     );
   }

@@ -2,7 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { Card, Icon, List, Image, Grid } from "semantic-ui-react";
 
-const UserDashboard = ({ user }) => (
+const UserDashboard = ({ user, handleEditProfile }) => (
   <Card fluid>
     <Image src="../noun_basketball_player_1646799-transparent-background.svg" />
     <Card.Content>
@@ -65,13 +65,23 @@ const UserDashboard = ({ user }) => (
       </div>
     </Card.Content>
     <Card.Content extra>
-      <Link to={`/group_dashboard`}>
-        <Icon name="group" />
-        {user.user_groups.length}{" "}
-        {user.user_groups.length > 1 || user.user_groups.length === 0
-          ? "groups"
-          : "group"}
-      </Link>
+      <div className="ui two column grid container">
+        <div className="column">
+          <Link to={`/group_dashboard`}>
+            <Icon name="group" />
+            {user.user_groups.length}{" "}
+            {user.user_groups.length > 1 || user.user_groups.length === 0
+              ? "groups"
+              : "group"}
+          </Link>
+        </div>
+        <div className="column">
+          <a href="edit_profile" onClick={handleEditProfile}>
+            <Icon name="write" />
+            Edit your Profile
+          </a>
+        </div>
+      </div>
     </Card.Content>
   </Card>
 );

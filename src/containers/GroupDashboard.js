@@ -116,6 +116,7 @@ class GroupDashboard extends Component {
                         handleNewGroupSubmit={this.handleNewGroupSubmit}
                         handleForceUserUpdate={handleForceUserUpdate}
                         handleFetchSessions={handleFetchSessions}
+                        handleItemClick={this.handleItemClick}
                       />
                       <GroupSubDashboard
                         group={group}
@@ -124,6 +125,7 @@ class GroupDashboard extends Component {
                         handleAccordianDisplay={this.handleAccordianDisplay}
                         handleForceUserUpdate={handleForceUserUpdate}
                         handleFetchSessions={handleFetchSessions}
+                        handleItemClick={this.handleItemClick}
                         user={user}
                       />
                     </React.Fragment>
@@ -132,7 +134,7 @@ class GroupDashboard extends Component {
             </Segment>
           </Grid.Column>
           <Grid.Column width={4}>
-            <Menu fluid vertical tabular="right">
+            <Menu size="tiny" fluid vertical tabular="right">
               <Menu.Item
                 name="create_or_join"
                 active={activeItem === "create_or_join"}

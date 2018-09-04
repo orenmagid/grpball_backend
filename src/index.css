@@ -33,5 +33,5 @@ body {
 }
 
 .ui.raised.container.map.segment {
-  height: 400px;
+  min-height: 475px;
 }
