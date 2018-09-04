@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  get 'messages/reply'
   namespace :api do
    namespace :v1 do
      post '/login', to: 'auth#login'
