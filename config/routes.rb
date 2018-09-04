@@ -20,4 +20,10 @@ Rails.application.routes.draw do
  get '/aggregated', to: 'feeds#aggregated'
  get '/group/:id', to: 'feeds#group'
  mount ActionCable.server => '/cable'
+
+ resource :messages do
+  collection do
+    post 'reply'
+  end
+end
 end

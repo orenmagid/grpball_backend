@@ -1,3 +1,5 @@
+require 'nexmo'
+
 class Api::V1::UsersController < ApplicationController
 
   before_action :find_user, only: [:show, :update]
@@ -31,6 +33,19 @@ class Api::V1::UsersController < ApplicationController
    def update
      @current_user.update(user_params)
      if @current_user.save
+
+
+       # client = Nexmo::Client.new(
+       #   api_key: ENV['NEXMO_API_KEY'],
+       #   api_secret: ENV['NEXMO_API_SECRET']
+       # )
+       # response = client.sms.send(
+       #   from: '12015542314',
+       #   to: '12024243653',
+       #   text: 'This is from Oren. Did it work?'
+       # )
+
+
        render json: @current_user, status: :accepted
      else
        render json: { errors: @current_user.errors.full_messages }, status: :unprocessible_entity
