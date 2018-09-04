@@ -8,8 +8,8 @@ class Session < ApplicationRecord
   geocoded_by :location
   after_validation :geocode
 
-  include StreamRails::Activity
-  as_activity
+  # include StreamRails::Activity
+  # as_activity
 
     def self.update_session_status
       Session.all.each do |session|
@@ -20,25 +20,25 @@ class Session < ApplicationRecord
          end
       end
 
-    end
-
-    def activity_actor
-      User.find(self.creator_id)
-    end
-
-    def activity_object
-      self
-    end
-
-    def activity_verb
-      "proposed a session"
-    end
-
-
-    def activity_notify
-      self.group.users.map do |user|
-        StreamRails.feed_manager.get_notification_feed(user.id)
-      end
+    # end
+    #
+    # def activity_actor
+    #   User.find(self.creator_id)
+    # end
+    #
+    # def activity_object
+    #   self
+    # end
+    #
+    # def activity_verb
+    #   "proposed a session"
+    # end
+    #
+    #
+    # def activity_notify
+    #   self.group.users.map do |user|
+    #     StreamRails.feed_manager.get_notification_feed(user.id)
+    #   end
 
     end
 
