@@ -1,5 +1,6 @@
 class Api::V1::GroupsController < ApplicationController
 
+  skip_before_action :authenticate, only: [:index]
   before_action :find_group, only: [:show, :update]
 
    def index

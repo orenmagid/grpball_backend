@@ -1,6 +1,7 @@
 require 'pry'
 
 class Api::V1::SessionsController < ApplicationController
+  skip_before_action :authenticate, only: [:index]
   before_action :find_session, only: [:show, :update]
 
    def index
@@ -22,7 +23,7 @@ class Api::V1::SessionsController < ApplicationController
 
       if @session.save
 
-        # @session.rsvps << Rsvp.create(user_id: @current_user.id, status: "Accepted")
+
         @session.users << @current_user
 
         @session.rsvps.last.update(status: "Accepted")
