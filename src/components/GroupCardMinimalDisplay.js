@@ -5,7 +5,7 @@ import SessionScheduler from "./SessionScheduler";
 import AddUserFormCard from "./AddUserFormCard";
 
 // const baseUrl = "http://localhost:3000/api/v1";
-const baseUrl = "https://grpball.herokuapp.com/api/v1/";
+const baseUrl = "https://grpball.herokuapp.com/api/v1";
 
 export default class GroupCard extends Component {
   state = {

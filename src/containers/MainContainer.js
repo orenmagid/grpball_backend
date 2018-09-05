@@ -15,7 +15,7 @@ import { Segment, Loader } from "semantic-ui-react";
 // import { API_ROOT } from "../constants";
 
 // const baseUrl = "http://localhost:3000/api/v1";
-const baseUrl = "https://grpball.herokuapp.com/api/v1/";
+const baseUrl = "https://grpball.herokuapp.com/api/v1";
 
 class MainContainer extends React.Component {
   state = {
