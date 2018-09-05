@@ -6,8 +6,8 @@ import InteractiveSegment from "../components/InteractiveSegment";
 import SessionsTable from "../components/SessionsTable";
 import InfoSegment from "../components/InfoSegment";
 
-const baseUrl = "http://localhost:3000/api/v1";
-// const baseUrl = "https://grpball.herokuapp.com/api/v1";
+// const baseUrl = "http://localhost:3000/api/v1";
+const baseUrl = "https://grpball-backend.herokuapp.com/api/v1";
 
 export default class GroupSubDashboard extends Component {
   state = {

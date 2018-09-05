@@ -2,8 +2,8 @@ import React, { Component } from "react";
 import { Table } from "semantic-ui-react";
 import moment from "moment";
 
-const baseUrl = "http://localhost:3000/api/v1";
-// const baseUrl = "https://grpball.herokuapp.com/api/v1";
+// const baseUrl = "http://localhost:3000/api/v1";
+const baseUrl = "https://grpball-backend.herokuapp.com/api/v1";
 
 export default class SessionsTable extends Component {
   render() {

@@ -3,8 +3,8 @@ import moment from "moment";
 import RsvpsTable from "./RsvpsTable";
 import { Card, Statistic, Label, Icon } from "semantic-ui-react";
 
-const baseUrl = "http://localhost:3000/api/v1";
-// const baseUrl = "https://grpball.herokuapp.com/api/v1";
+// const baseUrl = "http://localhost:3000/api/v1";
+const baseUrl = "https://grpball-backend.herokuapp.com/api/v1";
 
 export default class CalendarSessionInfo extends Component {
   state = {
