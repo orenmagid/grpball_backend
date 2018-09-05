@@ -6,8 +6,8 @@ import NavBar from "./components/NavBar";
 import NewUserForm from "./components/NewUserForm";
 import LoginForm from "./components/LoginForm";
 
-// const baseUrl = "http://localhost:3000/api/v1";
-const baseUrl = "https://grpball.herokuapp.com/api/v1";
+const baseUrl = "http://localhost:3000/api/v1";
+// const baseUrl = "https://grpball.herokuapp.com/api/v1";
 
 class App extends Component {
   state = {

@@ -8,8 +8,8 @@ import SessionScheduler from "../components/SessionScheduler";
 
 import "react-big-calendar/lib/css/react-big-calendar.css";
 
-// const baseUrl = "http://localhost:3000/api/v1";
-const baseUrl = "https://grpball.herokuapp.com/api/v1";
+const baseUrl = "http://localhost:3000/api/v1";
+// const baseUrl = "https://grpball.herokuapp.com/api/v1";
 
 Calendar.setLocalizer(Calendar.momentLocalizer(moment));
 
