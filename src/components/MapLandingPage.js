@@ -10,15 +10,29 @@ import MediaQuery from "react-responsive";
 // const baseUrl = "http://localhost:3000/api/v1";
 const baseUrl = "https://grpball-backend.herokuapp.com/api/v1";
 
-export class MapDashboard extends Component {
+export class MapLandingPage extends Component {
   state = {
     selectedEvent: null,
     selectedGroup: null,
-    displayedUser: null,
-    currentRsvp: "",
-    formToShow: "none",
-    whatToDisplayOnMap: "yourSessions"
+    whatToDisplayOnMap: "allSessions",
+    userPosition: null
   };
+
+  componentDidMount() {
+    window.onload = () => {
+      var startPos;
+      var geoSuccess = position => {
+        startPos = position;
+        this.setState({
+          userPosition: {
+            lat: startPos.coords.latitude,
+            lng: startPos.coords.longitude
+          }
+        });
+      };
+      navigator.geolocation.getCurrentPosition(geoSuccess);
+    };
+  }
 
   onMarkerClick = (props, marker, e) => {
     if (props.session) {
@@ -26,15 +40,11 @@ export class MapDashboard extends Component {
         this.state.selectedEvent &&
         this.state.selectedEvent.id === props.session.id
       ) {
-        this.setState({ selectedEvent: null, currentRsvp: "" });
+        this.setState({ selectedEvent: null });
       } else {
-        let myRsvp = props.session.rsvps.find(
-          rsvp => rsvp.user_id === this.props.user.id
-        );
         this.setState({
           selectedGroup: null,
-          selectedEvent: props.session,
-          currentRsvp: myRsvp ? myRsvp : ""
+          selectedEvent: props.session
         });
       }
     } else if (props.group) {
@@ -44,14 +54,12 @@ export class MapDashboard extends Component {
       ) {
         this.setState({
           selectedEvent: null,
-          selectedGroup: null,
-          currentRsvp: ""
+          selectedGroup: null
         });
       } else {
         this.setState({
           selectedGroup: props.group,
-          selectedEvent: null,
-          currentRsvp: ""
+          selectedEvent: null
         });
       }
     } else if (props.user) {
@@ -61,14 +69,12 @@ export class MapDashboard extends Component {
       ) {
         this.setState({
           displayedUser: null,
-          selectedEvent: null,
-          currentRsvp: ""
+          selectedEvent: null
         });
       } else {
         this.setState({
           displayedUser: props.user,
-          selectedEvent: null,
-          currentRsvp: ""
+          selectedEvent: null
         });
       }
     }
@@ -86,12 +92,8 @@ export class MapDashboard extends Component {
     if (this.state.selectedEvent && this.state.selectedEvent.id === event.id) {
       this.setState({ selectedEvent: null });
     } else {
-      let myRsvp = event.rsvps.find(
-        rsvp => rsvp.user_id === this.props.user.id
-      );
       this.setState({
-        selectedEvent: event,
-        currentRsvp: myRsvp
+        selectedEvent: event
       });
     }
   };
@@ -99,81 +101,8 @@ export class MapDashboard extends Component {
   handleCloseClick = () => {
     this.setState({
       selectedEvent: null,
-      selectedGroup: null,
-      displayedUser: null,
-      currentRsvp: "",
-      formToShow: "none"
+      selectedGroup: null
     });
-  };
-
-  handleRsvpClick = (e, rsvp = null) => {
-    e.preventDefault();
-    if (rsvp) {
-      this.setState({
-        currentRsvp: rsvp,
-        formToShow: "editRsvp"
-      });
-    } else {
-      this.setState({
-        formToShow: "newRsvp"
-      });
-    }
-  };
-
-  handleNewRsvp = (e, sessionId) => {
-    console.log("Inside handleNewRsvp");
-    e.preventDefault();
-
-    let data = {
-      user_id: this.props.user.id,
-      session_id: sessionId,
-      status: e.target.status.value,
-      other_text: e.target.otherText.value
-    };
-    e.target.reset();
-    let token = localStorage.getItem("token");
-    fetch(baseUrl + `/rsvps`, {
-      method: "POST",
-      body: JSON.stringify(data),
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`
-      }
-    })
-      .then(response => response.json())
-      .then(jsonData => {
-        this.handleFormCloseClick();
-        this.handleShowSession(this.state.selectedEvent);
-        this.props.handleFetchSessions();
-      });
-  };
-
-  handleEditRsvp = (e, sessionId, otherText) => {
-    console.log("Inside handleEditRsvp");
-    e.preventDefault();
-
-    let data = {
-      user_id: this.props.user.id,
-      session_id: sessionId,
-      status: e.target.status.value,
-      other_text: otherText
-    };
-    e.target.reset();
-    let token = localStorage.getItem("token");
-    fetch(baseUrl + `/rsvps/${this.state.currentRsvp.id}`, {
-      method: "PATCH",
-      body: JSON.stringify(data),
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`
-      }
-    })
-      .then(response => response.json())
-      .then(jsonData => {
-        this.props.handleFetchSessions();
-        this.handleShowSession(this.state.selectedEvent);
-        this.handleFormCloseClick();
-      });
   };
 
   handleShowSession = currentSession => {
@@ -198,19 +127,12 @@ export class MapDashboard extends Component {
     }
   };
 
-  handleFormCloseClick = () => {
-    this.setState({
-      formToShow: "none"
-    });
-  };
-
   handleToggle = whatToDisplay =>
     this.setState({
       whatToDisplayOnMap:
         this.state.whatToDisplayOnMap === whatToDisplay ? "" : whatToDisplay,
       selectedEvent: null,
-      selectedGroup: null,
-      displayedUser: null
+      selectedGroup: null
     });
 
   render() {
@@ -223,15 +145,9 @@ export class MapDashboard extends Component {
 
     let markers;
 
-    if (navigator.geolocation) {
-      console.log("Geolocation is supported!");
-    } else {
-      console.log("Geolocation is not supported for this Browser/OS.");
-    }
-
     switch (this.state.whatToDisplayOnMap) {
       case "allSessions":
-        markers = sessions.map(session => {
+        markers = this.props.sessions.map(session => {
           return (
             <Marker
               key={session.id}
@@ -245,28 +161,9 @@ export class MapDashboard extends Component {
           );
         });
         break;
-      case "yourSessions":
-        let groupIds = user.groups.map(group => group.id);
-        groupIds = groupIds.filter(groupId => groupId !== "undefined");
-        markers = sessions.map(session => {
-          if (groupIds.includes(session.group_id)) {
-            return (
-              <Marker
-                key={session.id}
-                session={session}
-                title={session.group.name}
-                name={session.location}
-                position={{ lat: session.latitude, lng: session.longitude }}
-                onClick={this.onMarkerClick}
-                onMouseover={this.onMouseoverMarker}
-              />
-            );
-          }
-        });
-        markers = markers.filter(marker => marker !== undefined);
-        break;
+
       case "allGroups":
-        markers = groups.map(group => {
+        markers = this.props.groups.map(group => {
           return (
             <Marker
               key={group.id}
@@ -276,35 +173,6 @@ export class MapDashboard extends Component {
               position={{ lat: group.latitude, lng: group.longitude }}
               onClick={this.onMarkerClick}
               onMouseover={this.onMouseoverMarker}
-            />
-          );
-        });
-        break;
-      case "yourGroups":
-        markers = user.groups.map(group => {
-          return (
-            <Marker
-              key={group.id}
-              group={group}
-              title={group.name}
-              name={group.location}
-              position={{ lat: group.latitude, lng: group.longitude }}
-              onClick={this.onMarkerClick}
-              onMouseover={this.onMouseoverMarker}
-            />
-          );
-        });
-        break;
-      case "users":
-        markers = users.map(user => {
-          return (
-            <Marker
-              key={user.id}
-              user={user}
-              title={user.name}
-              name={user.location}
-              position={{ lat: user.latitude, lng: user.longitude }}
-              onClick={this.onMarkerClick}
             />
           );
         });
@@ -316,7 +184,7 @@ export class MapDashboard extends Component {
     return (
       <React.Fragment>
         <MediaQuery minWidth={992}>
-          <div className="ui five column grid container segment">
+          <div className="ui two column grid container segment">
             <div className="column">
               <Checkbox
                 slider
@@ -325,36 +193,13 @@ export class MapDashboard extends Component {
                 checked={this.state.whatToDisplayOnMap === "allSessions"}
               />
             </div>
-            <div className="column">
-              <Checkbox
-                slider
-                label="Your Sessions"
-                onChange={() => this.handleToggle("yourSessions")}
-                checked={this.state.whatToDisplayOnMap === "yourSessions"}
-              />
-            </div>
+
             <div className="column">
               <Checkbox
                 slider
                 label="All Groups"
                 onChange={() => this.handleToggle("allGroups")}
                 checked={this.state.whatToDisplayOnMap === "allGroups"}
-              />
-            </div>
-            <div className="column">
-              <Checkbox
-                slider
-                label="Your Groups"
-                onChange={() => this.handleToggle("yourGroups")}
-                checked={this.state.whatToDisplayOnMap === "yourGroups"}
-              />
-            </div>
-            <div className="column">
-              <Checkbox
-                slider
-                label="All Users"
-                onChange={() => this.handleToggle("users")}
-                checked={this.state.whatToDisplayOnMap === "users"}
               />
             </div>
           </div>
@@ -374,36 +219,11 @@ export class MapDashboard extends Component {
 
               <Grid.Row verticalAlign="middle">
                 <Checkbox
-                  onChange={() => this.handleToggle("yourSessions")}
-                  checked={this.state.whatToDisplayOnMap === "yourSessions"}
-                />{" "}
-                <br />
-                <Header as="h5">Your Sessions</Header>
-              </Grid.Row>
-
-              <Grid.Row verticalAlign="middle">
-                <Checkbox
                   onChange={() => this.handleToggle("allGroups")}
                   checked={this.state.whatToDisplayOnMap === "allGroups"}
                 />{" "}
                 <br />
                 <Header as="h5">All Groups</Header>
-              </Grid.Row>
-              <Grid.Row verticalAlign="middle">
-                <Checkbox
-                  onChange={() => this.handleToggle("yourGroups")}
-                  checked={this.state.whatToDisplayOnMap === "yourGroups"}
-                />{" "}
-                <br />
-                <Header as="h5">Your Groups</Header>
-              </Grid.Row>
-              <Grid.Row verticalAlign="middle">
-                <Checkbox
-                  onChange={() => this.handleToggle("users")}
-                  checked={this.state.whatToDisplayOnMap === "users"}
-                />{" "}
-                <br />
-                <Header as="h5">All Users</Header>
               </Grid.Row>
             </Grid.Column>
             <Grid.Column width={14}>
@@ -447,8 +267,12 @@ export class MapDashboard extends Component {
               <div className="ui raised container map segment">
                 <Map
                   google={this.props.google}
-                  zoom={14}
-                  initialCenter={initialCenter}
+                  zoom={8}
+                  initialCenter={
+                    this.state.userPosition
+                      ? this.state.userPosition
+                      : initialCenter
+                  }
                 >
                   {markers}
                   {this.state.selectedEvent ? (
@@ -509,8 +333,12 @@ export class MapDashboard extends Component {
           <div className="ui raised container map segment">
             <Map
               google={this.props.google}
-              zoom={14}
-              initialCenter={initialCenter}
+              zoom={8}
+              initialCenter={
+                this.state.userPosition
+                  ? this.state.userPosition
+                  : initialCenter
+              }
             >
               {markers}
               {this.state.selectedEvent ? (
@@ -534,4 +362,4 @@ export class MapDashboard extends Component {
 
 export default GoogleApiWrapper({
   apiKey: "AIzaSyDNfb_UadB3LFS4dbL9hbQRA-6wOV4jJTE"
-})(MapDashboard);
+})(MapLandingPage);

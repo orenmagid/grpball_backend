@@ -15,11 +15,27 @@ export class MapDashboard extends Component {
     selectedEvent: null,
     selectedGroup: null,
     displayedUser: null,
+    userPosition: null,
     currentRsvp: "",
     formToShow: "none",
     whatToDisplayOnMap: "yourSessions"
   };
 
+  componentDidMount() {
+    window.onload = () => {
+      var startPos;
+      var geoSuccess = position => {
+        startPos = position;
+        this.setState({
+          userPosition: {
+            lat: startPos.coords.latitude,
+            lng: startPos.coords.longitude
+          }
+        });
+      };
+      navigator.geolocation.getCurrentPosition(geoSuccess);
+    };
+  }
   onMarkerClick = (props, marker, e) => {
     if (props.session) {
       if (
@@ -447,8 +463,12 @@ export class MapDashboard extends Component {
               <div className="ui raised container map segment">
                 <Map
                   google={this.props.google}
-                  zoom={14}
-                  initialCenter={initialCenter}
+                  zoom={11}
+                  initialCenter={
+                    this.state.userPosition
+                      ? this.state.userPosition
+                      : initialCenter
+                  }
                 >
                   {markers}
                   {this.state.selectedEvent ? (
@@ -509,8 +529,12 @@ export class MapDashboard extends Component {
           <div className="ui raised container map segment">
             <Map
               google={this.props.google}
-              zoom={14}
-              initialCenter={initialCenter}
+              zoom={11}
+              initialCenter={
+                this.state.userPosition
+                  ? this.state.userPosition
+                  : initialCenter
+              }
             >
               {markers}
               {this.state.selectedEvent ? (

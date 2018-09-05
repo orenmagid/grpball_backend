@@ -167,7 +167,11 @@ class App extends Component {
             <Route
               path="/"
               render={routerProps => (
-                <MainContainer handleFetchSessions={this.handleFetchSessions} />
+                <MainContainer
+                  handleFetchSessions={this.handleFetchSessions}
+                  sessions={this.state.sessions}
+                  groups={this.state.groups}
+                />
               )}
             />
           ) : null}
