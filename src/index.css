@@ -35,3 +35,21 @@ body {
 .ui.raised.container.map.segment {
   min-height: 475px;
 }
+
+@media screen and (max-width: 750px) {
+  .rbc-toolbar {
+    font-size: 12px;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  .rbc-toolbar-label {
+    order: 5;
+    padding: 5px;
+    margin: 5px;
+    justify-content: center;
+  }
+
+  .rbc-btn-group {
+    margin: 5px;
+  }
+}

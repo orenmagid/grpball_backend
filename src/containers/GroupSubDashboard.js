@@ -201,16 +201,12 @@ export default class GroupSubDashboard extends Component {
             This Group's Sessions
           </Accordion.Title>
           <Accordion.Content active={activeIndex === 0}>
-            {group.sessions && group.sessions.length > 0 ? (
-              <SessionsTable
-                group={group}
-                sessions={sessions}
-                user={user}
-                handleShowSession={this.handleShowSession}
-              />
-            ) : (
-              "No sessions yet! Schedule one by clicking 'Suggest Session' above."
-            )}
+            <SessionsTable
+              group={group}
+              sessions={sessions}
+              user={user}
+              handleShowSession={this.handleShowSession}
+            />
           </Accordion.Content>
 
           <Accordion.Title

@@ -1,10 +1,25 @@
 .App {
   text-align: center;
+  min-height: 100vh; /* will cover the 100% of viewport */
+  overflow: hidden;
+  display: block;
+  position: relative;
+  padding-bottom: 50px;
 }
 
-.App-header {
+.ui.header.segment {
   background-color: #9eadc8;
   height: 100px;
   padding: 20px;
   color: white;
+}
+.ui.footer.segment {
+  background-color: #9eadc8;
+  margin: 5em 0em 0em;
+  padding: 5em 0em 0em;
+  height: 50px;
+  color: white;
+  position: relative;
+  bottom: 0;
+  width: 100%;
 }

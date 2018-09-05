@@ -5,6 +5,7 @@ import MainContainer from "./containers/MainContainer";
 import NavBar from "./components/NavBar";
 import NewUserForm from "./components/NewUserForm";
 import LoginForm from "./components/LoginForm";
+import MapLandingPage from "./components/MapLandingPage";
 
 // const baseUrl = "http://localhost:3000/api/v1";
 const baseUrl = "https://grpball-backend.herokuapp.com/api/v1";
@@ -12,7 +13,30 @@ const baseUrl = "https://grpball-backend.herokuapp.com/api/v1";
 class App extends Component {
   state = {
     displayNewUserForm: false,
-    error: ""
+    error: "",
+    sessions: [],
+    groups: []
+  };
+
+  handleFetchSessions = () => {
+    fetch(baseUrl + "/sessions")
+      .then(res => res.json())
+      .then(sessions => {
+        this.setState({ sessions: sessions });
+      })
+      .catch(e => {
+        alert(e);
+      });
+  };
+
+  handleFetchGroups = () => {
+    fetch(baseUrl + `/groups`)
+      .then(res => res.json())
+      .then(groups => {
+        this.setState({
+          groups: groups
+        });
+      });
   };
 
   handleLogin = e => {
@@ -110,10 +134,15 @@ class App extends Component {
     });
   };
 
+  componentDidMount() {
+    this.handleFetchSessions();
+    this.handleFetchGroups();
+  }
+
   render() {
     return (
       <div className="App">
-        <header className="App-header">
+        <header className="ui header segment">
           <div className="ui container">
             <NavBar
               displayNewUserForm={this.state.displayNewUserForm}
@@ -135,9 +164,21 @@ class App extends Component {
             )}
           />
           {localStorage.getItem("token") ? (
-            <Route path="/" render={routerProps => <MainContainer />} />
+            <Route
+              path="/"
+              render={routerProps => (
+                <MainContainer handleFetchSessions={this.handleFetchSessions} />
+              )}
+            />
           ) : null}
+          {localStorage.getItem("token") ? null : (
+            <MapLandingPage
+              sessions={this.state.sessions}
+              groups={this.state.groups}
+            />
+          )}
         </div>
+        <footer className="ui footer segment" />
       </div>
     );
   }

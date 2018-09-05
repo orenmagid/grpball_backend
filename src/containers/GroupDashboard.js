@@ -4,6 +4,7 @@ import GroupCard from "../components/GroupCard";
 import { Grid, Menu, Segment } from "semantic-ui-react";
 import GroupSubDashboard from "./GroupSubDashboard";
 import CreateOrJoinFormCard from "../components/CreateOrJoinFormCard";
+import MediaQuery from "react-responsive";
 
 // const baseUrl = "http://localhost:3000/api/v1";
 const baseUrl = "https://grpball-backend.herokuapp.com/api/v1";
@@ -89,8 +90,30 @@ class GroupDashboard extends Component {
     const { activeItem, activeIndex } = this.state;
 
     return (
-      <React.Fragment>
-        <Grid>
+      <Grid>
+        <MediaQuery maxWidth={767}>
+          <Grid.Row>
+            <Menu size="tiny" tabular>
+              <Menu.Item
+                icon="plus"
+                active={activeItem === "create_or_join"}
+                onClick={this.handleItemClick}
+              />
+              {user.groups.map(group => (
+                <Menu.Item
+                  key={group.id}
+                  name={group.name.split(/-|\s/g)[0]}
+                  active={
+                    activeItem === group.name ||
+                    activeItem === group.name.split(/-|\s/g)[0]
+                  }
+                  onClick={this.handleItemClick}
+                />
+              ))}
+            </Menu>
+          </Grid.Row>
+        </MediaQuery>
+        <MediaQuery minWidth={767}>
           <Grid.Column stretched width={12}>
             <Segment>
               {activeItem === "create_or_join" ? (
@@ -104,7 +127,8 @@ class GroupDashboard extends Component {
 
               {user.groups.map(
                 group =>
-                  activeItem === group.name ? (
+                  activeItem === group.name ||
+                  activeItem === group.name.split(/-|\s/g)[0] ? (
                     <React.Fragment key={group.id}>
                       <GroupCard
                         sessions={sessions}
@@ -124,6 +148,44 @@ class GroupDashboard extends Component {
               )}
             </Segment>
           </Grid.Column>
+        </MediaQuery>
+        <MediaQuery maxWidth={767}>
+          <Grid.Column stretched width={16}>
+            <Segment>
+              {activeItem === "create_or_join" ? (
+                <React.Fragment>
+                  <CreateOrJoinFormCard
+                    handleNewGroupSubmit={this.handleNewGroupSubmit}
+                    handleJoinGroupSubmit={this.handleJoinGroupSubmit}
+                  />
+                </React.Fragment>
+              ) : null}
+
+              {user.groups.map(
+                group =>
+                  activeItem === group.name ||
+                  activeItem === group.name.split(/-|\s/g)[0] ? (
+                    <React.Fragment key={group.id}>
+                      <GroupCard
+                        sessions={sessions}
+                        key={group.id}
+                        group={group}
+                        user={user}
+                        activeIndex={activeIndex}
+                        handleAccordianDisplay={this.handleAccordianDisplay}
+                        handleJoinGroupSubmit={this.handleJoinGroupSubmit}
+                        handleNewGroupSubmit={this.handleNewGroupSubmit}
+                        handleForceUserUpdate={handleForceUserUpdate}
+                        handleFetchSessions={handleFetchSessions}
+                        handleItemClick={this.handleItemClick}
+                      />
+                    </React.Fragment>
+                  ) : null
+              )}
+            </Segment>
+          </Grid.Column>
+        </MediaQuery>
+        <MediaQuery minWidth={767}>
           <Grid.Column width={4}>
             <Menu size="tiny" fluid vertical tabular="right">
               <Menu.Item
@@ -135,17 +197,23 @@ class GroupDashboard extends Component {
                 <Menu.Item
                   key={group.id}
                   name={group.name}
-                  active={activeItem === group.name}
+                  active={
+                    activeItem === group.name ||
+                    activeItem === group.name.split(/-|\s/g)[0]
+                  }
                   onClick={this.handleItemClick}
                 />
               ))}
             </Menu>
           </Grid.Column>
-          <Grid.Row>
-            {user.groups.map(
-              group =>
-                activeItem === group.name ? (
-                  <React.Fragment key={group.id}>
+        </MediaQuery>
+        <Grid.Row>
+          {user.groups.map(
+            group =>
+              activeItem === group.name ||
+              activeItem === group.name.split(/-|\s/g)[0] ? (
+                <React.Fragment key={group.id}>
+                  <MediaQuery minWidth={767}>
                     <Grid.Column width={12}>
                       <GroupSubDashboard
                         group={group}
@@ -158,12 +226,26 @@ class GroupDashboard extends Component {
                         user={user}
                       />
                     </Grid.Column>
-                  </React.Fragment>
-                ) : null
-            )}
-          </Grid.Row>
-        </Grid>
-      </React.Fragment>
+                  </MediaQuery>
+                  <MediaQuery maxWidth={767}>
+                    <Grid.Column width={16}>
+                      <GroupSubDashboard
+                        group={group}
+                        sessions={sessions}
+                        activeIndex={activeIndex}
+                        handleAccordianDisplay={this.handleAccordianDisplay}
+                        handleForceUserUpdate={handleForceUserUpdate}
+                        handleFetchSessions={handleFetchSessions}
+                        handleItemClick={this.handleItemClick}
+                        user={user}
+                      />
+                    </Grid.Column>
+                  </MediaQuery>
+                </React.Fragment>
+              ) : null
+          )}
+        </Grid.Row>
+      </Grid>
     );
   }
 }

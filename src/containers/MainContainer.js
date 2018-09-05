@@ -30,24 +30,6 @@ class MainContainer extends React.Component {
     activeItem: ""
   };
 
-  handleFetchSessions = () => {
-    let token = localStorage.getItem("token");
-    if (token) {
-      fetch(baseUrl + "/sessions", {
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
-      })
-        .then(res => res.json())
-        .then(sessions => {
-          this.setState({ sessions: sessions });
-        })
-        .catch(e => {
-          alert(e);
-        });
-    }
-  };
-
   handleforceUserUpdate = () => {
     console.log("inside handleforceUpdate");
     let token = localStorage.getItem("token");
@@ -133,19 +115,6 @@ class MainContainer extends React.Component {
         })
         .catch(e => console.error(e));
 
-      // fetch all groups
-      fetch(baseUrl + `/groups`, {
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
-      })
-        .then(res => res.json())
-        .then(groups => {
-          this.setState({
-            groups: groups
-          });
-        });
-
       // fetch all users
       fetch(baseUrl + `/users`, {
         headers: {
@@ -159,7 +128,7 @@ class MainContainer extends React.Component {
           });
         });
 
-      this.handleFetchSessions();
+      this.props.handleFetchSessions();
 
       // Fetch user feed from actioncable
       // fetch(`${API_ROOT}/me`)
@@ -283,8 +252,8 @@ class MainContainer extends React.Component {
               <GroupDashboard
                 user={this.state.user}
                 handleForceUserUpdate={this.handleforceUserUpdate}
-                handleFetchSessions={this.handleFetchSessions}
-                sessions={this.state.sessions}
+                handleFetchSessions={this.props.handleFetchSessions}
+                sessions={this.props.sessions}
               />
             )}
           />
@@ -296,8 +265,8 @@ class MainContainer extends React.Component {
             render={routerProps => (
               <CalendarDashboard
                 user={this.state.user}
-                sessions={this.state.sessions}
-                handleFetchSessions={this.handleFetchSessions}
+                sessions={this.props.sessions}
+                handleFetchSessions={this.props.handleFetchSessions}
               />
             )}
           />
@@ -310,9 +279,9 @@ class MainContainer extends React.Component {
             render={routerProps => (
               <MapDashboard
                 user={this.state.user}
-                sessions={this.state.sessions}
-                handleFetchSessions={this.handleFetchSessions}
-                groups={this.state.groups}
+                sessions={this.props.sessions}
+                handleFetchSessions={this.props.handleFetchSessions}
+                groups={this.props.groups}
                 users={this.state.users}
               />
             )}
