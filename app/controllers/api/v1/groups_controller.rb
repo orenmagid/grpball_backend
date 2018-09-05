@@ -15,10 +15,11 @@ class Api::V1::GroupsController < ApplicationController
 
     def create
       @group = Group.new(group_params)
+        @user = User.find(params[:user_id])
 
 
       if @group.save
-        @group.users << @current_user
+        @group.users << @user
         @group.save
         @group.user_groups.last.update(is_administrator: true)
         render json: @group, status: :accepted
@@ -53,7 +54,7 @@ class Api::V1::GroupsController < ApplicationController
    private
 
    def group_params
-     params.require(:group).permit(:id, :name, :location)
+     params.require(:group).permit(:id, :name, :location, :user_id)
    end
 
    def find_group
