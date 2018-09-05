@@ -108,7 +108,7 @@ class MainContainer extends React.Component {
         })
         .catch(e => console.error(e));
       // Fetch user feed
-      fetch("http://localhost:3000/me", {
+      fetch(baseUrlForFeed + "/me", {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -121,7 +121,7 @@ class MainContainer extends React.Component {
         .catch(e => console.error(e));
 
       // Fetch user notifications
-      fetch("http://localhost:3000/notification_user", {
+      fetch(baseUrlForFeed + "/notification_user", {
         headers: {
           Authorization: `Bearer ${token}`
         }

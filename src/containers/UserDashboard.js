@@ -13,7 +13,7 @@ const UserDashboard = ({ user, handleEditProfile }) => (
       </Card.Meta>
       {/* <Card.Description>{user.first_name} is a baller!</Card.Description> */}
       <div className="top-margin">
-        <MediaQuery minWidth={992}>
+        <MediaQuery minWidth={767}>
           <Grid columns={2} divided>
             <Grid.Row>
               <Grid.Column>
@@ -65,7 +65,7 @@ const UserDashboard = ({ user, handleEditProfile }) => (
             </Grid.Row>
           </Grid>
         </MediaQuery>
-        <MediaQuery maxWidth={992}>
+        <MediaQuery maxWidth={767}>
           <List horizontal>
             <List.Item>
               <List.Icon name="marker" />
