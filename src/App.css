@@ -8,13 +8,14 @@
 }
 
 .ui.header.segment {
-  background-color: #9eadc8;
+  background-color: #31393c;
   height: 100px;
-  padding: 20px;
   color: white;
+  border-radius: 0;
 }
 .ui.footer.segment {
-  background-color: #9eadc8;
+  border-radius: 0;
+  background-color: #31393c;
   margin: 5em 0em 0em;
   padding: 5em 0em 0em;
   height: 50px;
@@ -22,4 +23,30 @@
   position: relative;
   bottom: 0;
   width: 100%;
+}
+
+.ui.huge.primary.button {
+  /* background-color: #c5d5ea; */
+  background-color: #424b54;
+}
+
+.ui.huge.primary.button:hover {
+  background-color: #31393c;
+}
+
+.ui.inverted.segment .ui.inverted.form {
+  background: #424b54;
+  color: blue;
+}
+.ui.primary.inverted.segment {
+  background: #424b54;
+  color: blue;
+}
+
+.ui.vertical.masthead.center.aligned.segment {
+  border-bottom: none;
+}
+
+.ui.vertical.stripe.segment {
+  border-bottom: none;
 }

@@ -68,7 +68,8 @@ class GroupDashboard extends Component {
       .then(jsonData => this.props.handleForceUserUpdate());
   };
 
-  handleItemClick = (e, { name }) => this.setState({ activeItem: name });
+  handleItemClick = (e, { name }) =>
+    this.setState({ activeItem: name ? name : "create_or_join" });
 
   handleAccordianDisplay = (e, activeIndex) => {
     e.preventDefault();

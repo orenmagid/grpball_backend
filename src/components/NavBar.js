@@ -1,7 +1,8 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { Grid } from "semantic-ui-react";
+import { Grid, Button } from "semantic-ui-react";
 import LoginForm from "./LoginForm";
+import MediaQuery from "react-responsive";
 
 const NavBar = ({
   createNewUser,
@@ -9,25 +10,16 @@ const NavBar = ({
   handleLogin,
   handleLogout
 }) => (
-  <Grid container columns={2}>
+  <Grid container>
     <Grid.Row>
-      <Grid.Column width={4}>
-        <div className="margin-auto">
-          {!localStorage.token && !displayNewUserForm ? (
-            <Link to={`/newuser`}>
-              <button
-                onClick={createNewUser}
-                className="ui inverted basic button"
-              >
-                Create Account
-              </button>
-            </Link>
-          ) : null}
-        </div>
-      </Grid.Column>
-
-      {localStorage.token ? null : (
-        <Grid.Column width={12}>
+      {localStorage.token ? (
+        <Grid.Column width={4}>
+          <Link to={`/`}>
+            <h1 className="ui inverted header">GRPBALL</h1>
+          </Link>
+        </Grid.Column>
+      ) : (
+        <Grid.Column width={16}>
           <LoginForm handleLogin={handleLogin} />
         </Grid.Column>
       )}
@@ -44,7 +36,7 @@ const NavBar = ({
           </Link>
         </Grid.Column>
       ) : (
-        <Grid.Column width={12} />
+        <Grid.Column width={16} />
       )}
     </Grid.Row>
   </Grid>

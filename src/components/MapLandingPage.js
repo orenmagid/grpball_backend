@@ -1,7 +1,8 @@
 import React, { Component } from "react";
+import { Link } from "react-router-dom";
 import { Map, InfoWindow, Marker, GoogleApiWrapper } from "google-maps-react";
-import { Checkbox, Grid, Label, Header } from "semantic-ui-react";
-import CalendarSessionInfo from "../components/CalendarSessionInfo";
+import { Checkbox, Grid, Label, Header, Segment } from "semantic-ui-react";
+import MapLandingSessionInfo from "../components/MapLandingSessionInfo";
 import InteractiveSegment from "../components/InteractiveSegment";
 import GroupCardMinimalDisplay from "../components/GroupCardMinimalDisplay";
 import UserInfo from "../components/UserInfo";
@@ -106,25 +107,9 @@ export class MapLandingPage extends Component {
   };
 
   handleShowSession = currentSession => {
-    let token = localStorage.getItem("token");
-    if (token) {
-      fetch(baseUrl + `/sessions/${currentSession.id}`, {
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
-      })
-        .then(res => res.json())
-        .then(session => {
-          let myRsvp = session.rsvps.find(
-            rsvp => rsvp.user_id === this.props.user.id
-          );
-
-          this.setState({
-            selectedEvent: session,
-            currentRsvp: myRsvp
-          });
-        });
-    }
+    this.setState({
+      selectedEvent: currentSession
+    });
   };
 
   handleToggle = whatToDisplay =>
@@ -136,7 +121,7 @@ export class MapLandingPage extends Component {
     });
 
   render() {
-    const { user, sessions, groups, users } = this.props;
+    const { user, sessions, groups, users, createNewUser } = this.props;
 
     let initialCenter = {
       lat: 38.89511,
@@ -183,12 +168,21 @@ export class MapLandingPage extends Component {
 
     return (
       <React.Fragment>
+        <Link to={`/new_user`}>
+          <div className="ui huge primary button" onClick={createNewUser}>
+            Create an Account <i className="right arrow icon" />
+          </div>
+        </Link>
+        <Segment>
+          Take a look at the map to find groups and sessions near you. Once you
+          create an account, you can find users near you too.
+        </Segment>
         <MediaQuery minWidth={992}>
           <div className="ui two column grid container segment">
             <div className="column">
               <Checkbox
                 slider
-                label="All Sessions"
+                label="Browse Sessions"
                 onChange={() => this.handleToggle("allSessions")}
                 checked={this.state.whatToDisplayOnMap === "allSessions"}
               />
@@ -197,7 +191,7 @@ export class MapLandingPage extends Component {
             <div className="column">
               <Checkbox
                 slider
-                label="All Groups"
+                label="Browse Groups"
                 onChange={() => this.handleToggle("allGroups")}
                 checked={this.state.whatToDisplayOnMap === "allGroups"}
               />
@@ -236,34 +230,13 @@ export class MapLandingPage extends Component {
               ) : null}
 
               {this.state.selectedEvent ? (
-                <CalendarSessionInfo
+                <MapLandingSessionInfo
                   group={this.state.selectedEvent.group}
                   handleCloseClick={this.handleCloseClick}
-                  handleRsvpClick={this.handleRsvpClick}
                   session={this.state.selectedEvent}
-                  rsvp={this.state.currentRsvp}
-                  user={this.props.user}
                 />
               ) : null}
-              {this.state.formToShow === "editRsvp" ||
-              this.state.formToShow === "newRsvp" ? (
-                <InteractiveSegment
-                  handleCloseClick={this.handleFormCloseClick}
-                  formToShow={this.state.formToShow}
-                  session={this.state.selectedEvent}
-                  rsvp={this.state.currentRsvp}
-                  handleEditRsvp={this.handleEditRsvp}
-                  handleNewRsvp={this.handleNewRsvp}
-                  group={this.state.selectedGroup}
-                />
-              ) : null}
-              {this.state.displayedUser ? (
-                <UserInfo
-                  handleCloseClick={this.handleCloseClick}
-                  user={user}
-                  displayedUser={this.state.displayedUser}
-                />
-              ) : null}
+
               <div className="ui raised container map segment">
                 <Map
                   google={this.props.google}
@@ -295,6 +268,7 @@ export class MapLandingPage extends Component {
         <MediaQuery minWidth={992}>
           {this.state.selectedGroup ? (
             <GroupCardMinimalDisplay
+              handleCloseClick={this.handleCloseClick}
               sessions={sessions}
               group={this.state.selectedGroup}
               user={user}
@@ -302,34 +276,13 @@ export class MapLandingPage extends Component {
           ) : null}
 
           {this.state.selectedEvent ? (
-            <CalendarSessionInfo
+            <MapLandingSessionInfo
               group={this.state.selectedEvent.group}
               handleCloseClick={this.handleCloseClick}
-              handleRsvpClick={this.handleRsvpClick}
               session={this.state.selectedEvent}
-              rsvp={this.state.currentRsvp}
-              user={this.props.user}
             />
           ) : null}
-          {this.state.formToShow === "editRsvp" ||
-          this.state.formToShow === "newRsvp" ? (
-            <InteractiveSegment
-              handleCloseClick={this.handleFormCloseClick}
-              formToShow={this.state.formToShow}
-              session={this.state.selectedEvent}
-              rsvp={this.state.currentRsvp}
-              handleEditRsvp={this.handleEditRsvp}
-              handleNewRsvp={this.handleNewRsvp}
-              group={this.state.selectedGroup}
-            />
-          ) : null}
-          {this.state.displayedUser ? (
-            <UserInfo
-              handleCloseClick={this.handleCloseClick}
-              user={user}
-              displayedUser={this.state.displayedUser}
-            />
-          ) : null}
+
           <div className="ui raised container map segment">
             <Map
               google={this.props.google}

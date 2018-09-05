@@ -14,13 +14,14 @@ export default class NewUserForm extends Component {
     //   { key: "pb", text: "Professional Ball", value: "Professional Ball" }
     // ];
 
-    if (!displayNewUserForm && !localStorage.getItem("token")) {
+    let token = localStorage.getItem("token");
+    if (token) {
       return <Redirect to="/" />;
     }
     return (
       <div className="ui container">
-        <Segment>
-          <Form onSubmit={handleCreateOrEditUser}>
+        <Segment inverted>
+          <Form inverted onSubmit={handleCreateOrEditUser}>
             <Form.Group widths="equal">
               <Form.Input
                 name="first_name"
@@ -107,7 +108,7 @@ export default class NewUserForm extends Component {
               />
             </Form.Group> */}
             {/* <Form.Checkbox label="I agree to the Terms and Conditions" /> */}
-            <Button secondary basic type="submit">
+            <Button inverted secondary basic type="submit">
               Submit
             </Button>
           </Form>

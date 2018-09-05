@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Message, Segment } from "semantic-ui-react";
+import { Message, Segment, Icon } from "semantic-ui-react";
 import moment from "moment";
 import SessionScheduler from "./SessionScheduler";
 import AddUserFormCard from "./AddUserFormCard";
@@ -32,54 +32,11 @@ export default class GroupCard extends Component {
     }
   }
 
-  // handleOpenAddUserClick = () => {
-  //   this.setState({
-  //     formToShow: "addUser"
-  //   });
-  // };
-  //
-  // handleOpenSuggestSessionClick = () => {
-  //   this.setState({
-  //     formToShow: "suggestSession"
-  //   });
-  // };
-
   handleCloseClick = () => {
     this.setState({
       formToShow: "none"
     });
   };
-
-  // handleAddToGroupSubmit = e => {
-  //   e.preventDefault();
-  //
-  //   let username = e.target.username.value;
-  //   e.target.reset();
-  //   let data = {
-  //     username: username
-  //   };
-  //
-  //   let token = localStorage.getItem("token");
-  //   if (token) {
-  //     fetch(baseUrl + `/groups/${this.props.group.id}`, {
-  //       method: "PATCH",
-  //       body: JSON.stringify(data),
-  //       headers: {
-  //         "Content-Type": "application/json",
-  //         Authorization: `Bearer ${token}`
-  //       }
-  //     })
-  //       .then(response => response.json())
-  //       .then(group => {
-  //         this.props.handleForceUserUpdate();
-  //         this.setState({
-  //           group: group,
-  //           users: group.users,
-  //           formToShow: "none"
-  //         });
-  //       });
-  //   }
-  // };
 
   handleLeaveGroup = (group, user) => {
     let token = localStorage.getItem("token");
@@ -112,11 +69,20 @@ export default class GroupCard extends Component {
 
     return (
       <Segment>
+        <i
+          className="window close icon"
+          onClick={this.props.handleCloseClick}
+        />
         <div className="ui two column grid">
           <div className="column">
-            {userGroup
-              ? "Joined: " + moment(userGroup.created_at).calendar()
-              : null}
+            {userGroup ? (
+              "Joined: " + moment(userGroup.created_at).calendar()
+            ) : (
+              <div>
+                Create an Account to Join this Group <br />
+                <Icon name="signup" />
+              </div>
+            )}
           </div>
           <div className="column">
             <i className="user icon" />
@@ -136,7 +102,7 @@ export default class GroupCard extends Component {
           ) : null}
         </div>
 
-        <div className="ui header">{this.props.group.name}</div>
+        <div className="ui header">Group Name: "{this.props.group.name}"</div>
         <div className="meta">{this.props.group.location}</div>
         <div className="meta">Group #: {this.props.group.id}</div>
         {userGroup !== undefined && userGroup.is_administrator ? (

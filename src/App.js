@@ -1,11 +1,14 @@
 import React, { Component } from "react";
-import { Route } from "react-router-dom";
+import { Route, Redirect } from "react-router-dom";
+
 import "./App.css";
 import MainContainer from "./containers/MainContainer";
 import NavBar from "./components/NavBar";
 import NewUserForm from "./components/NewUserForm";
 import LoginForm from "./components/LoginForm";
 import MapLandingPage from "./components/MapLandingPage";
+import { Image, Reveal } from "semantic-ui-react";
+import ImageSplash from "./components/ImageSplash";
 
 // const baseUrl = "http://localhost:3000/api/v1";
 const baseUrl = "https://grpball-backend.herokuapp.com/api/v1";
@@ -15,8 +18,14 @@ class App extends Component {
     displayNewUserForm: false,
     error: "",
     sessions: [],
-    groups: []
+    groups: [],
+    stage: 1
   };
+
+  componentDidMount() {
+    this.handleFetchSessions();
+    this.handleFetchGroups();
+  }
 
   handleFetchSessions = () => {
     fetch(baseUrl + "/sessions")
@@ -37,6 +46,12 @@ class App extends Component {
           groups: groups
         });
       });
+  };
+
+  handleChangeStage = () => {
+    this.setState({
+      stage: ""
+    });
   };
 
   handleLogin = e => {
@@ -73,7 +88,8 @@ class App extends Component {
 
   createNewUser = () => {
     this.setState({
-      displayNewUserForm: true
+      displayNewUserForm: true,
+      stage: "new_user"
     });
   };
 
@@ -134,11 +150,6 @@ class App extends Component {
     });
   };
 
-  componentDidMount() {
-    this.handleFetchSessions();
-    this.handleFetchGroups();
-  }
-
   render() {
     return (
       <div className="App">
@@ -152,10 +163,24 @@ class App extends Component {
             />
           </div>
         </header>
+        <div className="top-margin">
+          {!localStorage.getItem("token") && this.state.stage !== "map" ? (
+            <Route
+              exact
+              path="/"
+              render={routerProps => (
+                <ImageSplash
+                  createNewUser={this.createNewUser}
+                  handleChangeStage={this.handleChangeStage}
+                />
+              )}
+            />
+          ) : null}
+        </div>
         <div className="ui container top-margin">
           <Route
             exact
-            path="/newuser"
+            path="/new_user"
             render={routerProps => (
               <NewUserForm
                 handleCreateOrEditUser={this.handleCreateUser}
@@ -176,12 +201,19 @@ class App extends Component {
             />
           ) : null}
           {localStorage.getItem("token") ? null : (
-            <MapLandingPage
-              sessions={this.state.sessions}
-              groups={this.state.groups}
+            <Route
+              path="/map_splash"
+              render={routerProps => (
+                <MapLandingPage
+                  sessions={this.state.sessions}
+                  groups={this.state.groups}
+                  createNewUser={this.createNewUser}
+                />
+              )}
             />
           )}
         </div>
+
         <footer className="ui footer segment" />
       </div>
     );
