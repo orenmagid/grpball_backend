@@ -119,23 +119,13 @@ class GroupDashboard extends Component {
                         handleFetchSessions={handleFetchSessions}
                         handleItemClick={this.handleItemClick}
                       />
-                      <GroupSubDashboard
-                        group={group}
-                        sessions={sessions}
-                        activeIndex={activeIndex}
-                        handleAccordianDisplay={this.handleAccordianDisplay}
-                        handleForceUserUpdate={handleForceUserUpdate}
-                        handleFetchSessions={handleFetchSessions}
-                        handleItemClick={this.handleItemClick}
-                        user={user}
-                      />
                     </React.Fragment>
                   ) : null
               )}
             </Segment>
           </Grid.Column>
           <Grid.Column width={4}>
-            <Menu size="tiny" fluid vertical tabular="right">
+            <Menu size="tiny" fluid vertical tabular="left">
               <Menu.Item
                 name="create_or_join"
                 active={activeItem === "create_or_join"}
@@ -151,6 +141,27 @@ class GroupDashboard extends Component {
               ))}
             </Menu>
           </Grid.Column>
+          <Grid.Row>
+            {user.groups.map(
+              group =>
+                activeItem === group.name ? (
+                  <React.Fragment key={group.id}>
+                    <Grid.Column width={12}>
+                      <GroupSubDashboard
+                        group={group}
+                        sessions={sessions}
+                        activeIndex={activeIndex}
+                        handleAccordianDisplay={this.handleAccordianDisplay}
+                        handleForceUserUpdate={handleForceUserUpdate}
+                        handleFetchSessions={handleFetchSessions}
+                        handleItemClick={this.handleItemClick}
+                        user={user}
+                      />
+                    </Grid.Column>
+                  </React.Fragment>
+                ) : null
+            )}
+          </Grid.Row>
         </Grid>
       </React.Fragment>
     );

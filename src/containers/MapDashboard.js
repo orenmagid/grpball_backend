@@ -1,10 +1,11 @@
 import React, { Component } from "react";
 import { Map, InfoWindow, Marker, GoogleApiWrapper } from "google-maps-react";
-import { Checkbox } from "semantic-ui-react";
+import { Checkbox, Grid, Label } from "semantic-ui-react";
 import CalendarSessionInfo from "../components/CalendarSessionInfo";
 import InteractiveSegment from "../components/InteractiveSegment";
 import GroupCardMinimalDisplay from "../components/GroupCardMinimalDisplay";
 import UserInfo from "../components/UserInfo";
+import MediaQuery from "react-responsive";
 
 // const baseUrl = "http://localhost:3000/api/v1";
 const baseUrl = "https://grpball-backend.herokuapp.com/api/v1";
@@ -314,106 +315,223 @@ export class MapDashboard extends Component {
 
     return (
       <React.Fragment>
-        <div class="ui five column doubling stackable grid container segment">
-          <div class="column">
-            <Checkbox
-              slider
-              label="All Sessions"
-              onChange={() => this.handleToggle("allSessions")}
-              checked={this.state.whatToDisplayOnMap === "allSessions"}
-            />
+        <MediaQuery minWidth={1224}>
+          <div className="ui five column grid container segment">
+            <div className="column">
+              <Checkbox
+                slider
+                label="All Sessions"
+                onChange={() => this.handleToggle("allSessions")}
+                checked={this.state.whatToDisplayOnMap === "allSessions"}
+              />
+            </div>
+            <div className="column">
+              <Checkbox
+                slider
+                label="Your Sessions"
+                onChange={() => this.handleToggle("yourSessions")}
+                checked={this.state.whatToDisplayOnMap === "yourSessions"}
+              />
+            </div>
+            <div className="column">
+              <Checkbox
+                slider
+                label="All Groups"
+                onChange={() => this.handleToggle("allGroups")}
+                checked={this.state.whatToDisplayOnMap === "allGroups"}
+              />
+            </div>
+            <div className="column">
+              <Checkbox
+                slider
+                label="Your Groups"
+                onChange={() => this.handleToggle("yourGroups")}
+                checked={this.state.whatToDisplayOnMap === "yourGroups"}
+              />
+            </div>
+            <div className="column">
+              <Checkbox
+                slider
+                label="All Users"
+                onChange={() => this.handleToggle("users")}
+                checked={this.state.whatToDisplayOnMap === "users"}
+              />
+            </div>
           </div>
-          <div class="column">
-            <Checkbox
-              slider
-              label="Your Sessions"
-              onChange={() => this.handleToggle("yourSessions")}
-              checked={this.state.whatToDisplayOnMap === "yourSessions"}
-            />
-          </div>
-          <div class="column">
-            <Checkbox
-              slider
-              label="All Groups"
-              onChange={() => this.handleToggle("allGroups")}
-              checked={this.state.whatToDisplayOnMap === "allGroups"}
-            />
-          </div>
-          <div class="column">
-            <Checkbox
-              slider
-              label="Your Groups"
-              onChange={() => this.handleToggle("yourGroups")}
-              checked={this.state.whatToDisplayOnMap === "yourGroups"}
-            />
-          </div>
-          <div class="column">
-            <Checkbox
-              slider
-              label="All Users"
-              onChange={() => this.handleToggle("users")}
-              checked={this.state.whatToDisplayOnMap === "users"}
-            />
-          </div>
-        </div>
+        </MediaQuery>
+        <MediaQuery maxWidth={1224}>
+          <Grid>
+            <Grid.Column stretched width={2}>
+              <Grid.Row verticalAlign="middle" />
+              <Grid.Row verticalAlign="middle">
+                <Checkbox
+                  onChange={() => this.handleToggle("allSessions")}
+                  checked={this.state.whatToDisplayOnMap === "allSessions"}
+                />
+                <Label as="a" basic pointing>
+                  All Sessions
+                </Label>
+              </Grid.Row>
 
-        {this.state.selectedGroup ? (
-          <GroupCardMinimalDisplay
-            sessions={sessions}
-            group={this.state.selectedGroup}
-            user={user}
-          />
-        ) : null}
+              <Grid.Row verticalAlign="middle">
+                <Checkbox
+                  onChange={() => this.handleToggle("yourSessions")}
+                  checked={this.state.whatToDisplayOnMap === "yourSessions"}
+                />
+                <Label as="a" basic pointing>
+                  Your Sessions
+                </Label>
+              </Grid.Row>
 
-        {this.state.selectedEvent ? (
-          <CalendarSessionInfo
-            group={this.state.selectedEvent.group}
-            handleCloseClick={this.handleCloseClick}
-            handleRsvpClick={this.handleRsvpClick}
-            session={this.state.selectedEvent}
-            rsvp={this.state.currentRsvp}
-            user={this.props.user}
-          />
-        ) : null}
-        {this.state.formToShow === "editRsvp" ||
-        this.state.formToShow === "newRsvp" ? (
-          <InteractiveSegment
-            handleCloseClick={this.handleFormCloseClick}
-            formToShow={this.state.formToShow}
-            session={this.state.selectedEvent}
-            rsvp={this.state.currentRsvp}
-            handleEditRsvp={this.handleEditRsvp}
-            handleNewRsvp={this.handleNewRsvp}
-            group={this.state.selectedGroup}
-          />
-        ) : null}
-        {this.state.displayedUser ? (
-          <UserInfo
-            handleCloseClick={this.handleCloseClick}
-            user={user}
-            displayedUser={this.state.displayedUser}
-          />
-        ) : null}
-        <div className="ui raised container map segment">
-          <Map
-            google={this.props.google}
-            zoom={14}
-            initialCenter={initialCenter}
-          >
-            {markers}
-            {this.state.selectedEvent ? (
-              <InfoWindow
-                marker={this.state.activeMarker}
-                visible="true"
-                onClose={this.onInfoWindowClose}
-              >
-                <div>
-                  <h1>{this.state.selectedEvent.group.name}</h1>
-                </div>
-              </InfoWindow>
-            ) : null}
-          </Map>
-        </div>
+              <Grid.Row verticalAlign="middle">
+                <Checkbox
+                  onChange={() => this.handleToggle("allGroups")}
+                  checked={this.state.whatToDisplayOnMap === "allGroups"}
+                />
+                <Label as="a" basic pointing>
+                  All Groups
+                </Label>
+              </Grid.Row>
+              <Grid.Row verticalAlign="middle">
+                <Checkbox
+                  onChange={() => this.handleToggle("yourGroups")}
+                  checked={this.state.whatToDisplayOnMap === "yourGroups"}
+                />
+                <Label as="a" basic pointing>
+                  Your Groups
+                </Label>
+              </Grid.Row>
+              <Grid.Row verticalAlign="middle">
+                <Checkbox
+                  onChange={() => this.handleToggle("users")}
+                  checked={this.state.whatToDisplayOnMap === "users"}
+                />
+                <Label as="a" basic pointing>
+                  All Users
+                </Label>
+              </Grid.Row>
+            </Grid.Column>
+            <Grid.Column width={13}>
+              {this.state.selectedGroup ? (
+                <GroupCardMinimalDisplay
+                  sessions={sessions}
+                  group={this.state.selectedGroup}
+                  user={user}
+                />
+              ) : null}
+
+              {this.state.selectedEvent ? (
+                <CalendarSessionInfo
+                  group={this.state.selectedEvent.group}
+                  handleCloseClick={this.handleCloseClick}
+                  handleRsvpClick={this.handleRsvpClick}
+                  session={this.state.selectedEvent}
+                  rsvp={this.state.currentRsvp}
+                  user={this.props.user}
+                />
+              ) : null}
+              {this.state.formToShow === "editRsvp" ||
+              this.state.formToShow === "newRsvp" ? (
+                <InteractiveSegment
+                  handleCloseClick={this.handleFormCloseClick}
+                  formToShow={this.state.formToShow}
+                  session={this.state.selectedEvent}
+                  rsvp={this.state.currentRsvp}
+                  handleEditRsvp={this.handleEditRsvp}
+                  handleNewRsvp={this.handleNewRsvp}
+                  group={this.state.selectedGroup}
+                />
+              ) : null}
+              {this.state.displayedUser ? (
+                <UserInfo
+                  handleCloseClick={this.handleCloseClick}
+                  user={user}
+                  displayedUser={this.state.displayedUser}
+                />
+              ) : null}
+              <div className="ui raised container map segment">
+                <Map
+                  google={this.props.google}
+                  zoom={14}
+                  initialCenter={initialCenter}
+                >
+                  {markers}
+                  {this.state.selectedEvent ? (
+                    <InfoWindow
+                      marker={this.state.activeMarker}
+                      visible="true"
+                      onClose={this.onInfoWindowClose}
+                    >
+                      <div>
+                        <h1>{this.state.selectedEvent.group.name}</h1>
+                      </div>
+                    </InfoWindow>
+                  ) : null}
+                </Map>
+              </div>
+            </Grid.Column>
+          </Grid>
+        </MediaQuery>
+
+        <MediaQuery minWidth={1224}>
+          {this.state.selectedGroup ? (
+            <GroupCardMinimalDisplay
+              sessions={sessions}
+              group={this.state.selectedGroup}
+              user={user}
+            />
+          ) : null}
+
+          {this.state.selectedEvent ? (
+            <CalendarSessionInfo
+              group={this.state.selectedEvent.group}
+              handleCloseClick={this.handleCloseClick}
+              handleRsvpClick={this.handleRsvpClick}
+              session={this.state.selectedEvent}
+              rsvp={this.state.currentRsvp}
+              user={this.props.user}
+            />
+          ) : null}
+          {this.state.formToShow === "editRsvp" ||
+          this.state.formToShow === "newRsvp" ? (
+            <InteractiveSegment
+              handleCloseClick={this.handleFormCloseClick}
+              formToShow={this.state.formToShow}
+              session={this.state.selectedEvent}
+              rsvp={this.state.currentRsvp}
+              handleEditRsvp={this.handleEditRsvp}
+              handleNewRsvp={this.handleNewRsvp}
+              group={this.state.selectedGroup}
+            />
+          ) : null}
+          {this.state.displayedUser ? (
+            <UserInfo
+              handleCloseClick={this.handleCloseClick}
+              user={user}
+              displayedUser={this.state.displayedUser}
+            />
+          ) : null}
+          <div className="ui raised container map segment">
+            <Map
+              google={this.props.google}
+              zoom={14}
+              initialCenter={initialCenter}
+            >
+              {markers}
+              {this.state.selectedEvent ? (
+                <InfoWindow
+                  marker={this.state.activeMarker}
+                  visible="true"
+                  onClose={this.onInfoWindowClose}
+                >
+                  <div>
+                    <h1>{this.state.selectedEvent.group.name}</h1>
+                  </div>
+                </InfoWindow>
+              ) : null}
+            </Map>
+          </div>
+        </MediaQuery>
       </React.Fragment>
     );
   }
