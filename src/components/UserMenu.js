@@ -22,7 +22,7 @@ export default class UserMenu extends Component {
 
     return (
       <React.Fragment>
-        <MediaQuery maxWidth={1224}>
+        <MediaQuery maxWidth={992}>
           <Menu tabular size="small">
             <Link to={`/`}>
               <Menu.Item
@@ -73,7 +73,7 @@ export default class UserMenu extends Component {
             </Link>
           </Menu>
         </MediaQuery>
-        <MediaQuery minWidth={1224}>
+        <MediaQuery minWidth={992}>
           <Menu tabular size="small">
             <Link to={`/`}>
               <Menu.Item

@@ -125,7 +125,7 @@ class GroupDashboard extends Component {
             </Segment>
           </Grid.Column>
           <Grid.Column width={4}>
-            <Menu size="tiny" fluid vertical tabular="left">
+            <Menu size="tiny" fluid vertical tabular="right">
               <Menu.Item
                 name="create_or_join"
                 active={activeItem === "create_or_join"}

@@ -33,6 +33,7 @@ export default class SessionScheduler extends Component {
   handleChange = (e, { value }) => this.setState({ group_id: value });
 
   handleSubmit = e => {
+    console.log("Inside handleSubmit");
     e.preventDefault();
 
     let data = {

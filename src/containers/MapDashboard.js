@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { Map, InfoWindow, Marker, GoogleApiWrapper } from "google-maps-react";
-import { Checkbox, Grid, Label } from "semantic-ui-react";
+import { Checkbox, Grid, Label, Header } from "semantic-ui-react";
 import CalendarSessionInfo from "../components/CalendarSessionInfo";
 import InteractiveSegment from "../components/InteractiveSegment";
 import GroupCardMinimalDisplay from "../components/GroupCardMinimalDisplay";
@@ -315,7 +315,7 @@ export class MapDashboard extends Component {
 
     return (
       <React.Fragment>
-        <MediaQuery minWidth={1224}>
+        <MediaQuery minWidth={992}>
           <div className="ui five column grid container segment">
             <div className="column">
               <Checkbox
@@ -359,59 +359,54 @@ export class MapDashboard extends Component {
             </div>
           </div>
         </MediaQuery>
-        <MediaQuery maxWidth={1224}>
+        <MediaQuery maxWidth={992}>
           <Grid>
-            <Grid.Column stretched width={2}>
+            <Grid.Column stretched centered width={2}>
               <Grid.Row verticalAlign="middle" />
               <Grid.Row verticalAlign="middle">
                 <Checkbox
                   onChange={() => this.handleToggle("allSessions")}
                   checked={this.state.whatToDisplayOnMap === "allSessions"}
                 />
-                <Label as="a" basic pointing>
-                  All Sessions
-                </Label>
+                <br />
+                <Header as="h5">All Sessions</Header>
               </Grid.Row>
 
               <Grid.Row verticalAlign="middle">
                 <Checkbox
                   onChange={() => this.handleToggle("yourSessions")}
                   checked={this.state.whatToDisplayOnMap === "yourSessions"}
-                />
-                <Label as="a" basic pointing>
-                  Your Sessions
-                </Label>
+                />{" "}
+                <br />
+                <Header as="h5">Your Sessions</Header>
               </Grid.Row>
 
               <Grid.Row verticalAlign="middle">
                 <Checkbox
                   onChange={() => this.handleToggle("allGroups")}
                   checked={this.state.whatToDisplayOnMap === "allGroups"}
-                />
-                <Label as="a" basic pointing>
-                  All Groups
-                </Label>
+                />{" "}
+                <br />
+                <Header as="h5">All Groups</Header>
               </Grid.Row>
               <Grid.Row verticalAlign="middle">
                 <Checkbox
                   onChange={() => this.handleToggle("yourGroups")}
                   checked={this.state.whatToDisplayOnMap === "yourGroups"}
-                />
-                <Label as="a" basic pointing>
-                  Your Groups
-                </Label>
+                />{" "}
+                <br />
+                <Header as="h5">Your Groups</Header>
               </Grid.Row>
               <Grid.Row verticalAlign="middle">
                 <Checkbox
                   onChange={() => this.handleToggle("users")}
                   checked={this.state.whatToDisplayOnMap === "users"}
-                />
-                <Label as="a" basic pointing>
-                  All Users
-                </Label>
+                />{" "}
+                <br />
+                <Header as="h5">All Users</Header>
               </Grid.Row>
             </Grid.Column>
-            <Grid.Column width={13}>
+            <Grid.Column width={14}>
               {this.state.selectedGroup ? (
                 <GroupCardMinimalDisplay
                   sessions={sessions}
@@ -473,7 +468,7 @@ export class MapDashboard extends Component {
           </Grid>
         </MediaQuery>
 
-        <MediaQuery minWidth={1224}>
+        <MediaQuery minWidth={992}>
           {this.state.selectedGroup ? (
             <GroupCardMinimalDisplay
               sessions={sessions}
