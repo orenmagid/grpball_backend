@@ -265,7 +265,9 @@ class MainContainer extends React.Component {
                     handleCloseClick={this.handleFormCloseClick}
                   />
                 ) : null}
-                <UserFeed userFeed={this.state.userFeed} />
+                {this.state.userFeed.length > 0 ? (
+                  <UserFeed userFeed={this.state.userFeed} />
+                ) : null}
               </Segment>
             )}
           />
@@ -316,7 +318,7 @@ class MainContainer extends React.Component {
           />
         ) : null}
 
-        {this.state.user ? (
+        {this.state.user && this.state.userNotifications.length > 0 ? (
           <Route
             exact
             path="/notifications"
