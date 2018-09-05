@@ -7,20 +7,20 @@ class Group < ApplicationRecord
   after_validation :geocode
 
   include StreamRails::Activity
-  as_activity
+  # as_activity
+  #
+  #   def activity_actor
+  #     self.user_groups
+  #   end
+  #
+  #   def activity_object
+  #     self.sessions
+  #   end
+  #
+  #   def activity_verb
+  #     "proposed"
+  #   end
 
-    def activity_actor
-      self.user_groups
-    end
-
-    def activity_object
-      self.sessions
-    end
-
-    def activity_verb
-      "proposed"
-    end
-  
   #   def activity_extra_data
   #     @extra_data
   #   end
