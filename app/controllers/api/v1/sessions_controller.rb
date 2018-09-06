@@ -7,13 +7,13 @@ class Api::V1::SessionsController < ApplicationController
    def index
      Session.update_session_status
      @sessions = Session.all
-     render json: @sessions, include: ['group', 'rsvps']
+     render json: @sessions
    end
 
 
     def show
       Session.update_session_status
-      render json: @session, include: ['group', 'rsvps']
+      render json: @session
     end
 
     def create
