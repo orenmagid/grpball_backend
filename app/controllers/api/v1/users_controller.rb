@@ -7,7 +7,7 @@ class Api::V1::UsersController < ApplicationController
 
    def index
      @users = User.all
-     render json: @users
+     render json: @users, include: ['groups', 'user_groups', 'sessions', 'invitations', 'requests']
    end
 
     def show
