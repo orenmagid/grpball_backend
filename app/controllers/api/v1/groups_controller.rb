@@ -47,6 +47,9 @@ class Api::V1::GroupsController < ApplicationController
       if params[:username]
         @group.users << @user
         @group.save
+
+        @group.user_groups.last.update(is_administrator: params[:is_administrator])
+
         render json: @group, status: :accepted
       end
     end
@@ -54,7 +57,7 @@ class Api::V1::GroupsController < ApplicationController
    private
 
    def group_params
-     params.require(:group).permit(:id, :name, :location, :user_id)
+     params.require(:group).permit(:id, :name, :location, :user_id, :is_administrator)
    end
 
    def find_group
