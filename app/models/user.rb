@@ -4,6 +4,8 @@ class User < ApplicationRecord
   has_many :rsvps
   has_many :sessions, through: :rsvps
   has_many :messages, dependent: :destroy
+  has_many :invitations
+  has_many :requests
 
   validates :username, uniqueness: true
   validates :password, presence: true, :on => :create

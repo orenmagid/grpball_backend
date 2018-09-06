@@ -11,6 +11,9 @@ Rails.application.routes.draw do
       resources :sessions
       resources :conversations
       resources :messages
+      resources :invitations
+      resources :requests
+
 
       mount ActionCable.server => '/cable'
 

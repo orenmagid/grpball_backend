@@ -2,6 +2,8 @@ class Group < ApplicationRecord
   has_many :user_groups
   has_many :users, through: :user_groups
   has_many :sessions
+  has_many :invitations
+  has_many :requests
 
   geocoded_by :location
   after_validation :geocode
