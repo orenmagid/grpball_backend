@@ -12,6 +12,15 @@ class Api::V1::RequestsController < ApplicationController
       render json: @request
     end
 
+    def create
+      @request = Request.new(request_params)
+      if @request.save
+        render json: @request, status: :accepted
+      else
+        render json: { errors: @request.errors.full_messages }, status: :unprocessible_entity
+      end
+    end
+
    def update
      @request.update(request_params)
      if @request.save

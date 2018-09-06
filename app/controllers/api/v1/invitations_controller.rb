@@ -12,6 +12,15 @@ class Api::V1::InvitationsController < ApplicationController
       render json: @invitation
     end
 
+
+    def create
+      @invitation = Invitation.new(invitation_params)
+      if @invitation.save
+        render json: @invitation, status: :accepted
+      else
+        render json: { errors: @invitation.errors.full_messages }, status: :unprocessible_entity
+      end
+    end
    def update
      @invitation.update(invitation_params)
      if @invitation.save
