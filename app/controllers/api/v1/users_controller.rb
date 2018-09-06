@@ -11,7 +11,7 @@ class Api::V1::UsersController < ApplicationController
    end
 
     def show
-      render json: @current_user, include: ['groups', 'user_groups', 'sessions']
+      render json: @current_user, include: ['groups', 'user_groups', 'sessions', 'invitations', 'requests']
     end
 
 
