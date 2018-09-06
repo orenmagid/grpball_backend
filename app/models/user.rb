@@ -3,6 +3,7 @@ class User < ApplicationRecord
   has_many :groups, through: :user_groups
   has_many :rsvps
   has_many :sessions, through: :rsvps
+  has_many :messages, dependent: :destroy
 
   validates :username, uniqueness: true
   validates :password, presence: true, :on => :create
