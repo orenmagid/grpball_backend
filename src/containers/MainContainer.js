@@ -11,8 +11,6 @@ import MapDashboard from "./MapDashboard";
 
 import UserFeed from "../components/UserFeed";
 import { Segment, Loader } from "semantic-ui-react";
-// import { ActionCable } from "react-actioncable-provider";
-// import { API_ROOT } from "../constants";
 
 // const baseUrl = "http://localhost:3000/api/v1";
 const baseUrl = "https://grpball-backend.herokuapp.com/api/v1";
@@ -27,7 +25,8 @@ class MainContainer extends React.Component {
     groups: [],
     users: [],
     formToShow: "",
-    activeItem: ""
+    activeItem: "",
+    chatrooms: []
   };
 
   handleforceUserUpdate = () => {
@@ -129,20 +128,15 @@ class MainContainer extends React.Component {
         });
 
       this.props.handleFetchSessions();
-
-      // Fetch user feed from actioncable
-      // fetch(`${API_ROOT}/me`)
-      //   .then(res => res.json())
-      //   .then(userFeed => this.setState({ userFeed }));
     }
   }
 
-  // handleReceivedUserFeed = response => {
-  //   // const { userFeed } = response;
-  //   this.setState({
-  //     userFeed: [...this.state.userFeed, response]
-  //   });
-  // };
+  handleReceivedUserFeed = response => {
+    // const { userFeed } = response;
+    this.setState({
+      userFeed: [...this.state.chatrooms, response]
+    });
+  };
 
   handleEditProfile = e => {
     e.preventDefault();
@@ -209,10 +203,6 @@ class MainContainer extends React.Component {
   render() {
     return (
       <div className="ui container">
-        {/* <ActionCable
-          channel={{ channel: "UserChannel" }}
-          onReceived={this.handleReceivedUserFeed}
-        /> */}
         <Route
           path="/"
           render={routerProps => <UserMenu user={this.state.user} />}

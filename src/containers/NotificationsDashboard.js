@@ -1,9 +1,13 @@
 import React, { Component } from "react";
 import moment from "moment";
 import { Feed, Icon } from "semantic-ui-react";
+import ConversationsList from "../components/ConversationsList";
 
 import "react-datepicker/dist/react-datepicker.css";
 import "react-datepicker/dist/react-datepicker-cssmodules.css";
+
+import { ActionCable } from "react-actioncable-provider";
+import { API_ROOT } from "../constants";
 
 export default class NotificationsDashboard extends Component {
   render() {
@@ -12,6 +16,7 @@ export default class NotificationsDashboard extends Component {
 
     return (
       <React.Fragment>
+        <ConversationsList />
         <Feed>
           {userNotifications.map(notification => {
             return notification.activities.map(activity => {
