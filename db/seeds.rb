@@ -28,11 +28,19 @@ while x <  16  do
   User.find(x).groups << Group.find(3)
   User.find(x).groups << Group.find(4)
   User.find(x).groups << Group.find(5)
+  User.find(x).groups << Group.find(6)
+  User.find(x).groups << Group.find(7)
+  User.find(x).groups << Group.find(8)
+  User.find(x).groups << Group.find(9)
+  User.find(x).groups << Group.find(10)
 
   x += 1
 end
 
-UserGroup.find(4).update(is_administrator: true)
+# UserGroup.find(4).update(is_administrator: true)
+Group.all.each do |group|
+  group.user_groups.first.update(is_administrator: true)
+end
 
 x = 1
 while x <  10  do
