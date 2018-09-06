@@ -7,16 +7,16 @@ class Api::V1::UsersController < ApplicationController
 
    def index
      @users = User.all
-     render json: @users, include: ['groups', 'user_groups', 'sessions', 'invitations', 'requests']
+     render json: @users
    end
 
     def show
-      render json: @current_user, include: ['groups', 'user_groups', 'sessions', 'invitations', 'requests']
+      render json: @current_user
     end
 
 
     def show_user
-      render json: @current_user, include: ['groups', 'user_groups', 'sessions']
+      render json: @current_user
     end
 
     def create
