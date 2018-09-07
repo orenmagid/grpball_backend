@@ -35,12 +35,12 @@ class Session < ApplicationRecord
     end
 
 
-    def activity_notify
-      self.group.users.map do |user|
-        StreamRails.feed_manager.get_notification_feed(user.id)
-      end
-
-    end
+    # def activity_notify
+    #   self.group.users.map do |user|
+    #     StreamRails.feed_manager.get_notification_feed(user.id)
+    #   end
+    #
+    # end
 
     # def activity_extra_data
     #   {'is_retweet' => self.is_retweet}

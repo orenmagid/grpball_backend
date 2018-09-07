@@ -8,7 +8,7 @@ class Group < ApplicationRecord
   geocoded_by :location
   after_validation :geocode
 
-  include StreamRails::Activity
+  # include StreamRails::Activity
   # as_activity
   #
   #   def activity_actor

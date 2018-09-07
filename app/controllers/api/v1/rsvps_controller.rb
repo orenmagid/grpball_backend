@@ -10,7 +10,7 @@ class Api::V1::RsvpsController < ApplicationController
 
 
    def show
-     render json: @rsvp, include: ['rsvps']
+     render json: @rsvp
    end
 
    def create

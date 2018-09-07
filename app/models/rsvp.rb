@@ -20,11 +20,11 @@ class Rsvp < ApplicationRecord
 
 
 
-    def activity_notify
-      self.session.group.users.map do |user|
-        StreamRails.feed_manager.get_notification_feed(user.id)
-      end
-    end
+    # def activity_notify
+    #   self.session.group.users.map do |user|
+    #     StreamRails.feed_manager.get_notification_feed(user.id)
+    #   end
+    # end
 
 
     # def activity_extra_data
