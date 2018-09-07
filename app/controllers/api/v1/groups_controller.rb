@@ -44,7 +44,7 @@ class Api::V1::GroupsController < ApplicationController
           render json: { errors: @group.errors.full_messages }, status: :unprocessible_entity
         end
       end
-      if params[:username]
+      if params[:username] || params[:user_id]
         @group.users << @user
         @group.save
 
