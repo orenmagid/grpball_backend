@@ -6,9 +6,9 @@ import InteractiveSegment from "../components/InteractiveSegment";
 import GroupCardMinimalDisplay from "../components/GroupCardMinimalDisplay";
 import UserInfo from "../components/UserInfo";
 import MediaQuery from "react-responsive";
+import moment from "moment";
 
-// const baseUrl = "http://localhost:3000/api/v1";
-const baseUrl = "https://grpball-backend.herokuapp.com/api/v1";
+import { baseUrl } from "../constants";
 
 export class MapDashboard extends Component {
   state = {
@@ -18,7 +18,8 @@ export class MapDashboard extends Component {
     userPosition: null,
     currentRsvp: "",
     formToShow: "none",
-    whatToDisplayOnMap: "yourSessions"
+    whatToDisplayOnMap: "yourSessions",
+    groupUsers: []
   };
 
   componentDidMount() {
@@ -36,7 +37,30 @@ export class MapDashboard extends Component {
       navigator.geolocation.getCurrentPosition(geoSuccess);
     };
   }
+
+  fetchGroup = group => {
+    console.log("Inside fetchGroup");
+    let token = localStorage.getItem("token");
+    if (token) {
+      fetch(baseUrl + `/groups/${group.id}`, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      })
+        .then(res => res.json())
+        .then(group => {
+          this.setState({
+            selectedGroup: group,
+            groupUsers: group.users,
+            selectedEvent: null,
+            currentRsvp: ""
+          });
+        });
+    }
+  };
   onMarkerClick = (props, marker, e) => {
+    console.log("Inside onMarkerClick");
+    console.log("props", props);
     if (props.session) {
       if (
         this.state.selectedEvent &&
@@ -47,11 +71,23 @@ export class MapDashboard extends Component {
         let myRsvp = props.session.rsvps.find(
           rsvp => rsvp.user_id === this.props.user.id
         );
-        this.setState({
-          selectedGroup: null,
-          selectedEvent: props.session,
-          currentRsvp: myRsvp ? myRsvp : ""
-        });
+        let token = localStorage.getItem("token");
+        if (token) {
+          fetch(baseUrl + `/groups/${props.session.group.id}`, {
+            headers: {
+              Authorization: `Bearer ${token}`
+            }
+          })
+            .then(res => res.json())
+            .then(group => {
+              this.setState({
+                groupUsers: group.users,
+                selectedGroup: null,
+                selectedEvent: props.session,
+                currentRsvp: myRsvp ? myRsvp : ""
+              });
+            });
+        }
       }
     } else if (props.group) {
       if (
@@ -64,11 +100,7 @@ export class MapDashboard extends Component {
           currentRsvp: ""
         });
       } else {
-        this.setState({
-          selectedGroup: props.group,
-          selectedEvent: null,
-          currentRsvp: ""
-        });
+        this.fetchGroup(props.group);
       }
     } else if (props.user) {
       if (
@@ -230,7 +262,7 @@ export class MapDashboard extends Component {
     });
 
   render() {
-    const { user, sessions, groups, users } = this.props;
+    const { user, sessions, groups, users, handleforceUserUpdate } = this.props;
 
     let initialCenter =
       user.latitude && user.longitude
@@ -244,10 +276,13 @@ export class MapDashboard extends Component {
           };
 
     let markers;
+    let nonCancelledFutureSessions = sessions.filter(session => {
+      return session.status !== "Cancelled" && moment(session.date) > moment();
+    });
 
     switch (this.state.whatToDisplayOnMap) {
       case "allSessions":
-        markers = sessions.map(session => {
+        markers = nonCancelledFutureSessions.map(session => {
           return (
             <Marker
               key={session.id}
@@ -264,7 +299,7 @@ export class MapDashboard extends Component {
       case "yourSessions":
         let groupIds = user.groups.map(group => group.id);
         groupIds = groupIds.filter(groupId => groupId !== "undefined");
-        markers = sessions.map(session => {
+        markers = nonCancelledFutureSessions.map(session => {
           if (groupIds.includes(session.group_id)) {
             return (
               <Marker
@@ -428,12 +463,16 @@ export class MapDashboard extends Component {
                   sessions={sessions}
                   group={this.state.selectedGroup}
                   user={user}
+                  users={this.state.groupUsers}
+                  handleFetchGroup={this.fetchGroup}
+                  handleforceUserUpdate={handleforceUserUpdate}
                 />
               ) : null}
 
               {this.state.selectedEvent ? (
                 <CalendarSessionInfo
                   group={this.state.selectedEvent.group}
+                  groupUsers={this.state.groupUsers}
                   handleCloseClick={this.handleCloseClick}
                   handleRsvpClick={this.handleRsvpClick}
                   session={this.state.selectedEvent}
@@ -451,6 +490,7 @@ export class MapDashboard extends Component {
                   handleEditRsvp={this.handleEditRsvp}
                   handleNewRsvp={this.handleNewRsvp}
                   group={this.state.selectedGroup}
+                  groupUsers={this.state.groupUsers}
                 />
               ) : null}
               {this.state.displayedUser ? (
@@ -494,6 +534,9 @@ export class MapDashboard extends Component {
               sessions={sessions}
               group={this.state.selectedGroup}
               user={user}
+              users={this.state.groupUsers}
+              handleFetchGroup={this.fetchGroup}
+              handleforceUserUpdate={handleforceUserUpdate}
             />
           ) : null}
 
@@ -505,6 +548,7 @@ export class MapDashboard extends Component {
               session={this.state.selectedEvent}
               rsvp={this.state.currentRsvp}
               user={this.props.user}
+              groupUsers={this.state.groupUsers}
             />
           ) : null}
           {this.state.formToShow === "editRsvp" ||
@@ -517,6 +561,7 @@ export class MapDashboard extends Component {
               handleEditRsvp={this.handleEditRsvp}
               handleNewRsvp={this.handleNewRsvp}
               group={this.state.selectedGroup}
+              groupUsers={this.state.groupUsers}
             />
           ) : null}
           {this.state.displayedUser ? (

@@ -12,9 +12,7 @@ import MapDashboard from "./MapDashboard";
 import UserFeed from "../components/UserFeed";
 import { Segment, Loader } from "semantic-ui-react";
 
-// const baseUrl = "http://localhost:3000/api/v1";
-const baseUrl = "https://grpball-backend.herokuapp.com/api/v1";
-const baseUrlForFeed = "https://grpball-backend.herokuapp.com";
+import { baseUrl, baseUrlForFeed } from "../constants";
 
 class MainContainer extends React.Component {
   state = {
@@ -29,8 +27,8 @@ class MainContainer extends React.Component {
     chatrooms: []
   };
 
-  handleforceUserUpdate = () => {
-    console.log("inside handleforceUpdate");
+  handleForceUserUpdate = () => {
+    console.log("inside handleForceUpdate");
     let token = localStorage.getItem("token");
     if (token) {
       // Fetch user information
@@ -241,8 +239,9 @@ class MainContainer extends React.Component {
             render={routerProps => (
               <GroupDashboard
                 user={this.state.user}
-                handleForceUserUpdate={this.handleforceUserUpdate}
+                handleForceUserUpdate={this.handleForceUserUpdate}
                 handleFetchSessions={this.props.handleFetchSessions}
+                handleFetchGroups={this.props.handleFetchGroups}
                 sessions={this.props.sessions}
               />
             )}
@@ -273,12 +272,13 @@ class MainContainer extends React.Component {
                 handleFetchSessions={this.props.handleFetchSessions}
                 groups={this.props.groups}
                 users={this.state.users}
+                handleForceUserUpdate={this.handleForceUserUpdate}
               />
             )}
           />
         ) : null}
 
-        {this.state.user && this.state.userNotifications.length > 0 ? (
+        {this.state.user ? (
           <Route
             exact
             path="/notifications"
@@ -286,6 +286,8 @@ class MainContainer extends React.Component {
               <NotificationsDashboard
                 userNotifications={this.state.userNotifications}
                 user={this.state.user}
+                groups={this.props.groups}
+                handleForceUserUpdate={this.handleForceUserUpdate}
               />
             )}
           />

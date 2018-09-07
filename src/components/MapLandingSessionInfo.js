@@ -3,8 +3,7 @@ import moment from "moment";
 import RsvpsTable from "./RsvpsTable";
 import { Card, Statistic, Label, Icon } from "semantic-ui-react";
 
-// const baseUrl = "http://localhost:3000/api/v1";
-const baseUrl = "https://grpball-backend.herokuapp.com/api/v1";
+import { baseUrl } from "../constants";
 
 export default class MapLandingSessionInfo extends Component {
   state = {

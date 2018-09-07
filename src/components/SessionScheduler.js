@@ -6,8 +6,7 @@ import { Form, Select, Segment } from "semantic-ui-react";
 import "react-datepicker/dist/react-datepicker.css";
 import "react-datepicker/dist/react-datepicker-cssmodules.css";
 
-// const baseUrl = "http://localhost:3000/api/v1";
-const baseUrl = "https://grpball-backend.herokuapp.com/api/v1";
+import { baseUrl } from "../constants";
 
 export default class SessionScheduler extends Component {
   state = {

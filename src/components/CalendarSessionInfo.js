@@ -3,33 +3,13 @@ import moment from "moment";
 import RsvpsTable from "./RsvpsTable";
 import { Card, Statistic, Label, Icon } from "semantic-ui-react";
 
-// const baseUrl = "http://localhost:3000/api/v1";
-const baseUrl = "https://grpball-backend.herokuapp.com/api/v1";
+import { baseUrl } from "../constants";
 
 export default class CalendarSessionInfo extends Component {
   state = {
     statusToDisplay: "",
-    rsvps: [],
-    groupUsers: []
+    rsvps: []
   };
-
-  componentDidMount() {
-    let token = localStorage.getItem("token");
-    if (token) {
-      fetch(baseUrl + `/groups/${this.props.session.group.id}`, {
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
-      })
-        .then(res => res.json())
-        .then(group => {
-          console.log("group", group);
-          this.setState({
-            groupUsers: group.users
-          });
-        });
-    }
-  }
 
   handleShowStatus = (e, statusToDisplay, rsvps = []) => {
     e.preventDefault();
@@ -56,7 +36,13 @@ export default class CalendarSessionInfo extends Component {
       handleRsvpClick
     } = this.props;
 
-    const { groupUsers } = this.state;
+    const { groupUsers } = this.props;
+
+    let memberOfGroup = groupUsers.findIndex(groupUser => {
+      return groupUser.id === user.id;
+    });
+
+    console.log("memberOfGroup", memberOfGroup);
 
     const acceptedRsvps = session.rsvps.filter(rsvp => {
       return rsvp.status === "Accepted";
@@ -213,12 +199,13 @@ export default class CalendarSessionInfo extends Component {
                 <Icon name="write" />
                 {rsvp.status}
               </a>
-            ) : (
+            ) : null}
+            {memberOfGroup > -1 && !rsvp ? (
               <a href="rsvp" onClick={e => handleRsvpClick(e)}>
                 <Icon name="write" />
                 RSVP
               </a>
-            )}
+            ) : null}
           </Card.Content>
         </Card>
       </React.Fragment>

@@ -2,12 +2,15 @@ import React, { Component } from "react";
 import { Table } from "semantic-ui-react";
 import moment from "moment";
 
-// const baseUrl = "http://localhost:3000/api/v1";
-const baseUrl = "https://grpball-backend.herokuapp.com/api/v1";
+import { baseUrl } from "../constants";
 
 export default class SessionsTable extends Component {
   render() {
-    const { group, sessions, user, handleShowSession } = this.props;
+    const { group, user, handleShowSession } = this.props;
+
+    let sessions = this.props.sessions.filter(
+      session => session.group_id === group.id
+    );
 
     let sortedSessions = sessions.sort(
       (a, b) => moment(a.date) - moment(b.date)

@@ -10,8 +10,7 @@ import MapLandingPage from "./components/MapLandingPage";
 import { Image, Reveal } from "semantic-ui-react";
 import ImageSplash from "./components/ImageSplash";
 
-// const baseUrl = "http://localhost:3000/api/v1";
-const baseUrl = "https://grpball-backend.herokuapp.com/api/v1";
+import { baseUrl } from "./constants";
 
 class App extends Component {
   state = {
@@ -110,30 +109,29 @@ class App extends Component {
       }
     };
 
-    let token = localStorage.getItem("token");
-    if (token) {
-      fetch(baseUrl + "/users", {
-        method: "POST",
-        body: JSON.stringify(data),
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`
-        }
-      })
-        .then(response => response.json())
-        .then(newUser => {
-          console.log(newUser);
-          console.log(newUser);
-          if (newUser.errors) {
-            this.displayErrors(newUser.errors);
-          } else {
-            this.setState({
-              displayNewUserForm: false
-            });
-            window.history.back();
+    fetch(baseUrl + "/users", {
+      method: "POST",
+      body: JSON.stringify(data),
+      headers: {
+        "Content-Type": "application/json"
+      }
+    })
+      .then(response => response.json())
+      .then(newUser => {
+        console.log(newUser);
+
+        if (newUser.errors) {
+          this.displayErrors(newUser.errors);
+        } else {
+          if (newUser.success) {
+            localStorage.setItem("token", newUser.token);
+
+            this.setState({ error: "" });
+            displayNewUserForm: false;
           }
-        });
-    }
+          window.history.back();
+        }
+      });
   };
 
   displayErrors = errors => {
@@ -151,6 +149,12 @@ class App extends Component {
   };
 
   render() {
+    if (
+      localStorage.getItem("token") &&
+      window.location.href.includes("map_splash")
+    ) {
+      return <Redirect to="/" />;
+    }
     return (
       <div className="App">
         <header className="ui header segment">
@@ -194,6 +198,7 @@ class App extends Component {
               render={routerProps => (
                 <MainContainer
                   handleFetchSessions={this.handleFetchSessions}
+                  handleFetchGroups={this.handleFetchGroups}
                   sessions={this.state.sessions}
                   groups={this.state.groups}
                 />

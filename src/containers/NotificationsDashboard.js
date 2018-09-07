@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import moment from "moment";
-import { Feed, Icon } from "semantic-ui-react";
+import { Feed, Icon, Message } from "semantic-ui-react";
 import ConversationsList from "../components/ConversationsList";
 
 import "react-datepicker/dist/react-datepicker.css";
@@ -8,15 +8,163 @@ import "react-datepicker/dist/react-datepicker-cssmodules.css";
 
 import { ActionCable } from "react-actioncable-provider";
 import { API_ROOT } from "../constants";
+import { baseUrl } from "../constants";
 
 export default class NotificationsDashboard extends Component {
-  render() {
-    // let groups = this.props.user.groups;
-    let userNotifications = this.props.userNotifications;
+  handleCloseClick = request => {
+    let token = localStorage.getItem("token");
+    fetch(baseUrl + `/requests/${request.id}`, {
+      method: "PATCH",
+      body: JSON.stringify({ status: "Resolved" }),
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`
+      }
+    })
+      .then(response => response.json())
+      .then(request => {
+        this.props.handleForceUserUpdate();
+      });
+  };
 
+  render() {
+    let groups = this.props.groups;
+    let userNotifications = this.props.userNotifications;
+    let requestsSortedByDate = this.props.user.requests.sort((a, b) => {
+      return moment(b.updated_at) - moment(a.updated_at);
+    });
+
+    let requestsSentMessages = requestsSortedByDate.map(request => {
+      let group = groups.find(group => {
+        return group.id === request.group_id;
+      });
+      if (group) {
+        switch (request.status) {
+          case "New":
+            return (
+              <Message warning key={request.id}>
+                <i
+                  className="window close icon"
+                  onClick={e => this.handleCloseClick(request)}
+                />
+                <Message.Header>
+                  Your request has been sent to <b>{group.name}</b>.
+                </Message.Header>
+                <p>
+                  {moment(request.updated_at).calendar()}, you requested to join{" "}
+                  <b>{group.name}</b>. We'll update you once they respond.
+                </p>
+              </Message>
+            );
+          case "Accepted":
+            return (
+              <Message positive key={request.id}>
+                <i
+                  className="window close icon"
+                  onClick={e => this.handleCloseClick(request)}
+                />
+                <Message.Header>
+                  <b>{group.name}</b> has accepted your request.
+                </Message.Header>
+                <p>
+                  As of{" "}
+                  {moment(request.updated_at)
+                    .calendar()
+                    .toLowerCase()}, you are now a member of <b>{group.name}</b>.
+                </p>
+              </Message>
+            );
+          case "Denied":
+            return (
+              <Message negative key={request.id}>
+                <i
+                  className="window close icon"
+                  onClick={e => this.handleCloseClick(request)}
+                />
+                <Message.Header>
+                  <b>{group.name}</b> has denied your request.
+                </Message.Header>
+                <p>
+                  We're sorry about this. Feel free to start your own group and
+                  invite others to join!
+                </p>
+              </Message>
+            );
+          default:
+        }
+      }
+    });
+
+    let adminUserGroups = this.props.user.user_groups.filter(user_group => {
+      return user_group.is_administrator;
+    });
+
+    console.log("adminUserGroups", adminUserGroups);
+
+    let adminGroups;
+    let requestsReceivedMessages;
+
+    if (adminUserGroups && groups.length > 0) {
+      adminGroups = adminUserGroups.map(adminUserGroup => {
+        console.log("adminUserGroup.group_id", adminUserGroup.group_id);
+        console.log("groups", groups);
+        let group = groups.find(group => {
+          console.log("group.id", group.id);
+
+          return group.id === adminUserGroup.group_id;
+        });
+        return group;
+      });
+
+      console.log("adminGroups", adminGroups);
+
+      let unfilteredRequestsReceivedMessages = adminGroups.map(adminGroup => {
+        return adminGroup.requests.map(request => {
+          switch (request.status) {
+            case "New":
+              return (
+                <Message info key={request.id}>
+                  <i
+                    className="window close icon"
+                    onClick={e => this.handleCloseClick(request)}
+                  />
+                  <Message.Header>
+                    New Request for <b>{adminGroup.name}</b>.
+                  </Message.Header>
+                  <p>
+                    {moment(request.updated_at).calendar()}, a user requested to
+                    join <b>{adminGroup.name}</b>. Because you are an
+                    administrator, you can accept or deny this request in the
+                    "Your Groups" tab.
+                  </p>
+                </Message>
+              );
+            case "Accepted":
+              return null;
+            case "Denied":
+              return null;
+            default:
+          }
+        });
+      });
+      console.log(
+        "unfilteredRequestsReceivedMessages",
+        unfilteredRequestsReceivedMessages
+      );
+      requestsReceivedMessages = unfilteredRequestsReceivedMessages.filter(
+        message => {
+          return message.length > 0;
+        }
+      );
+    }
+
+    console.log(requestsReceivedMessages);
     return (
       <React.Fragment>
-        <ConversationsList />
+        {/* <ConversationsList /> */}
+        {requestsReceivedMessages ? requestsReceivedMessages : null}
+        {requestsSentMessages ? requestsSentMessages : null}
+
         <Feed>
           {userNotifications.map(notification => {
             return notification.activities.map(activity => {

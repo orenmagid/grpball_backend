@@ -1,5 +1,6 @@
 import React, { Component } from "react";
-import { Link } from "react-router-dom";
+import { Route, Link } from "react-router-dom";
+
 import { Map, InfoWindow, Marker, GoogleApiWrapper } from "google-maps-react";
 import { Checkbox, Grid, Label, Header, Segment } from "semantic-ui-react";
 import MapLandingSessionInfo from "../components/MapLandingSessionInfo";
@@ -7,9 +8,9 @@ import InteractiveSegment from "../components/InteractiveSegment";
 import GroupCardMinimalDisplay from "../components/GroupCardMinimalDisplay";
 import UserInfo from "../components/UserInfo";
 import MediaQuery from "react-responsive";
+import moment from "moment";
 
-// const baseUrl = "http://localhost:3000/api/v1";
-const baseUrl = "https://grpball-backend.herokuapp.com/api/v1";
+import { baseUrl } from "../constants";
 
 export class MapLandingPage extends Component {
   state = {
@@ -129,10 +130,13 @@ export class MapLandingPage extends Component {
     };
 
     let markers;
+    let nonCancelledFutureSessions = sessions.filter(session => {
+      return session.status !== "Cancelled" && moment(session.date) > moment();
+    });
 
     switch (this.state.whatToDisplayOnMap) {
       case "allSessions":
-        markers = this.props.sessions.map(session => {
+        markers = nonCancelledFutureSessions.map(session => {
           return (
             <Marker
               key={session.id}
@@ -175,7 +179,7 @@ export class MapLandingPage extends Component {
         </Link>
         <Segment>
           Take a look at the map to find groups and sessions near you. Once you
-          create an account, you can find users near you too.
+          create an account, you can find other users near you too.
         </Segment>
         <MediaQuery minWidth={992}>
           <div className="ui two column grid container segment">

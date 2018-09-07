@@ -8,8 +8,7 @@ import SessionScheduler from "../components/SessionScheduler";
 
 import "react-big-calendar/lib/css/react-big-calendar.css";
 
-// const baseUrl = "http://localhost:3000/api/v1";
-const baseUrl = "https://grpball-backend.herokuapp.com/api/v1";
+import { baseUrl } from "../constants";
 
 Calendar.setLocalizer(Calendar.momentLocalizer(moment));
 
@@ -19,7 +18,8 @@ class CalendarDashboard extends Component {
     end: "",
     selectedEvent: null,
     currentRsvp: "",
-    formToShow: "none"
+    formToShow: "none",
+    groupUsers: []
   };
 
   handleSelect = ({ start, end }) => {
@@ -37,6 +37,7 @@ class CalendarDashboard extends Component {
       let myRsvp = event.rsvps.find(
         rsvp => rsvp.user_id === this.props.user.id
       );
+
       this.setState({
         selectedEvent: event,
         currentRsvp: myRsvp

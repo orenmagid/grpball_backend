@@ -6,13 +6,35 @@ import GroupSubDashboard from "./GroupSubDashboard";
 import CreateOrJoinFormCard from "../components/CreateOrJoinFormCard";
 import MediaQuery from "react-responsive";
 
-// const baseUrl = "http://localhost:3000/api/v1";
-const baseUrl = "https://grpball-backend.herokuapp.com/api/v1";
+import { baseUrl } from "../constants";
 
 class GroupDashboard extends Component {
   state = {
-    activeItem: this.props.user.groups[0].name,
-    activeIndex: ""
+    activeItem:
+      this.props.user.groups.length > 0
+        ? this.props.user.groups[0].name
+        : "create_or_join",
+    activeIndex: "",
+    group: [],
+    users: []
+  };
+
+  fetchGroup = group => {
+    let token = localStorage.getItem("token");
+    if (token) {
+      fetch(baseUrl + `/groups/${group.id}`, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      })
+        .then(res => res.json())
+        .then(group => {
+          this.setState({
+            group: group,
+            users: group.users
+          });
+        });
+    }
   };
 
   handleJoinGroupSubmit = e => {
@@ -68,8 +90,9 @@ class GroupDashboard extends Component {
       .then(jsonData => this.props.handleForceUserUpdate());
   };
 
-  handleItemClick = (e, { name }) =>
+  handleItemClick = (e, { name }) => {
     this.setState({ activeItem: name ? name : "create_or_join" });
+  };
 
   handleAccordianDisplay = (e, activeIndex) => {
     e.preventDefault();
@@ -85,10 +108,14 @@ class GroupDashboard extends Component {
   };
 
   render() {
-    let user = this.props.user;
-    let { sessions, handleForceUserUpdate, handleFetchSessions } = this.props;
+    let {
+      user,
+      sessions,
+      handleForceUserUpdate,
+      handleFetchSessions
+    } = this.props;
 
-    const { activeItem, activeIndex } = this.state;
+    const { activeItem, activeIndex, group, users } = this.state;
 
     return (
       <Grid>
@@ -136,6 +163,7 @@ class GroupDashboard extends Component {
                         key={group.id}
                         group={group}
                         user={user}
+                        users={users}
                         activeIndex={activeIndex}
                         handleAccordianDisplay={this.handleAccordianDisplay}
                         handleJoinGroupSubmit={this.handleJoinGroupSubmit}
@@ -143,6 +171,8 @@ class GroupDashboard extends Component {
                         handleForceUserUpdate={handleForceUserUpdate}
                         handleFetchSessions={handleFetchSessions}
                         handleItemClick={this.handleItemClick}
+                        handleFetchGroup={this.fetchGroup}
+                        handleFetchGroups={this.props.handleFetchGroups}
                       />
                     </React.Fragment>
                   ) : null
@@ -172,6 +202,7 @@ class GroupDashboard extends Component {
                         key={group.id}
                         group={group}
                         user={user}
+                        users={users}
                         activeIndex={activeIndex}
                         handleAccordianDisplay={this.handleAccordianDisplay}
                         handleJoinGroupSubmit={this.handleJoinGroupSubmit}
@@ -179,6 +210,8 @@ class GroupDashboard extends Component {
                         handleForceUserUpdate={handleForceUserUpdate}
                         handleFetchSessions={handleFetchSessions}
                         handleItemClick={this.handleItemClick}
+                        handleFetchGroup={this.fetchGroup}
+                        handleFetchGroups={this.props.handleFetchGroups}
                       />
                     </React.Fragment>
                   ) : null
@@ -225,6 +258,7 @@ class GroupDashboard extends Component {
                         handleFetchSessions={handleFetchSessions}
                         handleItemClick={this.handleItemClick}
                         user={user}
+                        users={users}
                       />
                     </Grid.Column>
                   </MediaQuery>
@@ -239,6 +273,7 @@ class GroupDashboard extends Component {
                         handleFetchSessions={handleFetchSessions}
                         handleItemClick={this.handleItemClick}
                         user={user}
+                        users={users}
                       />
                     </Grid.Column>
                   </MediaQuery>

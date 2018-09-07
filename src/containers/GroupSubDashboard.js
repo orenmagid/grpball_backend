@@ -6,8 +6,7 @@ import InteractiveSegment from "../components/InteractiveSegment";
 import SessionsTable from "../components/SessionsTable";
 import InfoSegment from "../components/InfoSegment";
 
-// const baseUrl = "http://localhost:3000/api/v1";
-const baseUrl = "https://grpball-backend.herokuapp.com/api/v1";
+import { baseUrl } from "../constants";
 
 export default class GroupSubDashboard extends Component {
   state = {
@@ -155,15 +154,16 @@ export default class GroupSubDashboard extends Component {
   };
 
   render() {
-    const { users, formToShow, currentSession, displayedUser } = this.state;
+    const { formToShow, currentSession, displayedUser, users } = this.state;
     const {
       activeIndex,
       handleAccordianDisplay,
       handleClick,
       sessions,
-      group,
       user
     } = this.props;
+
+    let group = this.state.group ? this.state.group : this.props.group;
 
     return (
       <React.Fragment>
@@ -178,7 +178,6 @@ export default class GroupSubDashboard extends Component {
             displayedUser={displayedUser}
           />
         ) : null}
-
         {formToShow === "editRsvp" || formToShow === "newRsvp" ? (
           <InteractiveSegment
             handleCloseClick={this.handleFormCloseClick}
@@ -190,7 +189,6 @@ export default class GroupSubDashboard extends Component {
             group={this.state.group}
           />
         ) : null}
-
         <Accordion fluid styled>
           <Accordion.Title
             active={activeIndex === 0}
@@ -202,7 +200,7 @@ export default class GroupSubDashboard extends Component {
           </Accordion.Title>
           <Accordion.Content active={activeIndex === 0}>
             <SessionsTable
-              group={group}
+              group={this.props.group}
               sessions={sessions}
               user={user}
               handleShowSession={this.handleShowSession}
@@ -233,7 +231,7 @@ export default class GroupSubDashboard extends Component {
               })}
             </List>
           </Accordion.Content>
-        </Accordion>
+        </Accordion>{" "}
         {/* <GroupFeed groupFeed={this.state.groupFeed} /> */}
       </React.Fragment>
     );
