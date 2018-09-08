@@ -7,5 +7,6 @@ class UserSerializer < ActiveModel::Serializer
   has_many :rsvps
   has_many :invitations
   has_many :requests
+  has_many :messages
 
 end
