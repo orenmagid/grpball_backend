@@ -83,7 +83,11 @@ export default class GroupCard extends Component {
       })
         .then(response => response.json())
         .then(user_group => {
+          this.setState({
+            formToShow: "non"
+          });
           this.props.handleForceUserUpdate();
+          this.fetchGroup();
         });
     }
   };
@@ -282,8 +286,9 @@ export default class GroupCard extends Component {
       newRequests = group.requests.filter(request => request.status === "New");
     }
 
-    console.log("newRequests", newRequests);
-    console.log("group", group);
+    console.log("nonUserAdmins", nonUserAdmins);
+    console.log("users", users);
+
     return (
       <Card fluid>
         <Card.Content extra>
@@ -331,20 +336,27 @@ export default class GroupCard extends Component {
                   );
                 })}
               </List>
-              <div className="ui two column grid">
-                <div className="column">
-                  <a href="add_user" onClick={this.handleOpenAddUserClick}>
-                    <Icon name="add square" />
-                    Add User
-                  </a>
+              {users.length > 1 ? (
+                <div className="ui two column grid">
+                  <div className="column">
+                    <a href="add_user" onClick={this.handleOpenAddUserClick}>
+                      <Icon name="add square" />
+                      Add User
+                    </a>
+                  </div>
+                  <div className="column">
+                    <a href="add_user" onClick={this.handleOpenGrantAdminClick}>
+                      <Icon name="handshake outline" />
+                      Grant Admin Priviledges
+                    </a>
+                  </div>
                 </div>
-                <div className="column">
-                  <a href="add_user" onClick={this.handleOpenGrantAdminClick}>
-                    <Icon name="handshake outline" />
-                    Grant Admin Priviledges
-                  </a>
-                </div>
-              </div>
+              ) : (
+                <a href="add_user" onClick={this.handleOpenAddUserClick}>
+                  <Icon name="add square" />
+                  Add User
+                </a>
+              )}
             </Message>
           ) : null}
 
@@ -411,6 +423,7 @@ export default class GroupCard extends Component {
             <AddUserFormCard
               handleCloseClick={this.handleCloseClick}
               handleAddToGroupSubmit={this.handleAddToGroupSubmit}
+              nonUserAdmins={nonUserAdmins}
             />
           ) : null}
           {this.state.formToShow === "grantAdmin" ? (
@@ -420,6 +433,7 @@ export default class GroupCard extends Component {
               group={group}
               handleCloseClick={this.handleCloseClick}
               handleGrantAdminSubmit={this.handleGrantAdminSubmit}
+              nonUserAdmins={nonUserAdmins}
             />
           ) : null}
 

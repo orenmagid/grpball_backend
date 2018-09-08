@@ -27,16 +27,20 @@ class NewConversationForm extends React.Component {
 
   render = () => {
     return (
-      <div className="newConversationForm">
-        <form onSubmit={this.handleSubmit}>
-          <label>New Conversation:</label>
-          <br />
-          <input
-            type="text"
-            value={this.state.title}
-            onChange={this.handleChange}
-          />
-          <input type="submit" />
+      <div className="ui container">
+        <form className="ui form" onSubmit={this.handleSubmit}>
+          <div className="field">
+            <label>New Conversation:</label>
+            <br />
+            <input
+              type="text"
+              value={this.state.title}
+              onChange={this.handleChange}
+            />
+          </div>
+          <button className="ui secondary basic  button" type="submit">
+            Submit
+          </button>
         </form>
       </div>
     );

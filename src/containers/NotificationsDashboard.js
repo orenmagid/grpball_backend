@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import moment from "moment";
 import { Feed, Icon, Message } from "semantic-ui-react";
-import ConversationsList from "../components/ConversationsList";
+import ChatComponent from "../components/ChatComponent";
 
 import "react-datepicker/dist/react-datepicker.css";
 import "react-datepicker/dist/react-datepicker-cssmodules.css";
@@ -11,6 +11,9 @@ import { API_ROOT } from "../constants";
 import { baseUrl } from "../constants";
 
 export default class NotificationsDashboard extends Component {
+  componentDidMount() {
+    this.props.handleFetchGroups();
+  }
   handleCloseClick = request => {
     let token = localStorage.getItem("token");
     fetch(baseUrl + `/requests/${request.id}`, {
@@ -34,7 +37,10 @@ export default class NotificationsDashboard extends Component {
       return moment(b.updated_at) - moment(a.updated_at);
     });
 
-    let requestsSentMessages = requestsSortedByDate.map(request => {
+    let requestsReceivedMessages = [];
+    let requestsSentMessages = [];
+
+    let unfilteredRequestsSentMessages = requestsSortedByDate.map(request => {
       let group = groups.find(group => {
         return group.id === request.group_id;
       });
@@ -102,7 +108,7 @@ export default class NotificationsDashboard extends Component {
     console.log("adminUserGroups", adminUserGroups);
 
     let adminGroups;
-    let requestsReceivedMessages;
+    console.log("groups", groups);
 
     if (adminUserGroups && groups.length > 0) {
       adminGroups = adminUserGroups.map(adminUserGroup => {
@@ -153,17 +159,30 @@ export default class NotificationsDashboard extends Component {
       );
       requestsReceivedMessages = unfilteredRequestsReceivedMessages.filter(
         message => {
-          return message.length > 0;
+          return message !== undefined && message[0] !== undefined;
         }
       );
     }
 
-    console.log(requestsReceivedMessages);
+    requestsSentMessages = unfilteredRequestsSentMessages.filter(message => {
+      console.log("message", message);
+      return message !== undefined && message[0] !== undefined;
+    });
+
+    console.log("requestsReceivedMessages", requestsReceivedMessages);
+    console.log("requestsSentMessages", requestsSentMessages);
     return (
       <React.Fragment>
-        {/* <ConversationsList /> */}
+        <ChatComponent user={this.props.user} />
         {requestsReceivedMessages ? requestsReceivedMessages : null}
         {requestsSentMessages ? requestsSentMessages : null}
+        {requestsSentMessages.length === 0 &&
+        requestsReceivedMessages.length === 0 ? (
+          <Message>
+            <Message.Header>You have no new notifications</Message.Header>
+            <p>But here's where they'll be when you do.</p>
+          </Message>
+        ) : null}
 
         <Feed>
           {userNotifications.map(notification => {

@@ -288,6 +288,7 @@ class MainContainer extends React.Component {
                 user={this.state.user}
                 groups={this.props.groups}
                 handleForceUserUpdate={this.handleForceUserUpdate}
+                handleFetchGroups={this.props.handleFetchGroups}
               />
             )}
           />

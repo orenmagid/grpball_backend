@@ -64,3 +64,9 @@ body {
     flex-wrap: nowrap;
   }
 }
+
+.chat-window {
+  height: 400px;
+  overflow: auto;
+  visibility: visible;
+}

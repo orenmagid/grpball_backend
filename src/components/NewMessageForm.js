@@ -19,9 +19,13 @@ class NewMessageForm extends React.Component {
     e.preventDefault();
 
     let data = {
-      message: this.state
+      message: {
+        text: this.state.text,
+        conversation_id: this.state.conversation_id,
+        user_id: this.props.user.id
+      }
     };
-
+    console.log("data", data);
     fetch(`${API_ROOT}/messages`, {
       method: "POST",
       headers: HEADERS,
@@ -32,16 +36,20 @@ class NewMessageForm extends React.Component {
 
   render = () => {
     return (
-      <div className="newMessageForm">
-        <form onSubmit={this.handleSubmit}>
-          <label>New Message:</label>
-          <br />
-          <input
-            type="text"
-            value={this.state.text}
-            onChange={this.handleChange}
-          />
-          <input type="submit" />
+      <div className="ui container">
+        <form className="ui form" onSubmit={this.handleSubmit}>
+          <div className="field">
+            <label>New Message:</label>
+            <br />
+            <input
+              type="text"
+              value={this.state.text}
+              onChange={this.handleChange}
+            />
+          </div>
+          <button className="ui secondary basic  button" type="submit">
+            Submit
+          </button>
         </form>
       </div>
     );

@@ -5,7 +5,7 @@ import NewConversationForm from "./NewConversationForm";
 import MessagesArea from "./MessagesArea";
 import Cable from "./Cable";
 
-class ConversationsList extends React.Component {
+class ChatComponent extends React.Component {
   state = {
     conversations: [],
     activeConversation: null
@@ -44,7 +44,7 @@ class ConversationsList extends React.Component {
   render = () => {
     const { conversations, activeConversation } = this.state;
     return (
-      <div className="conversationsList">
+      <div className="ui raised segment divided grid ">
         <ActionCable
           channel={{ channel: "ConversationsChannel" }}
           onReceived={this.handleReceivedConversation}
@@ -55,23 +55,35 @@ class ConversationsList extends React.Component {
             handleReceivedMessage={this.handleReceivedMessage}
           />
         ) : null}
-        <h2>Conversations</h2>
-        <ul>{mapConversations(conversations, this.handleClick)}</ul>
-        <NewConversationForm />
-        {activeConversation ? (
-          <MessagesArea
-            conversation={findActiveConversation(
-              conversations,
-              activeConversation
-            )}
-          />
-        ) : null}
+        <div className="raised segment four wide column top-margin">
+          <div className="row">
+            <h4 className="ui header">Conversations</h4>
+            <div className="ui list">
+              {mapConversations(conversations, this.handleClick)}
+            </div>
+          </div>
+          <div className="row top-margin">
+            <NewConversationForm user={this.props.user} />
+          </div>
+        </div>
+
+        <div className="ui card twelve wide column">
+          {activeConversation ? (
+            <MessagesArea
+              user={this.props.user}
+              conversation={findActiveConversation(
+                conversations,
+                activeConversation
+              )}
+            />
+          ) : null}
+        </div>
       </div>
     );
   };
 }
 
-export default ConversationsList;
+export default ChatComponent;
 
 // helpers
 
@@ -84,9 +96,19 @@ const findActiveConversation = (conversations, activeConversation) => {
 const mapConversations = (conversations, handleClick) => {
   return conversations.map(conversation => {
     return (
-      <li key={conversation.id} onClick={() => handleClick(conversation.id)}>
-        {conversation.title}
-      </li>
+      // <li key={conversation.id} onClick={() => handleClick(conversation.id)}>
+      //   {conversation.title}
+      // </li>
+      <a
+        className="item"
+        key={conversation.id}
+        onClick={() => handleClick(conversation.id)}
+      >
+        <i className="chat icon" />
+        <div className="content">
+          <div className="header">{conversation.title}</div>
+        </div>
+      </a>
     );
   });
 };

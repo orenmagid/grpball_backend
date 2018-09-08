@@ -8,9 +8,28 @@ import { baseUrl } from "../constants";
 export default class CalendarSessionInfo extends Component {
   state = {
     statusToDisplay: "",
-    rsvps: []
+    rsvps: [],
+    group: [],
+    users: []
   };
 
+  componentDidMount() {
+    let token = localStorage.getItem("token");
+    if (token) {
+      fetch(baseUrl + `/groups/${this.props.group.id}`, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      })
+        .then(res => res.json())
+        .then(group => {
+          this.setState({
+            group: group,
+            users: group.users
+          });
+        });
+    }
+  }
   handleShowStatus = (e, statusToDisplay, rsvps = []) => {
     e.preventDefault();
     if (this.state.statusToDisplay === statusToDisplay) {
@@ -29,15 +48,18 @@ export default class CalendarSessionInfo extends Component {
   render() {
     const {
       session,
-      group,
+
       rsvp,
       user,
       handleCloseClick,
       handleRsvpClick
     } = this.props;
 
-    const { groupUsers } = this.props;
+    const { group } = this.state;
 
+    const groupUsers = this.state.users;
+
+    console.log("groupUsers", groupUsers);
     let memberOfGroup = groupUsers.findIndex(groupUser => {
       return groupUser.id === user.id;
     });

@@ -31,12 +31,17 @@ class CalendarDashboard extends Component {
   };
 
   handleSelectEvent = event => {
+    console.log("inside handleSelectEvent");
+    console.log("event", event);
+    console.log("this.state.selectedEvent", this.state.selectedEvent);
     if (this.state.selectedEvent && this.state.selectedEvent.id === event.id) {
       this.setState({ selectedEvent: null });
     } else {
       let myRsvp = event.rsvps.find(
         rsvp => rsvp.user_id === this.props.user.id
       );
+
+      console.log("myRsvp", myRsvp);
 
       this.setState({
         selectedEvent: event,
@@ -166,6 +171,7 @@ class CalendarDashboard extends Component {
             session={this.state.selectedEvent}
             rsvp={this.state.currentRsvp}
             user={this.props.user}
+            groupUsers={this.state.selectedEvent.group.users}
           />
         ) : null}
         {this.state.formToShow === "editRsvp" ||
@@ -201,7 +207,7 @@ class CalendarDashboard extends Component {
             defaultView="month"
             events={this.props.sessions}
             style={{ height: "80vh", padding: "5px" }}
-            onSelectEvent={event => this.handleSelectEvent(event)}
+            onSelectEvent={this.handleSelectEvent}
             onSelectSlot={this.handleSelect}
           />
         </Segment>

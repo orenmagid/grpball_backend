@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { Card, Form, Button } from "semantic-ui-react";
 
-export default class AddUserFormCard extends Component {
+export default class GrantAdminStatusCard extends Component {
   state = {
     group_id: ""
   };
@@ -13,18 +13,35 @@ export default class AddUserFormCard extends Component {
       group,
       handleCloseClick,
       handleGrantAdminSubmit,
-      user
+      user,
+      users,
+      nonUserAdmins
     } = this.props;
 
-    const users = group.users.filter(gUser => gUser.id !== user.id);
+    const nonAdminUsers = group.users.filter(user => {
+      for (var i = 0; i < nonUserAdmins.length; i++) {
+        if (nonUserAdmins[i].id === user.id) {
+          return false;
+        }
+      }
+      return true;
+    });
+    console.log("nonAdminUsers", nonAdminUsers);
+    let newNonAdminUsers = nonAdminUsers.filter(nonAdminUser => {
+      return nonAdminUser.id !== user.id;
+    });
 
-    const options = users.map(user => {
+    const options = newNonAdminUsers.map(user => {
       return {
         key: `${user.id}`,
         text: `${user.first_name} ${user.last_name}`,
         value: `${user.id}`
       };
     });
+
+    console.log("users", users);
+    console.log("nonAdminUsers", nonAdminUsers);
+    console.log("newNonAdminUsers", newNonAdminUsers);
 
     return (
       <Card centered>
