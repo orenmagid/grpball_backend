@@ -17,6 +17,7 @@ ActiveRecord::Schema.define(version: 2018_09_20_582947) do
 
   create_table "conversations", force: :cascade do |t|
     t.string "title"
+    t.integer "group_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end

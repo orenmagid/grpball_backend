@@ -16,10 +16,12 @@ class Api::V1::GroupsController < ApplicationController
     def create
       @group = Group.new(group_params)
         @user = User.find(params[:user_id])
+        @conversation = Conversation.create(title: "#{@group.name}", group_id: @group.id)
 
 
       if @group.save
         @group.users << @user
+        @group.conversation = @conversation
         @group.save
         @group.user_groups.last.update(is_administrator: true)
         render json: @group, status: :accepted
