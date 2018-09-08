@@ -2,7 +2,7 @@
 // export const API_WS_ROOT = "ws://localhost:3000/cable";
 
 export const API_ROOT = "https://grpball-backend.herokuapp.com/api/v1";
-export const API_WS_ROOT = "ws://grpball-backend.herokuapp.com/cable";
+export const API_WS_ROOT = "wss://grpball-backend.herokuapp.com/cable";
 
 export const HEADERS = {
   "Content-Type": "application/json",
