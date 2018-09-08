@@ -55,16 +55,16 @@ class ChatComponent extends React.Component {
             handleReceivedMessage={this.handleReceivedMessage}
           />
         ) : null}
-        <div className="raised segment four wide column top-margin">
+        <div className="raised segment four wide column">
           <div className="row">
             <h4 className="ui header">Conversations</h4>
             <div className="ui list">
               {mapConversations(conversations, this.handleClick)}
             </div>
           </div>
-          <div className="row top-margin">
+          {/* <div className="row top-margin">
             <NewConversationForm user={this.props.user} />
-          </div>
+          </div> */}
         </div>
 
         <div className="ui card twelve wide column">

@@ -8,6 +8,7 @@ import NewUserForm from "../components/NewUserForm";
 import NotificationsDashboard from "./NotificationsDashboard";
 import CalendarDashboard from "./CalendarDashboard";
 import MapDashboard from "./MapDashboard";
+import ConversationsDashboard from "./ConversationsDashboard";
 
 import UserFeed from "../components/UserFeed";
 import { Segment, Loader } from "semantic-ui-react";
@@ -273,6 +274,20 @@ class MainContainer extends React.Component {
                 groups={this.props.groups}
                 users={this.state.users}
                 handleForceUserUpdate={this.handleForceUserUpdate}
+              />
+            )}
+          />
+        ) : null}
+        {this.state.user ? (
+          <Route
+            exact
+            path="/conversations"
+            render={routerProps => (
+              <ConversationsDashboard
+                user={this.state.user}
+                groups={this.props.groups}
+                handleForceUserUpdate={this.handleForceUserUpdate}
+                handleFetchGroups={this.props.handleFetchGroups}
               />
             )}
           />

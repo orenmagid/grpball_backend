@@ -104,6 +104,13 @@ export default class UserMenu extends Component {
               />
             </Link>
 
+            <Link to={`/conversations`}>
+              <Menu.Item
+                name="conversations"
+                active={activeItem === "conversations"}
+                onClick={this.handleItemClick}
+              />
+            </Link>
             <Link to={`/notifications`}>
               <Menu.Item
                 name="notifications"

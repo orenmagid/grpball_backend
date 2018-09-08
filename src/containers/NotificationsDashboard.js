@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import moment from "moment";
 import { Feed, Icon, Message } from "semantic-ui-react";
-import ChatComponent from "../components/ChatComponent";
 
 import "react-datepicker/dist/react-datepicker.css";
 import "react-datepicker/dist/react-datepicker-cssmodules.css";
@@ -173,7 +172,6 @@ export default class NotificationsDashboard extends Component {
     console.log("requestsSentMessages", requestsSentMessages);
     return (
       <React.Fragment>
-        <ChatComponent user={this.props.user} />
         {requestsReceivedMessages ? requestsReceivedMessages : null}
         {requestsSentMessages ? requestsSentMessages : null}
         {requestsSentMessages.length === 0 &&
