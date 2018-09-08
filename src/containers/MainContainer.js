@@ -45,30 +45,30 @@ class MainContainer extends React.Component {
         })
         .catch(e => console.error(e));
       // Fetch user feed
-      fetch(baseUrlForFeed + "/me", {
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
-      })
-        .then(res => res.json())
-        .then(userFeed => {
-          console.log("userFeed", userFeed);
-          this.setState({ userFeed: userFeed });
-        })
-        .catch(e => console.error(e));
-
-      // Fetch user notifications
-      fetch(baseUrlForFeed + "/notification_user", {
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
-      })
-        .then(res => res.json())
-        .then(userNotifications => {
-          console.log("userNotifications", userNotifications);
-          this.setState({ userNotifications: userNotifications });
-        })
-        .catch(e => console.error(e));
+      // fetch(baseUrlForFeed + "/me", {
+      //   headers: {
+      //     Authorization: `Bearer ${token}`
+      //   }
+      // })
+      //   .then(res => res.json())
+      //   .then(userFeed => {
+      //     console.log("userFeed", userFeed);
+      //     this.setState({ userFeed: userFeed });
+      //   })
+      //   .catch(e => console.error(e));
+      //
+      // // Fetch user notifications
+      // fetch(baseUrlForFeed + "/notification_user", {
+      //   headers: {
+      //     Authorization: `Bearer ${token}`
+      //   }
+      // })
+      //   .then(res => res.json())
+      //   .then(userNotifications => {
+      //     console.log("userNotifications", userNotifications);
+      //     this.setState({ userNotifications: userNotifications });
+      //   })
+      //   .catch(e => console.error(e));
     }
   };
 
@@ -88,30 +88,30 @@ class MainContainer extends React.Component {
         })
         .catch(e => console.error(e));
       // Fetch user feed
-      fetch(baseUrlForFeed + "/me", {
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
-      })
-        .then(res => res.json())
-        .then(userFeed => {
-          console.log("userFeed", userFeed);
-          this.setState({ userFeed: userFeed });
-        })
-        .catch(e => console.error(e));
-
-      // Fetch user notifications
-      fetch(baseUrlForFeed + "/notification_user", {
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
-      })
-        .then(res => res.json())
-        .then(userNotifications => {
-          console.log("userNotifications", userNotifications);
-          this.setState({ userNotifications: userNotifications });
-        })
-        .catch(e => console.error(e));
+      // fetch(baseUrlForFeed + "/me", {
+      //   headers: {
+      //     Authorization: `Bearer ${token}`
+      //   }
+      // })
+      //   .then(res => res.json())
+      //   .then(userFeed => {
+      //     console.log("userFeed", userFeed);
+      //     this.setState({ userFeed: userFeed });
+      //   })
+      //   .catch(e => console.error(e));
+      //
+      // // Fetch user notifications
+      // fetch(baseUrlForFeed + "/notification_user", {
+      //   headers: {
+      //     Authorization: `Bearer ${token}`
+      //   }
+      // })
+      //   .then(res => res.json())
+      //   .then(userNotifications => {
+      //     console.log("userNotifications", userNotifications);
+      //     this.setState({ userNotifications: userNotifications });
+      //   })
+      //   .catch(e => console.error(e));
 
       // fetch all users
       fetch(baseUrl + `/users`, {

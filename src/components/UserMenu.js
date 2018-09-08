@@ -61,6 +61,15 @@ export default class UserMenu extends Component {
                 <Icon name="map marker" />
               </Menu.Item>
             </Link>
+            <Link to={`/conversations`}>
+              <Menu.Item
+                name="conversations"
+                active={activeItem === "conversations"}
+                onClick={this.handleItemClick}
+              >
+                <Icon name="chat" />
+              </Menu.Item>
+            </Link>
 
             <Link to={`/notifications`}>
               <Menu.Item

@@ -10,7 +10,7 @@ import { ActionCable } from "react-actioncable-provider";
 import { API_ROOT } from "../constants";
 import { baseUrl } from "../constants";
 
-export default class NotificationsDashboard extends Component {
+export default class ConversationsDashboard extends Component {
   componentDidMount() {
     this.props.handleFetchGroups();
   }
