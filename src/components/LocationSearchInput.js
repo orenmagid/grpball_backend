@@ -62,6 +62,16 @@ export default class LocationSearchInput extends React.Component {
                 {this.props.type === "user" ? (
                   <h5 className="ui inverted header">Your homecourt or city</h5>
                 ) : null}
+                {this.props.type === "user_edit" ? (
+                  <React.Fragment>
+                    <h5 className="ui inverted header">
+                      Update your homecourt or city{" "}
+                    </h5>{" "}
+                    <h6 className="ui inverted header">
+                      Currently, it's {this.props.currentLocation}
+                    </h6>
+                  </React.Fragment>
+                ) : null}
                 {this.props.type === "group" ? (
                   <h5 className="ui header">Where is your group located?</h5>
                 ) : null}
@@ -84,7 +94,16 @@ export default class LocationSearchInput extends React.Component {
                     <div className="header">
                       {this.props.type === "session"
                         ? "We've found that court"
-                        : "We've found that location"}
+                        : null}
+                      {this.props.type === "user"
+                        ? "We've found that location"
+                        : null}
+                      {this.props.type === "user_edit"
+                        ? "We've found that location. We'll update it when you submit this form."
+                        : null}
+                      {this.props.type === "group"
+                        ? "We've found that location."
+                        : null}
                     </div>
                     <p>{this.state.formatted_address}</p>
                   </div>

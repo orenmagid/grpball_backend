@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { Redirect } from "react-router-dom";
 import { Button, Form, Segment } from "semantic-ui-react";
+import LocationSearchInput from "./LocationSearchInput";
 
 export default class EditUserProfile extends Component {
   state = {
@@ -11,7 +12,12 @@ export default class EditUserProfile extends Component {
     location: "",
     phone: "",
     age: "",
-    height: ""
+    height: "",
+    address: ""
+  };
+
+  captureAddress = address => {
+    this.setState({ address: address });
   };
 
   componentDidMount() {
@@ -49,9 +55,14 @@ export default class EditUserProfile extends Component {
     }
     return (
       <div className="ui container">
-        <Segment>
+        <Segment inverted>
           <i className="window close icon" onClick={handleCloseClick} />
-          <Form onSubmit={e => handleCreateOrEditUser(e, this.props.user)}>
+          <Form
+            inverted
+            onSubmit={e =>
+              handleCreateOrEditUser(e, this.props.user, this.state.address)
+            }
+          >
             <Form.Group widths="equal">
               <Form.Input
                 name="first_name"
@@ -100,14 +111,13 @@ export default class EditUserProfile extends Component {
                 onChange={this.handleChange}
               />
             </Form.Group>
+
             <Form.Group widths="equal">
-              <Form.Input
-                name="location"
-                fluid
-                label="Location"
-                placeholder="Location"
-                value={this.state.location}
-                onChange={this.handleChange}
+              <br />
+              <LocationSearchInput
+                type="user_edit"
+                currentLocation={this.state.location}
+                captureAddress={this.captureAddress}
               />
             </Form.Group>
             <Form.Group widths="equal">
@@ -140,7 +150,7 @@ export default class EditUserProfile extends Component {
               />
             </Form.Group> */}
             {/* <Form.Checkbox label="I agree to the Terms and Conditions" /> */}
-            <Button secondary basic type="submit">
+            <Button inverted secondary basic type="submit">
               Submit
             </Button>
           </Form>

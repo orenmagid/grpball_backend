@@ -41,19 +41,19 @@ body {
 }
 
 .ui.huge.primary.button:hover {
-  background-color: #6b7e8d;
+  background-color: #3f4954;
 }
 
 .ui.small.inverted.popup {
-  background-color: #6b7e8d;
+  background-color: #3f4954;
 }
 
 .ui.inverted.form {
-  background: #6b7e8d;
+  background: #3f4954;
   color: blue;
 }
 .ui.inverted.segment {
-  background: #6b7e8d;
+  background: #3f4954;
 }
 
 .ui.vertical.masthead.center.aligned.segment {

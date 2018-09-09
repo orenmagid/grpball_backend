@@ -144,7 +144,7 @@ class MainContainer extends React.Component {
       : this.setState({ formToShow: "editProfile" });
   };
 
-  handlePatchUser = (e, user) => {
+  handlePatchUser = (e, user, address, latitude, longitude) => {
     e.preventDefault();
     let data = {
       user: {
@@ -153,7 +153,9 @@ class MainContainer extends React.Component {
         username: e.currentTarget.username.value,
         email: e.currentTarget.email.value,
         // password: e.currentTarget.password.value,
-        location: e.currentTarget.location.value,
+        location: address,
+        latitude: latitude,
+        longitude: longitude,
         age: e.currentTarget.age.value,
         height_in_inches: e.currentTarget.height.value,
         phone_number: e.currentTarget.phone.value
