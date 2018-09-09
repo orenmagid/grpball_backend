@@ -47,6 +47,9 @@ Group.all.each do |group|
   end
 
   conversation = Conversation.create(title: "#{group.name}", group_id: group.id)
+  message = Message.create(text: "Hi, I'm Oren. This is my final project for the Flatiron School's Bootcamp. There are no messages in this conversation yet. Get the conversation started!", user_id: 1)
+  conversation.messages << message
+  conversation.save
   group.conversation = conversation
   group.save
 end

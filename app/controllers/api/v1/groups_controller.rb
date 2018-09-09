@@ -17,6 +17,9 @@ class Api::V1::GroupsController < ApplicationController
       @group = Group.new(group_params)
         @user = User.find(params[:user_id])
         @conversation = Conversation.create(title: "#{@group.name}", group_id: @group.id)
+        @message = Message.create(text: "Hi, I'm Oren. This is my final project for the Flatiron School's Bootcamp. There are no messages in this conversation yet. Get the conversation started!", user_id: 1)
+        @conversation.messages << @message
+        @conversation.save
 
 
       if @group.save
