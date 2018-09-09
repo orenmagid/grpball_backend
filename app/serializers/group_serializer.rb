@@ -6,6 +6,6 @@ class GroupSerializer < ActiveModel::Serializer
   has_many :invitations
   has_many :requests
   has_one :conversation
-  has_many :messages, :through :conversation
+
 
 end

@@ -13,43 +13,79 @@ oren = User.create(first_name: "Oren", last_name: "Magid", username: "odog", ema
 
 
 50.times do
-  User.create(first_name: Faker::Name.first_name, last_name: Faker::Name.last_name, username: Faker::Internet.username, email: Faker::Internet.email, password: "test", phone_number: Faker::PhoneNumber.cell_phone, location: Faker::Address.full_address, highest_experience: "Pickup", height_in_inches: Faker::Number.between(50, 80), age: Faker::Number.between(14, 60))
+  User.create(first_name: Faker::Name.first_name, last_name: Faker::Name.last_name, username: Faker::Internet.username, email: Faker::Internet.email, password: "test", phone_number: Faker::PhoneNumber.cell_phone, location: "#{Faker::Address.city}, #{Faker::Address.zip}", highest_experience: "Pickup", height_in_inches: Faker::Number.between(50, 80), age: Faker::Number.between(14, 60))
 end
 
 25.times do
-  Group.create(name: Faker::Company.name, location: Faker::Address.full_address)
+  Group.create(name: Faker::Company.name, location: "#{Faker::Address.city}, #{Faker::Address.zip}")
+
+
 end
 
 
 
 
 x = 1
-while x <  16  do
-  while y < 16 do
+
+while x <=  16  do
+  y = 1
+  while y <= 5 do
     User.find(x).groups << Group.find(y)
+    User.find(x+5).groups << Group.find(y+5)
+    User.find(x+10).groups << Group.find(y+10)
+    User.find(x+15).groups << Group.find(y+15)
+    User.find(x+20).groups << Group.find(y+20)
+      y += 1
   end
   x += 1
 end
 
 
 Group.all.each do |group|
-  group.user_groups.first.update(is_administrator: true)
+  if group.user_groups.length > 0
+    group.user_groups.first.update(is_administrator: true)
+  end
+
+  conversation = Conversation.create(title: "#{group.name}", group_id: group.id)
+  group.conversation = conversation
+  group.save
 end
 
+
+
 x = 1
-while x <  20  do
-  Session.create(group_id: x, creator_id: x, date: x.days.from_now, expiration_date_time: (x-1).days.from_now, min_players: 6, location: Faker::Address.city, status: "Pending")
+
+while x <=  20  do
+  Session.create(group_id: x, creator_id: x, date: Time.now + x.days, expiration_date_time: Time.now + (x-1).days, min_players: 6, location: Faker::Address.city, status: "Pending")
   x += 1
+
 end
 
 x = 1
+
 while x <  6  do
+  y = 1
     while y < 16 do
         Rsvp.create(user_id: x, session_id: y, status: "Accepted")
         Rsvp.create(user_id: x + 7, session_id: y, status: "Declined")
         Rsvp.create(user_id: x + 14, session_id: y, status: "Delayed")
+        y += 1
     end
 
-
   x += 1
+end
+
+
+
+Group.all.each do |group|
+  x = 30
+  5.times do
+    user = User.find(x)
+
+      Request.create(user_id: user.id, group_id: group.id, status: "New")
+
+
+
+  end
+
 end

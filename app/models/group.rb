@@ -5,7 +5,7 @@ class Group < ApplicationRecord
   has_many :invitations
   has_many :requests
   has_one :conversation
-  has_many :messages, through: :conversation
+
 
   geocoded_by :location
   after_validation :geocode
