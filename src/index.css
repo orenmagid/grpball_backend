@@ -121,15 +121,23 @@ body {
   }
 
   .rbc-event {
-    background-color: #de8364;
+    background-color: #e8bc8c;
   }
-  .rbc-event-content {
-    color: #edddd1;
-  }
+  /* .rbc-event-content { */
+  /* color: #7c948d;
+  } */
 
   .ui.form.fields {
     flex-wrap: nowrap;
   }
+}
+@media screen and (min-width: 767px) {
+  .rbc-event {
+    background-color: #e8bc8c;
+  }
+  /* .rbc-event-content {
+    color: #7c948d;
+  } */
 }
 
 .chat-window {
