@@ -12,17 +12,21 @@ const NavBar = ({
 }) => (
   <Grid container>
     <Grid.Row>
-      {localStorage.token ? (
-        <Grid.Column width={4}>
-          <Link to={`/`}>
-            <h1 className="ui inverted header">GRPBALL</h1>
+      <Grid.Column width={4}>
+        <Link to={`/`}>
+          <h1 className="ui inverted header">GRPBALL</h1>
+        </Link>
+      </Grid.Column>
+      {!localStorage.token && !window.location.href.includes("login") ? (
+        <Grid.Column width={12}>
+          {/* <LoginForm handleLogin={handleLogin} /> */}
+          <Link to={`/login`}>
+            <button className="ui inverted basic right floated button">
+              Login
+            </button>
           </Link>
         </Grid.Column>
-      ) : (
-        <Grid.Column width={16}>
-          <LoginForm handleLogin={handleLogin} />
-        </Grid.Column>
-      )}
+      ) : null}
 
       {localStorage.token ? (
         <Grid.Column width={12}>
@@ -35,9 +39,7 @@ const NavBar = ({
             </button>
           </Link>
         </Grid.Column>
-      ) : (
-        <Grid.Column width={16} />
-      )}
+      ) : null}
     </Grid.Row>
   </Grid>
 );

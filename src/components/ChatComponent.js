@@ -4,7 +4,7 @@ import { API_ROOT } from "../constants";
 import NewConversationForm from "./NewConversationForm";
 import MessagesArea from "./MessagesArea";
 import Cable from "./Cable";
-import { Grid, Menu, Segment } from "semantic-ui-react";
+import { Grid, Menu, Segment, Message } from "semantic-ui-react";
 import MediaQuery from "react-responsive";
 
 class ChatComponent extends React.Component {
@@ -60,53 +60,63 @@ class ChatComponent extends React.Component {
   };
 
   render = () => {
-    const {
-      conversations,
-      activeConversation,
-      activeItem,
-      activeIndex
-    } = this.state;
-
+    const { activeConversation, activeItem, activeIndex } = this.state;
+    const { user } = this.props;
+    const userGroupIds = user.user_groups.map(
+      user_group => user_group.group_id
+    );
+    let conversations = this.state.conversations.filter(
+      conversation => userGroupIds.indexOf(conversation.group.id) >= 0
+    );
+    console.log("activeConversation", activeConversation);
+    console.log("conversations", conversations);
     return (
       <div className="ui divided grid ">
-        <MediaQuery maxWidth={767}>
-          <div className="row">
-            <Menu size="tiny" tabular>
-              {conversations.map(conversation => {
-                return (
-                  <Menu.Item
-                    key={conversation.id}
-                    name={conversation.title}
-                    active={activeItem === conversation.title}
-                    onClick={e => {
-                      this.handleItemClick(e, conversation);
-                      this.setState({ activeConversation: conversation.id });
-                    }}
-                  />
-                );
-              })}
-            </Menu>
-          </div>
-        </MediaQuery>
-        <MediaQuery minWidth={767}>
-          <div className="four wide column">
-            <Menu size="tiny" fluid vertical tabular="left">
-              {conversations.map(conversation => {
-                return (
-                  <Menu.Item
-                    key={conversation.id}
-                    name={conversation.title}
-                    active={activeItem === conversation.title}
-                    onClick={e => {
-                      this.handleItemClick(e, conversation);
-                      this.setState({ activeConversation: conversation.id });
-                    }}
-                  />
-                );
-              })}
-            </Menu>
-          </div>
-        </MediaQuery>
+        {activeConversation && conversations.length > 0 ? (
+          <MediaQuery maxWidth={767}>
+            <div className="row">
+              <Menu size="tiny" tabular>
+                {conversations.map(conversation => {
+                  return (
+                    <Menu.Item
+                      key={conversation.id}
+                      name={conversation.title.split(/-|\s/g)[0]}
+                      active={
+                        activeItem === conversation.title ||
+                        activeItem === conversation.title.split(/-|\s/g)[0]
+                      }
+                      onClick={e => {
+                        this.handleItemClick(e, conversation);
+                        this.setState({ activeConversation: conversation.id });
+                      }}
+                    />
+                  );
+                })}
+              </Menu>
+            </div>
+          </MediaQuery>
+        ) : null}
+        {activeConversation && conversations.length > 0 ? (
+          <MediaQuery minWidth={767}>
+            <div className="four wide column">
+              <Menu size="tiny" fluid vertical tabular="left">
+                {conversations.map(conversation => {
+                  return (
+                    <Menu.Item
+                      key={conversation.id}
+                      name={conversation.title}
+                      active={activeItem === conversation.title}
+                      onClick={e => {
+                        this.handleItemClick(e, conversation);
+                        this.setState({ activeConversation: conversation.id });
+                      }}
+                    />
+                  );
+                })}
+              </Menu>
+            </div>
+          </MediaQuery>
+        ) : null}
         <ActionCable
           channel={{ channel: "ConversationsChannel" }}
           onReceived={this.handleReceivedConversation}
@@ -119,7 +129,7 @@ class ChatComponent extends React.Component {
         ) : null}
         <MediaQuery minWidth={767}>
           <div className="ui card twelve wide column">
-            {activeConversation ? (
+            {activeConversation && conversations.length > 0 ? (
               <MessagesArea
                 user={this.props.user}
                 conversation={findActiveConversation(
@@ -132,7 +142,7 @@ class ChatComponent extends React.Component {
         </MediaQuery>
         <MediaQuery maxWidth={767}>
           <div className="ui card sixteen wide column">
-            {activeConversation ? (
+            {activeConversation && conversations.length > 0 ? (
               <MessagesArea
                 user={this.props.user}
                 conversation={findActiveConversation(
@@ -143,6 +153,18 @@ class ChatComponent extends React.Component {
             ) : null}
           </div>
         </MediaQuery>
+        {conversations.length === 0 ? (
+          <div className="ui card sixteen wide column">
+            <Message>
+              <Message.Header>
+                Join a group to enable conversations
+              </Message.Header>
+              <p>
+                Once you join a group, you'll be able to chat with them here.
+              </p>
+            </Message>
+          </div>
+        ) : null}
       </div>
     );
   };

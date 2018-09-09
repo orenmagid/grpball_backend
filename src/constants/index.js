@@ -10,8 +10,8 @@ export const HEADERS = {
   Authorization: `Bearer ${localStorage.getItem("token")}`
 };
 
-// export const baseUrl = "http://localhost:3000/api/v1";
-export const baseUrl = "https://grpball-backend.herokuapp.com/api/v1";
+export const baseUrl = "http://localhost:3000/api/v1";
+// export const baseUrl = "https://grpball-backend.herokuapp.com/api/v1";
 
-// export const baseUrlForFeed = "https://localhost:300";
-export const baseUrlForFeed = "https://grpball-backend.herokuapp.com";
+export const baseUrlForFeed = "https://localhost:300";
+// export const baseUrlForFeed = "https://grpball-backend.herokuapp.com";

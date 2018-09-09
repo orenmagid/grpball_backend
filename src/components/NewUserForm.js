@@ -1,8 +1,16 @@
 import React, { Component } from "react";
 import { Redirect } from "react-router-dom";
 import { Button, Form, Segment } from "semantic-ui-react";
+import LocationSearchInput from "./LocationSearchInput";
 
 export default class NewUserForm extends Component {
+  state = {
+    address: ""
+  };
+
+  captureAddress = address => {
+    this.setState({ address: address });
+  };
   render() {
     let { handleCreateOrEditUser, displayNewUserForm } = this.props;
     // const options = [
@@ -21,7 +29,10 @@ export default class NewUserForm extends Component {
     return (
       <div className="ui container">
         <Segment inverted>
-          <Form inverted onSubmit={handleCreateOrEditUser}>
+          <Form
+            inverted
+            onSubmit={e => handleCreateOrEditUser(e, this.state.address)}
+          >
             <Form.Group widths="equal">
               <Form.Input
                 name="first_name"
@@ -66,20 +77,11 @@ export default class NewUserForm extends Component {
                 placeholder="Phone Number"
                 type="Phone Number"
               />
-              {/* <Form.Input
-                name="password_confirmation"
-                fluid
-                label="Password Confirmation"
-                placeholder="Password Confirmation"
-                type="password"
-              /> */}
             </Form.Group>
             <Form.Group widths="equal">
-              <Form.Input
-                name="location"
-                fluid
-                label="Location"
-                placeholder="Location"
+              <LocationSearchInput
+                type="user"
+                captureAddress={this.captureAddress}
               />
             </Form.Group>
             <Form.Group widths="equal">

@@ -4,9 +4,37 @@ import { Menu, Icon } from "semantic-ui-react";
 import MediaQuery from "react-responsive";
 
 export default class UserMenu extends Component {
-  state = { activeItem: "" };
+  state = { activeItem: "you" };
 
   handleItemClick = (e, { name }) => this.setState({ activeItem: name });
+
+  componentDidMount() {
+    if (window.location.href.includes("group_dashboard")) {
+      this.setState({
+        activeItem: "your_groups"
+      });
+    }
+    if (window.location.href.includes("calendar")) {
+      this.setState({
+        activeItem: "calendar"
+      });
+    }
+    if (window.location.href.includes("map")) {
+      this.setState({
+        activeItem: "map"
+      });
+    }
+    if (window.location.href.includes("conversations")) {
+      this.setState({
+        activeItem: "conversations"
+      });
+    }
+    if (window.location.href.includes("notifications")) {
+      this.setState({
+        activeItem: "notifications"
+      });
+    }
+  }
 
   render() {
     const { activeItem } = this.state;

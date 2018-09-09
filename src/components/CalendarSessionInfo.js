@@ -30,6 +30,7 @@ export default class CalendarSessionInfo extends Component {
         });
     }
   }
+
   handleShowStatus = (e, statusToDisplay, rsvps = []) => {
     e.preventDefault();
     if (this.state.statusToDisplay === statusToDisplay) {
@@ -48,16 +49,21 @@ export default class CalendarSessionInfo extends Component {
   render() {
     const {
       session,
-
+      handleShowGroupFromSession,
       rsvp,
       user,
       handleCloseClick,
       handleRsvpClick
     } = this.props;
 
-    const { group } = this.state;
+    const group =
+      this.state.group.id !== this.props.group.id
+        ? this.props.group
+        : this.state.group;
 
-    const groupUsers = this.state.users;
+    const groupUsers = this.state.users
+      ? this.state.users
+      : this.props.group.users;
 
     console.log("groupUsers", groupUsers);
     let memberOfGroup = groupUsers.findIndex(groupUser => {
@@ -122,7 +128,22 @@ export default class CalendarSessionInfo extends Component {
           {label}
 
           <Card.Content>
-            <Card.Header>Group: {group.name}</Card.Header>
+            <Card.Header>
+              Group:{" "}
+              {
+                (memberOfGroup =
+                  -1 && !rsvp ? (
+                    <a
+                      href="group"
+                      onClick={e => handleShowGroupFromSession(e, group)}
+                    >
+                      {group.name}
+                    </a>
+                  ) : (
+                    group.name
+                  ))
+              }
+            </Card.Header>
             <Card.Header>
               {moment(session.date).format("MMMM Do YYYY, [at] h:mm a")}, at{" "}
               {session.location}
@@ -136,77 +157,82 @@ export default class CalendarSessionInfo extends Component {
             </Card.Meta> */}
 
             <Card.Description>
-              <Statistic size="mini">
-                <Statistic.Label>Attending</Statistic.Label>
-                <Statistic.Value>
-                  {acceptedRsvps.length > 0 ? (
-                    <a
-                      onClick={e =>
-                        this.handleShowStatus(e, "accepted", acceptedRsvps)
-                      }
-                      href="accepted"
-                    >
-                      {acceptedRsvps.length}
-                    </a>
-                  ) : (
-                    acceptedRsvps.length
-                  )}
-                </Statistic.Value>
-              </Statistic>
-
-              <Statistic size="mini">
-                <Statistic.Label>Not Attending</Statistic.Label>
-                <Statistic.Value>
-                  {declinedRsvps.length > 0 ? (
-                    <a
-                      onClick={e =>
-                        this.handleShowStatus(e, "declined", declinedRsvps)
-                      }
-                      href="declined"
-                    >
-                      {declinedRsvps.length}
-                    </a>
-                  ) : (
-                    declinedRsvps.length
-                  )}
-                </Statistic.Value>
-              </Statistic>
-
-              <Statistic size="mini">
-                <Statistic.Label>Not Sure</Statistic.Label>
-                <Statistic.Value>
-                  {" "}
-                  {delayedRsvps.length > 0 ? (
-                    <a
-                      onClick={e =>
-                        this.handleShowStatus(e, "delayed", delayedRsvps)
-                      }
-                      href="delayed"
-                    >
-                      {delayedRsvps.length}
-                    </a>
-                  ) : (
-                    delayedRsvps.length
-                  )}
-                </Statistic.Value>
-              </Statistic>
-              <Statistic size="mini">
-                <Statistic.Label>No Response</Statistic.Label>
-                <Statistic.Value>
-                  {groupUsers.length - session.rsvps.length > 0 ? (
-                    <a
-                      onClick={e =>
-                        this.handleShowStatus(e, "none", session.rsvps)
-                      }
-                      href="none"
-                    >
-                      {groupUsers.length - session.rsvps.length}
-                    </a>
-                  ) : (
-                    groupUsers.length - session.rsvps.length
-                  )}
-                </Statistic.Value>
-              </Statistic>
+              {session.status !== "Cancelled" ? (
+                <React.Fragment>
+                  <Statistic size="mini">
+                    <Statistic.Label>Attending</Statistic.Label>
+                    <Statistic.Value>
+                      {acceptedRsvps.length > 0 && memberOfGroup > -1 ? (
+                        <a
+                          onClick={e =>
+                            this.handleShowStatus(e, "accepted", acceptedRsvps)
+                          }
+                          href="accepted"
+                        >
+                          {acceptedRsvps.length}
+                        </a>
+                      ) : (
+                        acceptedRsvps.length
+                      )}
+                    </Statistic.Value>
+                  </Statistic>
+                  <Statistic size="mini">
+                    <Statistic.Label>Not Attending</Statistic.Label>
+                    <Statistic.Value>
+                      {declinedRsvps.length > 0 && memberOfGroup > -1 ? (
+                        <a
+                          onClick={e =>
+                            this.handleShowStatus(e, "declined", declinedRsvps)
+                          }
+                          href="declined"
+                        >
+                          {declinedRsvps.length}
+                        </a>
+                      ) : (
+                        declinedRsvps.length
+                      )}
+                    </Statistic.Value>
+                  </Statistic>
+                  <Statistic size="mini">
+                    <Statistic.Label>Not Sure</Statistic.Label>
+                    <Statistic.Value>
+                      {" "}
+                      {delayedRsvps.length > 0 && memberOfGroup > -1 ? (
+                        <a
+                          onClick={e =>
+                            this.handleShowStatus(e, "delayed", delayedRsvps)
+                          }
+                          href="delayed"
+                        >
+                          {delayedRsvps.length}
+                        </a>
+                      ) : (
+                        delayedRsvps.length
+                      )}
+                    </Statistic.Value>
+                  </Statistic>
+                  <Statistic size="mini">
+                    <Statistic.Label>No Response</Statistic.Label>
+                    <Statistic.Value>
+                      {groupUsers.length - session.rsvps.length > 0 &&
+                      memberOfGroup > -1 ? (
+                        <a
+                          onClick={e =>
+                            this.handleShowStatus(e, "none", session.rsvps)
+                          }
+                          href="none"
+                        >
+                          {groupUsers.length - session.rsvps.length}
+                        </a>
+                      ) : (
+                        groupUsers.length - session.rsvps.length
+                      )}
+                    </Statistic.Value>
+                  </Statistic>{" "}
+                </React.Fragment>
+              ) : (
+                "It's a shame, but this session was cancelled."
+              )}
             </Card.Description>
           </Card.Content>
           <RsvpsTable

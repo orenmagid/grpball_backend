@@ -9,7 +9,6 @@ import LoginForm from "./components/LoginForm";
 import MapLandingPage from "./components/MapLandingPage";
 import { Image, Reveal } from "semantic-ui-react";
 import ImageSplash from "./components/ImageSplash";
-
 import { baseUrl } from "./constants";
 
 class App extends Component {
@@ -56,6 +55,8 @@ class App extends Component {
   handleLogin = e => {
     e.preventDefault();
 
+    console.log("inside handleLogin");
+
     let params = {
       username: e.currentTarget.username.value,
       password: e.currentTarget.password.value
@@ -92,7 +93,7 @@ class App extends Component {
     });
   };
 
-  handleCreateUser = e => {
+  handleCreateUser = (e, address, latitude, longitude) => {
     e.preventDefault();
     let data = {
       user: {
@@ -101,7 +102,9 @@ class App extends Component {
         username: e.currentTarget.username.value,
         email: e.currentTarget.email.value,
         password: e.currentTarget.password.value,
-        location: e.currentTarget.location.value,
+        location: address,
+        latitude: latitude,
+        longitude: longitude,
         age: e.currentTarget.age.value,
         height_in_inches: e.currentTarget.height.value,
         phone_number: e.currentTarget.phone.value
@@ -151,7 +154,8 @@ class App extends Component {
   render() {
     if (
       localStorage.getItem("token") &&
-      window.location.href.includes("map_splash")
+      (window.location.href.includes("map_splash") ||
+        window.location.href.includes("login"))
     ) {
       return <Redirect to="/" />;
     }
@@ -213,6 +217,17 @@ class App extends Component {
                   sessions={this.state.sessions}
                   groups={this.state.groups}
                   createNewUser={this.createNewUser}
+                />
+              )}
+            />
+          )}
+          {localStorage.getItem("token") ? null : (
+            <Route
+              path="/login"
+              render={routerProps => (
+                <LoginForm
+                  createNewUser={this.createNewUser}
+                  handleLogin={this.handleLogin}
                 />
               )}
             />

@@ -10,33 +10,29 @@ export default class GroupCardMinimalDisplay extends Component {
   state = {
     group: null,
     users: [],
-    formToShow: "none"
+    formToShow: "none",
+    hasRequested: false
   };
 
-  componentDidMount() {}
+  componentDidMount() {
+    this.fetchGroup(this.props.group);
+  }
 
   componentWillUpdate(nextProps, nextState) {
     if (!this.state.group) {
-      this.fetchGroup();
+      this.fetchGroup(this.props.group);
     }
   }
 
-  fetchGroup = () => {
-    let token = localStorage.getItem("token");
-    if (token) {
-      fetch(baseUrl + `/groups/${this.props.group.id}`, {
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
-      })
-        .then(res => res.json())
-        .then(group => {
-          this.setState({
-            group: group,
-            users: group.users
-          });
+  fetchGroup = group => {
+    fetch(baseUrl + `/groups/${group.id}`)
+      .then(res => res.json())
+      .then(group => {
+        this.setState({
+          group: group,
+          users: group.users
         });
-    }
+      });
   };
 
   handleCloseClick = () => {
@@ -84,19 +80,23 @@ export default class GroupCardMinimalDisplay extends Component {
           console.log(newRequest);
         });
     }
-    this.props.handleFetchGroup(group);
-    this.props.handleforceUserUpdate();
+    this.fetchGroup(group);
+    this.setState({ hasRequested: true });
+    this.props.handleForceUserUpdate();
   };
 
   render() {
-    const { user, handleAccordianDisplay } = this.props;
+    const { user, handleAccordianDisplay, handleCloseClick } = this.props;
     let group = this.props.group;
-    let users = this.props.users;
+    let users = this.props.users ? this.props.users : this.state.users;
+    let hasRequested = this.state.hasRequested;
 
     let userGroup;
-    let userHasRequested;
+    let userHasRequested = [];
 
-    if (group) {
+    console.log("group", group);
+
+    if (group && group.user_groups > 0 && localStorage.getItem("token")) {
       userGroup = group.user_groups.find(user_group => {
         return user_group.user_id === user.id;
       });
@@ -111,10 +111,7 @@ export default class GroupCardMinimalDisplay extends Component {
 
     return (
       <Card fluid>
-        <i
-          className="window close icon"
-          onClick={this.props.handleCloseClick}
-        />
+        <i className="window close icon" onClick={handleCloseClick} />
 
         <Card.Content extra>
           <div className="ui two column grid">
@@ -126,7 +123,8 @@ export default class GroupCardMinimalDisplay extends Component {
 
                 {!userGroup &&
                 localStorage.getItem("token") &&
-                userHasRequested.length === 0 ? (
+                userHasRequested.length === 0 &&
+                !hasRequested ? (
                   <a
                     href="request_to_join"
                     onClick={e => this.handleSendRequest(e, group, user)}
@@ -146,7 +144,7 @@ export default class GroupCardMinimalDisplay extends Component {
               <div className="column">
                 <i className="user icon" />
                 {/* <a href="0" onClick={e => handleAccordianDisplay(e, 1)}> */}
-                {users.length} members
+                {users ? `${users.length} members` : null}
                 {/* </a> */}
               </div>
             </div>
@@ -168,10 +166,11 @@ export default class GroupCardMinimalDisplay extends Component {
           <Card.Meta>{group.location}</Card.Meta>
           <Card.Meta>Group #: {group.id}</Card.Meta>
           <div className="row centered">
-            {!userGroup &&
-            localStorage.getItem("token") &&
-            userHasRequested.length > 0 &&
-            userHasRequested[0].status === "New" ? (
+            {(!userGroup &&
+              localStorage.getItem("token") &&
+              (userHasRequested.length > 0 &&
+                userHasRequested[0].status === "New")) ||
+            hasRequested === true ? (
               <Message warning>
                 <Message.Header>Pending</Message.Header>
                 <p>You have requested to join this group.</p>

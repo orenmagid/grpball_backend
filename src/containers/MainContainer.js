@@ -257,6 +257,7 @@ class MainContainer extends React.Component {
                 user={this.state.user}
                 sessions={this.props.sessions}
                 handleFetchSessions={this.props.handleFetchSessions}
+                handleForceUserUpdate={this.handleForceUserUpdate}
               />
             )}
           />

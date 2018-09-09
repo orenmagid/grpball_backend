@@ -163,9 +163,14 @@ export default class NotificationsDashboard extends Component {
       );
     }
 
+    console.log(
+      "unfilteredRequestsSentMessages",
+      unfilteredRequestsSentMessages
+    );
+
     requestsSentMessages = unfilteredRequestsSentMessages.filter(message => {
       console.log("message", message);
-      return message !== undefined && message[0] !== undefined;
+      return message !== undefined;
     });
 
     console.log("requestsReceivedMessages", requestsReceivedMessages);

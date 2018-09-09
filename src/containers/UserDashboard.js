@@ -5,7 +5,7 @@ import MediaQuery from "react-responsive";
 
 const UserDashboard = ({ user, handleEditProfile }) => (
   <Card fluid>
-    <Image src="../noun_basketball_player_1646799-transparent-background.svg" />
+    <Image src="../grpball-secondary.png" centered size="medium" />
     <Card.Content>
       <Card.Header>{user.first_name + " " + user.last_name}</Card.Header>
       <Card.Meta>

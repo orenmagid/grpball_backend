@@ -29,7 +29,7 @@ export default class MapLandingSessionInfo extends Component {
     const {
       session,
       group,
-
+      handleShowGroupFromSession,
       handleCloseClick
     } = this.props;
 
@@ -86,7 +86,16 @@ export default class MapLandingSessionInfo extends Component {
           {label}
 
           <Card.Content>
-            <Card.Header>Group: {group.name}</Card.Header>
+            <Card.Header>
+              {" "}
+              Group:{" "}
+              <a
+                href="group"
+                onClick={e => handleShowGroupFromSession(e, group)}
+              >
+                {group.name}
+              </a>
+            </Card.Header>
             <Card.Header>
               {moment(session.date).format("MMMM Do YYYY, [at] h:mm a")}, at{" "}
               {session.location}
@@ -103,7 +112,7 @@ export default class MapLandingSessionInfo extends Component {
                 <Statistic.Value>{declinedRsvps.length}</Statistic.Value>
               </Statistic>
 
-              <Statistic size="mini">
+              {/* <Statistic size="mini">
                 <Statistic.Label>Not Sure</Statistic.Label>
                 <Statistic.Value> {delayedRsvps.length}</Statistic.Value>
               </Statistic>
@@ -112,7 +121,7 @@ export default class MapLandingSessionInfo extends Component {
                 <Statistic.Value>
                   <Icon name="question" />{" "}
                 </Statistic.Value>
-              </Statistic>
+              </Statistic> */}
             </Card.Description>
           </Card.Content>
         </Card>

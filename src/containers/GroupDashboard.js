@@ -14,7 +14,10 @@ class GroupDashboard extends Component {
       this.props.user.groups.length > 0
         ? this.props.user.groups[0].name
         : "create_or_join",
-    activeIndex: "",
+    activeIndex:
+      this.props.user.groups.length > 0
+        ? this.props.user.groups[0].name
+        : "create_or_join",
     group: [],
     users: []
   };
@@ -66,14 +69,14 @@ class GroupDashboard extends Component {
     }
   };
 
-  handleNewGroupSubmit = e => {
+  handleNewGroupSubmit = (e, address) => {
     e.preventDefault();
 
     let newGroupName = e.target.groupname.value;
-    let newGroupLocation = e.target.location.value;
+
     let data = {
       name: newGroupName,
-      location: newGroupLocation,
+      location: address,
       user_id: this.props.user.id
     };
     e.target.reset();
@@ -87,7 +90,10 @@ class GroupDashboard extends Component {
       }
     })
       .then(response => response.json())
-      .then(jsonData => this.props.handleForceUserUpdate());
+      .then(jsonData => {
+        this.setState({ activeIndex: newGroupName, activeItem: newGroupName });
+        this.props.handleForceUserUpdate();
+      });
   };
 
   handleItemClick = (e, { name }) => {

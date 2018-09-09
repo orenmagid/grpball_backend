@@ -36,6 +36,23 @@ export class MapLandingPage extends Component {
     };
   }
 
+  handleShowGroupFromSession = (e, group) => {
+    e.preventDefault();
+    if (this.state.selectedGroup && this.state.selectedGroup.id === group.id) {
+      this.setState({
+        selectedEvent: null,
+        selectedGroup: null,
+        currentRsvp: ""
+      });
+    } else {
+      this.setState({
+        selectedGroup: group,
+        groupUsers: group.users,
+        selectedEvent: null
+      });
+    }
+  };
+
   onMarkerClick = (props, marker, e) => {
     if (props.session) {
       if (
@@ -204,6 +221,25 @@ export class MapLandingPage extends Component {
         </MediaQuery>
         <MediaQuery maxWidth={992}>
           <Grid>
+            <Grid.Column stretched centered width={16}>
+              {this.state.selectedGroup ? (
+                <GroupCardMinimalDisplay
+                  handleCloseClick={this.handleCloseClick}
+                  sessions={sessions}
+                  group={this.state.selectedGroup}
+                  user={user}
+                />
+              ) : null}
+
+              {this.state.selectedEvent ? (
+                <MapLandingSessionInfo
+                  group={this.state.selectedEvent.group}
+                  handleCloseClick={this.handleCloseClick}
+                  session={this.state.selectedEvent}
+                  handleShowGroupFromSession={this.handleShowGroupFromSession}
+                />
+              ) : null}
+            </Grid.Column>
             <Grid.Column stretched centered width={2}>
               <Grid.Row verticalAlign="middle" />
               <Grid.Row verticalAlign="middle">
@@ -225,22 +261,6 @@ export class MapLandingPage extends Component {
               </Grid.Row>
             </Grid.Column>
             <Grid.Column width={14}>
-              {this.state.selectedGroup ? (
-                <GroupCardMinimalDisplay
-                  sessions={sessions}
-                  group={this.state.selectedGroup}
-                  user={user}
-                />
-              ) : null}
-
-              {this.state.selectedEvent ? (
-                <MapLandingSessionInfo
-                  group={this.state.selectedEvent.group}
-                  handleCloseClick={this.handleCloseClick}
-                  session={this.state.selectedEvent}
-                />
-              ) : null}
-
               <div className="ui raised container map segment">
                 <Map
                   google={this.props.google}
@@ -284,6 +304,7 @@ export class MapLandingPage extends Component {
               group={this.state.selectedEvent.group}
               handleCloseClick={this.handleCloseClick}
               session={this.state.selectedEvent}
+              handleShowGroupFromSession={this.handleShowGroupFromSession}
             />
           ) : null}
 

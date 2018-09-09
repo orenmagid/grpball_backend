@@ -52,24 +52,35 @@ export default class ReviewRequestCard extends Component {
                 this.props.handleAddToGroupSubmit(e, this.state.value)
               }
             >
-              <Form.Group inline>
+              <div className="form-label">
                 <label>Add {request.user.first_name} to the group?</label>
-                <Form.Field
-                  control={Radio}
-                  label="Yes"
-                  value="Yes"
-                  checked={value === "Yes"}
-                  onChange={this.handleChange}
-                />
-                <Form.Field
-                  control={Radio}
-                  label="No"
-                  value="No"
-                  checked={value === "No"}
-                  onChange={this.handleChange}
-                />
-              </Form.Group>
-              <Form.Field control={Button}>Submit</Form.Field>
+              </div>
+
+              <div className="ui four column grid">
+                <div className="column" />
+                <div className="column">
+                  <Form.Field
+                    control={Radio}
+                    label="Yes"
+                    value="Yes"
+                    checked={value === "Yes"}
+                    onChange={this.handleChange}
+                  />
+                </div>{" "}
+                <div className="column">
+                  <Form.Field
+                    control={Radio}
+                    label="No"
+                    value="No"
+                    checked={value === "No"}
+                    onChange={this.handleChange}
+                  />
+                </div>
+                <div className="column" />
+              </div>
+              <Form.Field secondary basic button control={Button}>
+                Submit
+              </Form.Field>
             </Form>
           </Card.Content>
         </Card>

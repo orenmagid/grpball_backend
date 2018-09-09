@@ -5,6 +5,7 @@ import moment from "moment";
 import CalendarSessionInfo from "../components/CalendarSessionInfo";
 import InteractiveSegment from "../components/InteractiveSegment";
 import SessionScheduler from "../components/SessionScheduler";
+import GroupCardMinimalDisplay from "../components/GroupCardMinimalDisplay";
 
 import "react-big-calendar/lib/css/react-big-calendar.css";
 
@@ -17,6 +18,7 @@ class CalendarDashboard extends Component {
     start: "",
     end: "",
     selectedEvent: null,
+    selectedGroup: null,
     currentRsvp: "",
     formToShow: "none",
     groupUsers: []
@@ -45,6 +47,7 @@ class CalendarDashboard extends Component {
 
       this.setState({
         selectedEvent: event,
+        selectedGroup: null,
         currentRsvp: myRsvp
       });
     }
@@ -148,6 +151,7 @@ class CalendarDashboard extends Component {
 
           this.setState({
             selectedEvent: session,
+            selectedGroup: null,
             currentRsvp: myRsvp
           });
         });
@@ -160,11 +164,47 @@ class CalendarDashboard extends Component {
     });
   };
 
+  handleShowGroupFromSession = (e, group) => {
+    e.preventDefault();
+    console.log("group", group);
+    if (this.state.selectedGroup && this.state.selectedGroup.id === group.id) {
+      this.setState({
+        selectedEvent: null,
+        selectedGroup: null,
+        currentRsvp: ""
+      });
+    } else {
+      this.setState({ selectedGroup: group, selectedEvent: null });
+    }
+  };
+
+  handleCloseClick = () => {
+    this.setState({
+      selectedEvent: null,
+      selectedGroup: null,
+      displayedUser: null,
+      currentRsvp: "",
+      formToShow: "none"
+    });
+  };
+
   render() {
+    console.log("selectedGroup", this.state.selectedGroup);
     return (
       <React.Fragment>
+        {this.state.selectedGroup ? (
+          <GroupCardMinimalDisplay
+            handleCloseClick={this.handleCloseClick}
+            group={this.state.selectedGroup}
+            user={this.props.user}
+            users={this.state.selectedGroup.users}
+            handleFetchGroup={this.fetchGroup}
+            handleForceUserUpdate={this.props.handleForceUserUpdate}
+          />
+        ) : null}
         {this.state.selectedEvent ? (
           <CalendarSessionInfo
+            handleShowGroupFromSession={this.handleShowGroupFromSession}
             group={this.state.selectedEvent.group}
             handleCloseClick={this.handleSessionCloseClick}
             handleRsvpClick={this.handleRsvpClick}

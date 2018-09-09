@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { Map, InfoWindow, Marker, GoogleApiWrapper } from "google-maps-react";
-import { Checkbox, Grid, Label, Header } from "semantic-ui-react";
+import { Checkbox, Grid, Label, Header, Popup } from "semantic-ui-react";
 import CalendarSessionInfo from "../components/CalendarSessionInfo";
 import InteractiveSegment from "../components/InteractiveSegment";
 import GroupCardMinimalDisplay from "../components/GroupCardMinimalDisplay";
@@ -15,11 +15,16 @@ export class MapDashboard extends Component {
     selectedEvent: null,
     selectedGroup: null,
     displayedUser: null,
+    hoveredEvent: null,
+    hoveredGroup: null,
+    hoveredUser: null,
     userPosition: null,
     currentRsvp: "",
     formToShow: "none",
     whatToDisplayOnMap: "yourSessions",
-    groupUsers: []
+    groupUsers: [],
+    activeMarker: {},
+    showingInfoWindow: false
   };
 
   componentDidMount() {
@@ -53,7 +58,8 @@ export class MapDashboard extends Component {
             selectedGroup: group,
             groupUsers: group.users,
             selectedEvent: null,
-            currentRsvp: ""
+            currentRsvp: "",
+            showingInfoWindow: true
           });
         });
     }
@@ -123,12 +129,89 @@ export class MapDashboard extends Component {
   };
 
   // onMouseoverMarker = (props, marker, e) => {
-  //   if (props.group) {
-  //     this.setState({ activeMarker: marker });
-  //   } else if (props.session) {
-  //     this.setState({ activeMarker: marker });
+  //   // e.preventDefault;
+  //   // console.log("mouseover marker");
+  //   // if (props.group && !this.state.activeMarker) {
+  //   //   this.setState({ activeMarker: marker });
+  //   // } else if (props.session && !this.state.activeMarker) {
+  //   //   this.setState({ activeMarker: marker });
+  //   // }
+  //   // if (!this.state.showingInfoWindow) {
+  //   //   this.setState({ showingInfoWindow: true });
+  //   // }
+  //   if (props.session) {
+  //     if (
+  //       this.state.hoveredEvent &&
+  //       this.state.hoveredEvent.id === props.session.id
+  //     ) {
+  //       this.setState({
+  //         hoveredEvent: null,
+  //         showingInfoWindow: false
+  //       });
+  //     } else {
+  //       let myRsvp = props.session.rsvps.find(
+  //         rsvp => rsvp.user_id === this.props.user.id
+  //       );
+  //       let token = localStorage.getItem("token");
+  //       if (token) {
+  //         fetch(baseUrl + `/groups/${props.session.group.id}`, {
+  //           headers: {
+  //             Authorization: `Bearer ${token}`
+  //           }
+  //         })
+  //           .then(res => res.json())
+  //           .then(group => {
+  //             this.setState({
+  //               groupUsers: group.users,
+  //               hoveredGroup: null,
+  //               hoveredEvent: props.session,
+  //               currentRsvp: myRsvp ? myRsvp : "",
+  //               showingInfoWindow: true,
+  //               activeMarker: marker
+  //             });
+  //           });
+  //       }
+  //     }
+  //   } else if (props.group) {
+  //     if (
+  //       this.state.hoveredGroup &&
+  //       this.state.hoveredGroup.id === props.group.id
+  //     ) {
+  //       this.setState({
+  //         hoveredEvent: null,
+  //         hoveredGroup: null,
+  //         currentRsvp: "",
+  //         showingInfoWindow: false
+  //       });
+  //     } else {
+  //       this.fetchGroup(props.group);
+  //     }
+  //   } else if (props.user) {
+  //     if (
+  //       this.state.displayedUser &&
+  //       this.state.displayedUser.id === props.user.id
+  //     ) {
+  //       this.setState({
+  //         hoveredUser: null,
+  //         hoveredEvent: null,
+  //         currentRsvp: "",
+  //         showingInfoWindow: false
+  //       });
+  //     } else {
+  //       this.setState({
+  //         hoveredUser: props.user,
+  //         hoveredEvent: null,
+  //         currentRsvp: "",
+  //         showingInfoWindow: true,
+  //         activeMarker: marker
+  //       });
+  //     }
   //   }
   // };
+
+  windowHasClosed = () => {
+    this.setState({ showingInfoWindow: false });
+  };
 
   handleSelectEvent = event => {
     if (this.state.selectedEvent && this.state.selectedEvent.id === event.id) {
@@ -261,8 +344,21 @@ export class MapDashboard extends Component {
       displayedUser: null
     });
 
+  handleShowGroupFromSession = (e, group) => {
+    e.preventDefault();
+    if (this.state.selectedGroup && this.state.selectedGroup.id === group.id) {
+      this.setState({
+        selectedEvent: null,
+        selectedGroup: null,
+        currentRsvp: ""
+      });
+    } else {
+      this.fetchGroup(group);
+    }
+  };
+
   render() {
-    const { user, sessions, groups, users, handleforceUserUpdate } = this.props;
+    const { user, sessions, groups, users, handleForceUserUpdate } = this.props;
 
     let initialCenter =
       user.latitude && user.longitude
@@ -292,6 +388,7 @@ export class MapDashboard extends Component {
               position={{ lat: session.latitude, lng: session.longitude }}
               onClick={this.onMarkerClick}
               onMouseover={this.onMouseoverMarker}
+              onMouseOut={this.onMouseoverMarker}
             />
           );
         });
@@ -310,6 +407,7 @@ export class MapDashboard extends Component {
                 position={{ lat: session.latitude, lng: session.longitude }}
                 onClick={this.onMarkerClick}
                 onMouseover={this.onMouseoverMarker}
+                onMouseOut={this.onMouseoverMarker}
               />
             );
           }
@@ -327,6 +425,7 @@ export class MapDashboard extends Component {
               position={{ lat: group.latitude, lng: group.longitude }}
               onClick={this.onMarkerClick}
               onMouseover={this.onMouseoverMarker}
+              onMouseOut={this.onMouseoverMarker}
             />
           );
         });
@@ -342,6 +441,7 @@ export class MapDashboard extends Component {
               position={{ lat: group.latitude, lng: group.longitude }}
               onClick={this.onMarkerClick}
               onMouseover={this.onMouseoverMarker}
+              onMouseOut={this.onMouseoverMarker}
             />
           );
         });
@@ -356,6 +456,8 @@ export class MapDashboard extends Component {
               name={user.location}
               position={{ lat: user.latitude, lng: user.longitude }}
               onClick={this.onMarkerClick}
+              onMouseover={this.onMouseoverMarker}
+              onMouseOut={this.onMouseoverMarker}
             />
           );
         });
@@ -460,12 +562,13 @@ export class MapDashboard extends Component {
             <Grid.Column width={14}>
               {this.state.selectedGroup ? (
                 <GroupCardMinimalDisplay
+                  handleCloseClick={this.handleCloseClick}
                   sessions={sessions}
                   group={this.state.selectedGroup}
                   user={user}
                   users={this.state.groupUsers}
                   handleFetchGroup={this.fetchGroup}
-                  handleforceUserUpdate={handleforceUserUpdate}
+                  handleForceUserUpdate={handleForceUserUpdate}
                 />
               ) : null}
 
@@ -478,6 +581,7 @@ export class MapDashboard extends Component {
                   session={this.state.selectedEvent}
                   rsvp={this.state.currentRsvp}
                   user={this.props.user}
+                  handleShowGroupFromSession={this.handleShowGroupFromSession}
                 />
               ) : null}
               {this.state.formToShow === "editRsvp" ||
@@ -511,14 +615,23 @@ export class MapDashboard extends Component {
                   }
                 >
                   {markers}
-                  {this.state.selectedEvent ? (
+                  {this.state.hoveredEvent ? (
                     <InfoWindow
-                      marker={this.state.activeMarker}
-                      visible="true"
-                      onClose={this.onInfoWindowClose}
+                      // marker={this.state.activeMarker}
+                      visible={this.state.showingInfoWindow}
+                      position={{
+                        lat: this.state.activeMarker.latitude,
+                        lng: this.state.activeMarker.longitude
+                      }}
+                      onClose={this.windowHasClosed}
                     >
+                      >
                       <div>
-                        <h1>{this.state.selectedEvent.group.name}</h1>
+                        <h1>
+                          {this.state.hoveredEvent
+                            ? this.state.hoveredEvent.group.name
+                            : null}
+                        </h1>
                       </div>
                     </InfoWindow>
                   ) : null}
@@ -531,12 +644,13 @@ export class MapDashboard extends Component {
         <MediaQuery minWidth={992}>
           {this.state.selectedGroup ? (
             <GroupCardMinimalDisplay
+              handleCloseClick={this.handleCloseClick}
               sessions={sessions}
               group={this.state.selectedGroup}
               user={user}
               users={this.state.groupUsers}
               handleFetchGroup={this.fetchGroup}
-              handleforceUserUpdate={handleforceUserUpdate}
+              handleForceUserUpdate={handleForceUserUpdate}
             />
           ) : null}
 
@@ -549,6 +663,7 @@ export class MapDashboard extends Component {
               rsvp={this.state.currentRsvp}
               user={this.props.user}
               groupUsers={this.state.groupUsers}
+              handleShowGroupFromSession={this.handleShowGroupFromSession}
             />
           ) : null}
           {this.state.formToShow === "editRsvp" ||
@@ -582,14 +697,22 @@ export class MapDashboard extends Component {
               }
             >
               {markers}
-              {this.state.selectedEvent ? (
+              {this.state.hoveredEvent ? (
                 <InfoWindow
-                  marker={this.state.activeMarker}
-                  visible="true"
-                  onClose={this.onInfoWindowClose}
+                  // marker={this.state.activeMarker}
+                  visible={this.state.showingInfoWindow}
+                  position={{
+                    lat: this.state.activeMarker.latitude,
+                    lng: this.state.activeMarker.longitude
+                  }}
+                  onClose={this.windowHasClosed}
                 >
                   <div>
-                    <h1>{this.state.selectedEvent.group.name}</h1>
+                    <h1>
+                      {this.state.hoveredEvent
+                        ? this.state.hoveredEvent.group.name
+                        : null}
+                    </h1>
                   </div>
                 </InfoWindow>
               ) : null}

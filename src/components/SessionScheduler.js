@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import DatePicker from "react-datepicker";
 import moment from "moment";
 import { Form, Select, Segment } from "semantic-ui-react";
+import LocationSearchInput from "./LocationSearchInput";
 
 import "react-datepicker/dist/react-datepicker.css";
 import "react-datepicker/dist/react-datepicker-cssmodules.css";
@@ -12,7 +13,12 @@ export default class SessionScheduler extends Component {
   state = {
     date: "",
     expiration: "",
-    group_id: ""
+    group_id: "",
+    address: ""
+  };
+
+  captureAddress = address => {
+    this.setState({ address: address });
   };
 
   handleDateChange = date => {
@@ -40,7 +46,7 @@ export default class SessionScheduler extends Component {
         group_id: this.props.group ? this.props.group.id : this.state.group_id,
         date: this.props.date ? moment(this.props.date) : this.state.date,
         status: "Pending",
-        location: e.currentTarget.location.value,
+        location: this.state.address,
         min_players: 6,
         expiration_date_time: this.state.expiration,
         creator_id: this.props.user.id
@@ -130,11 +136,9 @@ export default class SessionScheduler extends Component {
               onChange={this.handleChange}
             />
           )}
-          <Form.Input
-            name="location"
-            fluid
-            label="Location"
-            placeholder="Location"
+          <LocationSearchInput
+            type="session"
+            captureAddress={this.captureAddress}
           />
 
           <Form.Button secondary basic>
