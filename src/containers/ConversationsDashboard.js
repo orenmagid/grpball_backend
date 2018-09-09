@@ -18,7 +18,7 @@ export default class ConversationsDashboard extends Component {
   render() {
     return (
       <React.Fragment>
-        <ChatComponent user={this.props.user} />
+        <ChatComponent user={this.props.user} groups={this.props.groups} />
       </React.Fragment>
     );
   }

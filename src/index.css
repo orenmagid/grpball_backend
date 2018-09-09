@@ -14,14 +14,18 @@ body {
 }
 
 .ui.header.segment {
-  background-color: #31393c;
+  background-color: #1a2533;
   height: 100px;
   color: white;
   border-radius: 0;
 }
+
+/* .ui.inverted.header {
+  color: #edddd1;
+} */
 .ui.footer.segment {
   border-radius: 0;
-  background-color: #31393c;
+  background-color: #1a2533;
   margin: 5em 0em 0em;
   padding: 5em 0em 0em;
   height: 50px;
@@ -33,20 +37,23 @@ body {
 
 .ui.huge.primary.button {
   /* background-color: #c5d5ea; */
-  background-color: #424b54;
+  background-color: #1a2533;
 }
 
 .ui.huge.primary.button:hover {
-  background-color: #31393c;
+  background-color: #6b7e8d;
 }
 
-.ui.inverted.segment .ui.inverted.form {
-  background: #424b54;
+.ui.small.inverted.popup {
+  background-color: #6b7e8d;
+}
+
+.ui.inverted.form {
+  background: #6b7e8d;
   color: blue;
 }
-.ui.primary.inverted.segment {
-  background: #424b54;
-  color: blue;
+.ui.inverted.segment {
+  background: #6b7e8d;
 }
 
 .ui.vertical.masthead.center.aligned.segment {
@@ -111,6 +118,13 @@ body {
 
   .rbc-btn-group {
     margin: 5px;
+  }
+
+  .rbc-event {
+    background-color: #de8364;
+  }
+  .rbc-event-content {
+    color: #edddd1;
   }
 
   .ui.form.fields {
@@ -183,7 +197,7 @@ body {
   color: #999;
 }
 
-.Demo__autocomplete-container {
+.autocomplete-container {
   border-bottom: honeydew;
   border-left: honeydew;
   border-right: honeydew;
@@ -192,29 +206,34 @@ body {
   border-radius: 0 0 2px 2px;
 }
 
-.Demo__suggestion-item {
+.suggestion-item {
   padding: 8px;
   text-align: left;
   background-color: #fff;
   cursor: pointer;
+  color: #000000;
+  font-size: 1em;
 }
 
-.Demo__suggestion-item--active {
+.suggestion-item--active {
   background-color: #fafafa;
+  color: #000000;
+  text-align: left;
+  font-size: 1em;
 }
 
-.Demo__dropdown-footer {
+.dropdown-footer {
   display: flex;
   justify-content: flex-end;
   padding: 4px;
 }
 
-.Demo__dropdown-footer-image {
+.dropdown-footer-image {
   display: inline-block;
-  width: 150px;
+  width: 100px;
 }
 
-.Demo__spinner {
+.spinner {
   color: #18bc9c;
   font-size: 30px;
 }
@@ -223,9 +242,19 @@ body {
   color: red;
 }
 
-.Demo__geocode-result-header {
+.geocode-result-header {
   font-size: 20px;
   color: #222222;
+}
+
+.googlelogocontainer: {
+  text-align: right;
+  padding: 1px;
+  background-color: #fafafa;
+}
+,
+  .googlelogoimage: {
+  width: 100;
 }
 
 @media (max-width: 480px) {

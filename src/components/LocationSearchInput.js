@@ -1,29 +1,44 @@
 import React from "react";
 import PlacesAutocomplete, {
   geocodeByAddress,
+  geocodeByPlaceId,
   getLatLng
 } from "react-places-autocomplete";
 
 export default class LocationSearchInput extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { address: "", formatted_address: "" };
+    this.state = {
+      address: "",
+      formatted_address: "",
+      errorMessage: "",
+      suggestion: ""
+    };
   }
 
   handleChange = address => {
-    this.setState({ address });
+    this.setState({ address: address, errorMessage: "" });
   };
 
-  handleSelect = address => {
+  handleSelect = (address, placeId) => {
     geocodeByAddress(address)
       .then(results => getLatLng(results[0]))
       .then(latLng => console.log("Success", latLng))
       .catch(error => console.error("Error", error));
 
     geocodeByAddress(address).then(results => {
-      this.setState({ formatted_address: results[0].formatted_address });
+      console.log(results);
+      this.setState({
+        formatted_address: results[0].formatted_address,
+        address: ""
+      });
       this.props.captureAddress(results[0].formatted_address);
     });
+  };
+
+  handleError = (status, clearSuggestions) => {
+    console.log("Error from Google Maps API", status);
+    this.setState({ errorMessage: status });
   };
 
   render() {
@@ -35,6 +50,7 @@ export default class LocationSearchInput extends React.Component {
             value={this.state.address}
             onChange={this.handleChange}
             onSelect={this.handleSelect}
+            onError={this.handleError}
           >
             {({
               getInputProps,
@@ -47,12 +63,10 @@ export default class LocationSearchInput extends React.Component {
                   <h5 className="ui inverted header">Your homecourt or city</h5>
                 ) : null}
                 {this.props.type === "group" ? (
-                  <h5 className="ui inverted header">
-                    Where is your group located?
-                  </h5>
+                  <h5 className="ui header">Where is your group located?</h5>
                 ) : null}
                 {this.props.type === "session" ? (
-                  <h5 className="ui inverted header">
+                  <h5 className="ui  header">
                     Where will the session be located?
                   </h5>
                 ) : null}
@@ -82,24 +96,37 @@ export default class LocationSearchInput extends React.Component {
                       ? "suggestion-item--active"
                       : "suggestion-item";
                     // inline style for demonstration purpose
-                    const style = suggestion.active
-                      ? { backgroundColor: "#fafafa", cursor: "pointer" }
-                      : { backgroundColor: "#ffffff", cursor: "pointer" };
+                    // const style = suggestion.active
+                    //   ? { backgroundColor: "#fafafa", cursor: "pointer" }
+                    //   : { backgroundColor: "#ffffff", cursor: "pointer" };
                     return (
                       <div
                         {...getSuggestionItemProps(suggestion, {
-                          className,
-                          style
+                          className
+                          // style
                         })}
                       >
                         <span>{suggestion.description}</span>
                       </div>
                     );
                   })}
+                  {/* <div className="dropdown-footer">
+                    <div>
+                      <img
+                        src={"../powered_by_google_default.png"}
+                        className="dropdown-footer-image"
+                      />
+                    </div>
+                  </div> */}
                 </div>
               </div>
             )}
           </PlacesAutocomplete>
+          {this.state.errorMessage.length > 0 && (
+            <div className="Demo__error-message">
+              Error: {this.state.errorMessage}. Please try again.
+            </div>
+          )}
         </div>
         <div className="two wide column" />
       </div>

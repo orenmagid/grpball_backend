@@ -1,11 +1,12 @@
 import React, { Component } from "react";
 import Calendar from "react-big-calendar";
-import { Segment } from "semantic-ui-react";
+import { Segment, Message, Icon } from "semantic-ui-react";
 import moment from "moment";
 import CalendarSessionInfo from "../components/CalendarSessionInfo";
 import InteractiveSegment from "../components/InteractiveSegment";
 import SessionScheduler from "../components/SessionScheduler";
 import GroupCardMinimalDisplay from "../components/GroupCardMinimalDisplay";
+import MediaQuery from "react-responsive";
 
 import "react-big-calendar/lib/css/react-big-calendar.css";
 
@@ -25,11 +26,15 @@ class CalendarDashboard extends Component {
   };
 
   handleSelect = ({ start, end }) => {
-    this.setState({
-      formToShow: "suggestSession",
-      start: start,
-      end: end
-    });
+    if (this.props.user.user_groups.length > 0) {
+      this.setState({
+        formToShow: "suggestSession",
+        start: start,
+        end: end
+      });
+    } else {
+      this.setState({ showWarning: true });
+    }
   };
 
   handleSelectEvent = event => {
@@ -192,6 +197,34 @@ class CalendarDashboard extends Component {
     console.log("selectedGroup", this.state.selectedGroup);
     return (
       <React.Fragment>
+        {this.state.showWarning ? (
+          <React.Fragment>
+            <MediaQuery maxWidth={767}>
+              <Message>
+                <Message.Header>
+                  You must be a member of a group to schedule a pickup session
+                </Message.Header>
+                <p>
+                  Click <Icon name="users" /> to search for a group to join, or
+                  click <Icon name="map marker" />
+                  to create your own.
+                </p>
+              </Message>
+            </MediaQuery>
+            <MediaQuery minWidth={767}>
+              <Message>
+                <Message.Header>
+                  You must be a member of a group to schedule a pickup session
+                </Message.Header>
+                <p>
+                  Click "Map" to search for a group to join, or click "Your
+                  Groups" to create your own.
+                </p>
+              </Message>
+            </MediaQuery>
+          </React.Fragment>
+        ) : null}
+
         {this.state.selectedGroup ? (
           <GroupCardMinimalDisplay
             handleCloseClick={this.handleCloseClick}

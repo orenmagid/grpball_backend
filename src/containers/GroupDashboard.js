@@ -13,11 +13,11 @@ class GroupDashboard extends Component {
     activeItem:
       this.props.user.groups.length > 0
         ? this.props.user.groups[0].name
-        : "create_or_join",
+        : "create_group",
     activeIndex:
       this.props.user.groups.length > 0
         ? this.props.user.groups[0].name
-        : "create_or_join",
+        : "create_group",
     group: [],
     users: []
   };
@@ -97,7 +97,7 @@ class GroupDashboard extends Component {
   };
 
   handleItemClick = (e, { name }) => {
-    this.setState({ activeItem: name ? name : "create_or_join" });
+    this.setState({ activeItem: name ? name : "create_group" });
   };
 
   handleAccordianDisplay = (e, activeIndex) => {
@@ -130,7 +130,7 @@ class GroupDashboard extends Component {
             <Menu size="tiny" tabular>
               <Menu.Item
                 icon="plus"
-                active={activeItem === "create_or_join"}
+                active={activeItem === "create_group"}
                 onClick={this.handleItemClick}
               />
               {user.groups.map(group => (
@@ -150,7 +150,7 @@ class GroupDashboard extends Component {
         <MediaQuery minWidth={767}>
           <Grid.Column stretched width={12}>
             <Segment>
-              {activeItem === "create_or_join" ? (
+              {activeItem === "create_group" ? (
                 <React.Fragment>
                   <CreateOrJoinFormCard
                     handleNewGroupSubmit={this.handleNewGroupSubmit}
@@ -189,7 +189,7 @@ class GroupDashboard extends Component {
         <MediaQuery maxWidth={767}>
           <Grid.Column stretched width={16}>
             <Segment>
-              {activeItem === "create_or_join" ? (
+              {activeItem === "create_group" ? (
                 <React.Fragment>
                   <CreateOrJoinFormCard
                     handleNewGroupSubmit={this.handleNewGroupSubmit}
@@ -229,7 +229,7 @@ class GroupDashboard extends Component {
           <Grid.Column width={4}>
             <Menu size="tiny" fluid vertical tabular="right">
               <Menu.Item
-                name="create_or_join"
+                name="create_group"
                 active={activeItem === "create_or_join"}
                 onClick={this.handleItemClick}
               />

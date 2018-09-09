@@ -197,7 +197,7 @@ export default class GroupCard extends Component {
           .then(response => response.json())
           .then(request => {
             this.setState({
-              request: request,
+              request: null,
               formToShow: "none"
             });
             this.props.handleForceUserUpdate();
@@ -217,7 +217,7 @@ export default class GroupCard extends Component {
         .then(response => response.json())
         .then(request => {
           this.setState({
-            request: request,
+            request: null,
             formToShow: "none"
           });
         });
@@ -362,7 +362,8 @@ export default class GroupCard extends Component {
 
           {newRequests &&
           newRequests.length > 0 &&
-          userGroup.is_administrator ? (
+          userGroup.is_administrator &&
+          this.state.request ? (
             <Message info>
               <Message.Header>You have new requests.</Message.Header>
               <List horizontal>

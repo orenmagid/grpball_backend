@@ -148,6 +148,8 @@ export default class NotificationsDashboard extends Component {
               return null;
             case "Denied":
               return null;
+            case "Resolved":
+              return null;
             default:
           }
         });
@@ -158,7 +160,12 @@ export default class NotificationsDashboard extends Component {
       );
       requestsReceivedMessages = unfilteredRequestsReceivedMessages.filter(
         message => {
-          return message !== undefined && message[0] !== undefined;
+          return (
+            message !== undefined &&
+            message[0] !== undefined &&
+            message !== null &&
+            message[0] !== null
+          );
         }
       );
     }

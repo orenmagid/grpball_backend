@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
-import { Menu, Icon } from "semantic-ui-react";
+import { Menu, Icon, Popup } from "semantic-ui-react";
 import MediaQuery from "react-responsive";
 
 export default class UserMenu extends Component {
@@ -53,106 +53,220 @@ export default class UserMenu extends Component {
         <MediaQuery maxWidth={767}>
           <Menu tabular size="small">
             <Link to={`/`}>
-              <Menu.Item
-                name="you"
-                active={activeItem === "you"}
-                onClick={this.handleItemClick}
-              >
-                <Icon name="user" />
-              </Menu.Item>
+              <Popup
+                key="you"
+                size="small"
+                inverted
+                basic
+                trigger={
+                  <Menu.Item
+                    name="your_profile"
+                    active={activeItem === "your_profile"}
+                    onClick={this.handleItemClick}
+                  >
+                    <Icon name="user" />
+                  </Menu.Item>
+                }
+                header="Your Profile"
+                content="See and edit your profile information"
+              />
             </Link>
             <Link to={`/group_dashboard`}>
-              <Menu.Item
-                name="your_groups"
-                active={activeItem === "your_groups"}
-                onClick={this.handleItemClick}
-              >
-                <Icon name="users" />
-              </Menu.Item>
+              <Popup
+                key="you"
+                size="small"
+                inverted
+                basic
+                trigger={
+                  <Menu.Item
+                    name="your_groups"
+                    active={activeItem === "your_groups"}
+                    onClick={this.handleItemClick}
+                  >
+                    <Icon name="users" />
+                  </Menu.Item>
+                }
+                header="Groups"
+                content="See your groups, or create a new one"
+              />
             </Link>
             <Link to={`/calendar`}>
-              <Menu.Item
-                name="calendar"
-                active={activeItem === "calendar"}
-                onClick={this.handleItemClick}
-              >
-                <Icon name="calendar" />
-              </Menu.Item>
+              <Popup
+                key="you"
+                size="small"
+                inverted
+                basic
+                trigger={
+                  <Menu.Item
+                    name="calendar"
+                    active={activeItem === "calendar"}
+                    onClick={this.handleItemClick}
+                  >
+                    <Icon name="calendar" />
+                  </Menu.Item>
+                }
+                header="Calendar"
+                content="See scheduled sessions, or schedule one yourself"
+              />
             </Link>
             <Link to={`/map`}>
-              <Menu.Item
-                name="map"
-                active={activeItem === "map"}
-                onClick={this.handleItemClick}
-              >
-                {" "}
-                <Icon name="map marker" />
-              </Menu.Item>
+              <Popup
+                key="you"
+                size="small"
+                inverted
+                basic
+                trigger={
+                  <Menu.Item
+                    name="map"
+                    active={activeItem === "map"}
+                    onClick={this.handleItemClick}
+                  >
+                    {" "}
+                    <Icon name="map marker" />
+                  </Menu.Item>
+                }
+                header="Map"
+                content="Search for groups, sessions, and users"
+              />
             </Link>
             <Link to={`/conversations`}>
-              <Menu.Item
-                name="conversations"
-                active={activeItem === "conversations"}
-                onClick={this.handleItemClick}
-              >
-                <Icon name="chat" />
-              </Menu.Item>
+              <Popup
+                key="you"
+                size="small"
+                inverted
+                basic
+                trigger={
+                  <Menu.Item
+                    name="conversations"
+                    active={activeItem === "conversations"}
+                    onClick={this.handleItemClick}
+                  >
+                    <Icon name="chat" />
+                  </Menu.Item>
+                }
+                header="Conversations"
+                content="If you belong to a group, you can chat with other members here."
+              />
             </Link>
 
             <Link to={`/notifications`}>
-              <Menu.Item
-                name="notifications"
-                active={activeItem === "notifications"}
-                onClick={this.handleItemClick}
-              >
-                <Icon name="alarm" />
-              </Menu.Item>
+              <Popup
+                key="you"
+                size="small"
+                inverted
+                basic
+                trigger={
+                  <Menu.Item
+                    name="notifications"
+                    active={activeItem === "notifications"}
+                    onClick={this.handleItemClick}
+                  >
+                    <Icon name="alarm" />
+                  </Menu.Item>
+                }
+                header="Nofications"
+                content="Here's where you'll be notified of incoming requests, and see a record of your outgoing requests and their current status."
+              />
             </Link>
           </Menu>
         </MediaQuery>
         <MediaQuery minWidth={767}>
           <Menu tabular size="small">
             <Link to={`/`}>
-              <Menu.Item
-                name="you"
-                active={activeItem === "you"}
-                onClick={this.handleItemClick}
+              <Popup
+                key="you"
+                size="small"
+                inverted
+                basic
+                trigger={
+                  <Menu.Item
+                    name="your_profile"
+                    active={activeItem === "your_profile"}
+                    onClick={this.handleItemClick}
+                  />
+                }
+                content="See and edit your profile information"
               />
             </Link>
             <Link to={`/group_dashboard`}>
-              <Menu.Item
-                name="your_groups"
-                active={activeItem === "your_groups"}
-                onClick={this.handleItemClick}
+              <Popup
+                key="you"
+                size="small"
+                inverted
+                basic
+                trigger={
+                  <Menu.Item
+                    name="your_groups"
+                    active={activeItem === "your_groups"}
+                    onClick={this.handleItemClick}
+                  />
+                }
+                content="See your groups, or create a new one"
               />
             </Link>
             <Link to={`/calendar`}>
-              <Menu.Item
-                name="calendar"
-                active={activeItem === "calendar"}
-                onClick={this.handleItemClick}
+              <Popup
+                key="you"
+                size="small"
+                inverted
+                basic
+                trigger={
+                  <Menu.Item
+                    name="calendar"
+                    active={activeItem === "calendar"}
+                    onClick={this.handleItemClick}
+                  />
+                }
+                content="See scheduled sessions, or schedule one yourself"
               />
             </Link>
             <Link to={`/map`}>
-              <Menu.Item
-                name="map"
-                active={activeItem === "map"}
-                onClick={this.handleItemClick}
+              <Popup
+                key="you"
+                size="small"
+                inverted
+                basic
+                trigger={
+                  <Menu.Item
+                    name="map"
+                    active={activeItem === "map"}
+                    onClick={this.handleItemClick}
+                  />
+                }
+                content="Search for groups, sessions, and users"
+              />
+            </Link>
+            <Link to={`/conversations`}>
+              <Popup
+                key="you"
+                size="small"
+                inverted
+                basic
+                trigger={
+                  <Menu.Item
+                    name="conversations"
+                    active={activeItem === "conversations"}
+                    onClick={this.handleItemClick}
+                  />
+                }
+                content="If you belong to a group, you can chat with other members here."
               />
             </Link>
 
-            <Link to={`/conversations`}>
-              <Menu.Item
-                name="conversations"
-                active={activeItem === "conversations"}
-                onClick={this.handleItemClick}
-              />
-            </Link>
             <Link to={`/notifications`}>
-              <Menu.Item
-                name="notifications"
-                active={activeItem === "notifications"}
-                onClick={this.handleItemClick}
+              <Popup
+                key="you"
+                size="small"
+                inverted
+                basic
+                trigger={
+                  <Menu.Item
+                    name="notifications"
+                    active={activeItem === "notifications"}
+                    onClick={this.handleItemClick}
+                  />
+                }
+                content="Here's where you'll be notified of incoming requests, and see a record of your outgoing requests and their current status."
               />
             </Link>
           </Menu>

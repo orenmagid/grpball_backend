@@ -7,33 +7,65 @@ import Cable from "./Cable";
 import { Grid, Menu, Segment, Message } from "semantic-ui-react";
 import MediaQuery from "react-responsive";
 
+import { baseUrl } from "../constants";
+
 class ChatComponent extends React.Component {
   state = {
     conversations: [],
     activeConversation: null,
     activeItem: "",
     activeIndex: "",
+    group_id: "",
     group: [],
     users: []
   };
 
-  handleItemClick = (e, { title }) => {
-    console.log("e", e);
-    console.log("title", title);
-    this.setState({
-      activeItem: title
-    });
+  handleItemClick = (e, { title, group }) => {
+    let token = localStorage.getItem("token");
+    if (token) {
+      fetch(baseUrl + `/groups/${group.id}`, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      })
+        .then(res => res.json())
+        .then(group => {
+          this.setState({
+            activeItem: title,
+            group_id: group.id,
+            group: group,
+            users: group.users
+          });
+        });
+    }
   };
 
   componentDidMount = () => {
     fetch(`${API_ROOT}/conversations`)
       .then(res => res.json())
       .then(conversations => {
+        let token = localStorage.getItem("token");
+        if (token) {
+          fetch(baseUrl + `/groups/${conversations[0].group.id}`, {
+            headers: {
+              Authorization: `Bearer ${token}`
+            }
+          })
+            .then(res => res.json())
+            .then(group => {
+              this.setState({
+                group: group,
+                users: group.users
+              });
+            });
+        }
+
         console.log("conversations", conversations);
         this.setState({
           conversations: conversations,
           activeConversation: conversations[0].id,
-          activeItem: conversations[0].title
+          activeItem: conversations[0].title,
+          group_id: conversations[0].group.id
         });
       });
   };
@@ -60,7 +92,7 @@ class ChatComponent extends React.Component {
   };
 
   render = () => {
-    const { activeConversation, activeItem, activeIndex } = this.state;
+    const { activeConversation, activeItem, activeIndex, users } = this.state;
     const { user } = this.props;
     const userGroupIds = user.user_groups.map(
       user_group => user_group.group_id
@@ -132,6 +164,7 @@ class ChatComponent extends React.Component {
             {activeConversation && conversations.length > 0 ? (
               <MessagesArea
                 user={this.props.user}
+                users={users}
                 conversation={findActiveConversation(
                   conversations,
                   activeConversation
@@ -145,6 +178,7 @@ class ChatComponent extends React.Component {
             {activeConversation && conversations.length > 0 ? (
               <MessagesArea
                 user={this.props.user}
+                users={users}
                 conversation={findActiveConversation(
                   conversations,
                   activeConversation
