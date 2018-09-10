@@ -78,6 +78,17 @@ while x <  6  do
   x += 1
 end
 
+while x <  6  do
+  y = 1
+    while y < 3 do
+
+        Rsvp.create(user_id: x + 14, session_id: y, status: "Delayed")
+        y += 1
+    end
+
+  x += 1
+end
+
 
 
 Group.all.each do |group|
