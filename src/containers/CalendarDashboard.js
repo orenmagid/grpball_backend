@@ -245,9 +245,7 @@ class CalendarDashboard extends Component {
           <React.Fragment>
             <MediaQuery maxWidth={767}>
               <Message>
-                <Message.Header>
-                  This time slot has already passed
-                </Message.Header>
+                <Message.Header>This date has already passed</Message.Header>
                 <p>Click on a future slot to schedule a session.</p>
               </Message>
             </MediaQuery>

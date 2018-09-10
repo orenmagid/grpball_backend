@@ -5,6 +5,7 @@ import SessionScheduler from "./SessionScheduler";
 import AddUserFormCard from "./AddUserFormCard";
 import GrantAdminStatusCard from "./GrantAdminStatusCard";
 import ReviewRequestCard from "./ReviewRequestCard";
+import MediaQuery from "react-responsive";
 
 import { baseUrl } from "../constants";
 
@@ -403,13 +404,24 @@ export default class GroupCard extends Component {
                   );
                 })}
               </List>
-              <p>
-                {" "}
-                Administrators can add and remove users from the group, as well
-                as control certain default settings. If you'd like to become an
-                administrator of this group, send a request below.
-              </p>
-              <a
+              <MediaQuery minWidth={992}>
+                <p>
+                  Administrators can add and remove users from the group, as
+                  well as control certain default settings. If you'd like to
+                  become an administrator of this group, send a message to this
+                  group's administrator(s) by clicking "Conversations" above.
+                </p>
+              </MediaQuery>
+              <MediaQuery maxWidth={992}>
+                <p>
+                  Administrators can add and remove users from the group, as
+                  well as control certain default settings. If you'd like to
+                  become an administrator of this group, send a message to this
+                  group's administrator(s) by clicking <Icon name="chat" />{" "}
+                  above.
+                </p>
+              </MediaQuery>
+              {/* <a
                 href="message_administrator"
                 // onClick={this.handleOpenAddUserClick}
               >
@@ -417,7 +429,7 @@ export default class GroupCard extends Component {
                 {administrators.length > 1
                   ? "Message the Administrators"
                   : "Message the Administrator"}
-              </a>
+              </a> */}
             </Message>
           ) : null}
           {this.state.formToShow === "addUser" ? (
