@@ -187,7 +187,7 @@ class ChatComponent extends React.Component {
             ) : null}
           </div>
         </MediaQuery>
-        {conversations.length === 0 ? (
+        {conversations.length === 0 && user.groups.length === 0 ? (
           <div className="ui card sixteen wide column">
             <Message>
               <Message.Header>
