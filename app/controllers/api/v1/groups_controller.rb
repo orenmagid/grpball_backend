@@ -59,6 +59,7 @@ class Api::V1::GroupsController < ApplicationController
            render json: @group, status: :accepted
          else
            render json: { errors: @group.errors.full_messages }, status: :unprocessible_entity
+        end
       end
     end
 
