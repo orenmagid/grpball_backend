@@ -145,6 +145,7 @@ export default class GroupCard extends Component {
             });
           })
           .catch(e => console.error(e));
+
         fetch(baseUrl + `/requests/${this.state.request.id}`, {
           method: "PATCH",
           body: JSON.stringify({ status: "Accepted" }),
