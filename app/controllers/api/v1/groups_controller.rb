@@ -40,7 +40,7 @@ class Api::V1::GroupsController < ApplicationController
         @user = User.find_by(username: params[:username])
       end
 
-      if params[:name] && !params[:location]
+      if params[:user_id] || params[:username]
         if params[:name] == @group.name
           @group.users << @user
           @group.save
@@ -48,9 +48,7 @@ class Api::V1::GroupsController < ApplicationController
         else
           render json: { errors: @group.errors.full_messages }, status: :unprocessible_entity
         end
-      end
-
-      if params[:location]
+      else
         @group.update(group_params)
          if @group.save
            render json: @group, status: :accepted
@@ -60,16 +58,16 @@ class Api::V1::GroupsController < ApplicationController
 
       end
 
-      if params[:username] || params[:user_id]
-        @group.users << @user
-         if @group.save
-
-           @group.user_groups.last.update(is_administrator: params[:is_administrator])
-
-           render json: @group, status: :accepted
-         else
-           render json: { errors: @group.errors.full_messages }, status: :unprocessible_entity
-        end
+      # if params[:username] || params[:user_id]
+      #   @group.users << @user
+      #    if @group.save
+      #
+      #      @group.user_groups.last.update(is_administrator: params[:is_administrator])
+      #
+      #      render json: @group, status: :accepted
+      #    else
+      #      render json: { errors: @group.errors.full_messages }, status: :unprocessible_entity
+      #   end
       end
     end
 
