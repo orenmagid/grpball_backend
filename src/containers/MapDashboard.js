@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { Map, InfoWindow, Marker, GoogleApiWrapper } from "google-maps-react";
+import LocationSearchInputForMap from "../components/LocationSearchInputForMap";
 import { Checkbox, Grid, Label, Header, Popup } from "semantic-ui-react";
 import CalendarSessionInfo from "../components/CalendarSessionInfo";
 import InteractiveSegment from "../components/InteractiveSegment";
@@ -24,9 +25,27 @@ export class MapDashboard extends Component {
     whatToDisplayOnMap: "yourSessions",
     groupUsers: [],
     activeMarker: {},
-    showingInfoWindow: false
+    showingInfoWindow: false,
+    searchPosition: null,
+    zoomType: null
   };
 
+  captureAddress = latLng => {
+    console.log("latLng", latLng);
+    this.setState({
+      searchPosition: {
+        lat: latLng.lat,
+        lng: latLng.lng
+      }
+    });
+  };
+
+  captureZoomType = resultsTypes => {
+    console.log("resultsTypes", resultsTypes);
+    this.setState({
+      zoomType: resultsTypes
+    });
+  };
   componentDidMount() {
     window.onload = () => {
       var startPos;
@@ -464,7 +483,23 @@ export class MapDashboard extends Component {
         break;
     }
 
-    console.log("markers", markers);
+    let zoom;
+    if (this.state.zoomType) {
+      if (this.state.zoomType.includes("country")) {
+        zoom = 5;
+      } else if (
+        this.state.zoomType.includes("establishment") ||
+        this.state.zoomType.includes("point_of_interest") ||
+        this.state.zoomType.includes("gym") ||
+        this.state.zoomType.includes("route")
+      ) {
+        zoom = 18;
+      } else if (this.state.zoomType.includes("administrative_area_level_1")) {
+        zoom = 8;
+      }
+    } else {
+      zoom = 11;
+    }
 
     return (
       <React.Fragment>
@@ -605,12 +640,21 @@ export class MapDashboard extends Component {
                 />
               ) : null}
               <div className="ui raised container map segment">
+                <LocationSearchInputForMap
+                  captureZoomType={this.captureZoomType}
+                  captureAddress={this.captureAddress}
+                />
                 <Map
                   google={this.props.google}
-                  zoom={11}
+                  zoom={zoom}
                   initialCenter={
                     this.state.userPosition
                       ? this.state.userPosition
+                      : initialCenter
+                  }
+                  center={
+                    this.state.searchPosition
+                      ? this.state.searchPosition
                       : initialCenter
                   }
                 >
@@ -687,12 +731,21 @@ export class MapDashboard extends Component {
             />
           ) : null}
           <div className="ui raised container map segment">
+            <LocationSearchInputForMap
+              captureAddress={this.captureAddress}
+              captureZoomType={this.captureZoomType}
+            />
             <Map
               google={this.props.google}
-              zoom={11}
+              zoom={zoom}
               initialCenter={
                 this.state.userPosition
                   ? this.state.userPosition
+                  : initialCenter
+              }
+              center={
+                this.state.searchPosition
+                  ? this.state.searchPosition
                   : initialCenter
               }
             >

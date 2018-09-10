@@ -18,6 +18,13 @@ export default class ConversationsDashboard extends Component {
   render() {
     return (
       <React.Fragment>
+        <Message>
+          <Message.Header>Group Chats</Message.Header>
+          <p>
+            For now, conversations are only enabled among groups. Each group has
+            it's own chat, in which only group members can participate.
+          </p>
+        </Message>
         <ChatComponent user={this.props.user} groups={this.props.groups} />
       </React.Fragment>
     );

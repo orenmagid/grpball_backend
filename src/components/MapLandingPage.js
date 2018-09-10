@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { Route, Link } from "react-router-dom";
-
+import LocationSearchInputForMap from "./LocationSearchInputForMap";
 import { Map, InfoWindow, Marker, GoogleApiWrapper } from "google-maps-react";
 import { Checkbox, Grid, Label, Header, Segment } from "semantic-ui-react";
 import MapLandingSessionInfo from "../components/MapLandingSessionInfo";
@@ -17,7 +17,27 @@ export class MapLandingPage extends Component {
     selectedEvent: null,
     selectedGroup: null,
     whatToDisplayOnMap: "allSessions",
-    userPosition: null
+    userPosition: null,
+    searchPosition: null,
+    zoomType: null,
+    address: ""
+  };
+
+  captureAddress = latLng => {
+    console.log("latLng", latLng);
+    this.setState({
+      searchPosition: {
+        lat: latLng.lat,
+        lng: latLng.lng
+      }
+    });
+  };
+
+  captureZoomType = resultsTypes => {
+    console.log("resultsTypes", resultsTypes);
+    this.setState({
+      zoomType: resultsTypes
+    });
   };
 
   componentDidMount() {
@@ -187,6 +207,24 @@ export class MapLandingPage extends Component {
 
     console.log("markers", markers);
 
+    let zoom;
+    if (this.state.zoomType) {
+      if (this.state.zoomType.includes("country")) {
+        zoom = 5;
+      } else if (
+        this.state.zoomType.includes("establishment") ||
+        this.state.zoomType.includes("point_of_interest") ||
+        this.state.zoomType.includes("gym") ||
+        this.state.zoomType.includes("route")
+      ) {
+        zoom = 18;
+      } else if (this.state.zoomType.includes("administrative_area_level_1")) {
+        zoom = 8;
+      }
+    } else {
+      zoom = 11;
+    }
+
     return (
       <React.Fragment>
         <Link to={`/new_user`}>
@@ -195,8 +233,8 @@ export class MapLandingPage extends Component {
           </div>
         </Link>
         <Segment>
-          Take a look at the map to find groups and sessions near you. Once you
-          create an account, you can find other users near you too.
+          Take a look at the map to find groups and pickup sessions near you.
+          Once you create an account, you can find other users near you too.
         </Segment>
         <MediaQuery minWidth={992}>
           <div className="ui two column grid container segment">
@@ -262,12 +300,21 @@ export class MapLandingPage extends Component {
             </Grid.Column>
             <Grid.Column width={14}>
               <div className="ui raised container map segment">
+                <LocationSearchInputForMap
+                  captureAddress={this.captureAddress}
+                  captureZoomType={this.captureZoomType}
+                />
                 <Map
                   google={this.props.google}
-                  zoom={8}
+                  zoom={zoom}
                   initialCenter={
                     this.state.userPosition
                       ? this.state.userPosition
+                      : initialCenter
+                  }
+                  center={
+                    this.state.searchPosition
+                      ? this.state.searchPosition
                       : initialCenter
                   }
                 >
@@ -309,12 +356,21 @@ export class MapLandingPage extends Component {
           ) : null}
 
           <div className="ui raised container map segment">
+            <LocationSearchInputForMap
+              captureZoomType={this.captureZoomType}
+              captureAddress={this.captureAddress}
+            />
             <Map
               google={this.props.google}
-              zoom={8}
+              zoom={zoom}
               initialCenter={
                 this.state.userPosition
                   ? this.state.userPosition
+                  : initialCenter
+              }
+              center={
+                this.state.searchPosition
+                  ? this.state.searchPosition
                   : initialCenter
               }
             >

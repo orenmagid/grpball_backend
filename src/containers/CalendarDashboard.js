@@ -22,18 +22,36 @@ class CalendarDashboard extends Component {
     selectedGroup: null,
     currentRsvp: "",
     formToShow: "none",
-    groupUsers: []
+    groupUsers: [],
+    showWarning: false,
+    warning: ""
   };
 
   handleSelect = ({ start, end }) => {
-    if (this.props.user.user_groups.length > 0) {
+    if (this.props.user.user_groups.length > 0 && moment(start) > moment()) {
       this.setState({
         formToShow: "suggestSession",
         start: start,
-        end: end
+        end: end,
+        showWarning: false,
+        warning: "",
+        selectedEvent: null,
+        selectedGroup: null
       });
-    } else {
-      this.setState({ showWarning: true });
+    } else if (this.props.user.user_groups.length === 0) {
+      this.setState({
+        showWarning: true,
+        warning: "memberOfGroup",
+        selectedEvent: null,
+        selectedGroup: null
+      });
+    } else if (moment(start) < moment()) {
+      this.setState({
+        showWarning: true,
+        warning: "timeInPast",
+        selectedEvent: null,
+        selectedGroup: null
+      });
     }
   };
 
@@ -48,12 +66,11 @@ class CalendarDashboard extends Component {
         rsvp => rsvp.user_id === this.props.user.id
       );
 
-      console.log("myRsvp", myRsvp);
-
       this.setState({
         selectedEvent: event,
         selectedGroup: null,
-        currentRsvp: myRsvp
+        currentRsvp: myRsvp,
+        formToShow: "none"
       });
     }
   };
@@ -197,7 +214,7 @@ class CalendarDashboard extends Component {
     console.log("selectedGroup", this.state.selectedGroup);
     return (
       <React.Fragment>
-        {this.state.showWarning ? (
+        {this.state.showWarning && this.state.warning === "memberOfGroup" ? (
           <React.Fragment>
             <MediaQuery maxWidth={767}>
               <Message>
@@ -220,6 +237,26 @@ class CalendarDashboard extends Component {
                   Click "Map" to search for a group to join, or click "Your
                   Groups" to create your own.
                 </p>
+              </Message>
+            </MediaQuery>
+          </React.Fragment>
+        ) : null}
+        {this.state.showWarning && this.state.warning === "timeInPast" ? (
+          <React.Fragment>
+            <MediaQuery maxWidth={767}>
+              <Message>
+                <Message.Header>
+                  This time slot has already passed
+                </Message.Header>
+                <p>Click on a future slot to schedule a session.</p>
+              </Message>
+            </MediaQuery>
+            <MediaQuery minWidth={767}>
+              <Message>
+                <Message.Header>
+                  This time slot has already passed
+                </Message.Header>
+                <p>Click on a future slot to schedule a session.</p>
               </Message>
             </MediaQuery>
           </React.Fragment>

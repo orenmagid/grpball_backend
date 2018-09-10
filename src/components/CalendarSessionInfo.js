@@ -242,13 +242,13 @@ export default class CalendarSessionInfo extends Component {
             session={session}
           />
           <Card.Content extra>
-            {rsvp ? (
+            {rsvp && session.status !== "Cancelled" ? (
               <a href="rsvp" onClick={e => handleRsvpClick(e, rsvp)}>
                 <Icon name="write" />
                 {rsvp.status}
               </a>
             ) : null}
-            {memberOfGroup > -1 && !rsvp ? (
+            {memberOfGroup > -1 && !rsvp && session.status !== "Cancelled" ? (
               <a href="rsvp" onClick={e => handleRsvpClick(e)}>
                 <Icon name="write" />
                 RSVP
