@@ -188,17 +188,18 @@ export default class SessionInfo extends Component {
             session={session}
           />
           <Card.Content extra>
-            {rsvp ? (
+            {rsvp && session.status !== "Cancelled" ? (
               <a href="rsvp" onClick={e => handleRsvpClick(e, rsvp)}>
                 <Icon name="write" />
                 {rsvp.status}
               </a>
-            ) : (
+            ) : null}
+            {!rsvp && session.status !== "Cancelled" ? (
               <a href="rsvp" onClick={e => handleRsvpClick(e)}>
                 <Icon name="write" />
                 RSVP
               </a>
-            )}
+            ) : null}
           </Card.Content>
         </Card>
       </React.Fragment>

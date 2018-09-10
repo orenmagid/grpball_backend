@@ -90,6 +90,10 @@ export default class CalendarSessionInfo extends Component {
       return user.id === session.creator_id;
     });
 
+    console.log("acceptedRsvps", acceptedRsvps);
+    console.log("declinedRsvps", declinedRsvps);
+    console.log("delayedRsvps", delayedRsvps);
+
     let label;
 
     switch (session.status) {

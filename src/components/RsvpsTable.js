@@ -37,7 +37,7 @@ export default class RsvpsTable extends Component {
               return (
                 <Table.Row key={rsvp.id}>
                   <Table.Cell>
-                    {user.first_name + " " + user.last_name}
+                    {user ? user.first_name + " " + user.last_name : null}
                   </Table.Cell>
                   <Table.Cell>{rsvp.status}</Table.Cell>
 
