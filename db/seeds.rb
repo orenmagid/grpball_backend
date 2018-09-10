@@ -71,7 +71,6 @@ while x <  6  do
     while y < 16 do
         Rsvp.create(user_id: x, session_id: y, status: "Accepted")
         Rsvp.create(user_id: x + 7, session_id: y, status: "Declined")
-        Rsvp.create(user_id: x + 14, session_id: y, status: "Delayed")
         y += 1
     end
 
