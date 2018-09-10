@@ -66,7 +66,7 @@ class Api::V1::GroupsController < ApplicationController
    private
 
    def group_params
-     params.require(:group).permit(:id, :name, :location, :user_id, :is_administrator)
+     params.require(:group).permit(:id, :name, :location, :user_id, :is_administrator, :latitude, :longitude)
    end
 
    def find_group
