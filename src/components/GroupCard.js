@@ -42,6 +42,7 @@ export default class GroupCard extends Component {
   };
 
   fetchGroup = () => {
+    console.log("fetching group");
     let token = localStorage.getItem("token");
     if (token) {
       fetch(baseUrl + `/groups/${this.props.group.id}`, {
@@ -51,6 +52,7 @@ export default class GroupCard extends Component {
       })
         .then(res => res.json())
         .then(group => {
+          console.log("group", group);
           this.setState({
             group: group,
             users: group.users
@@ -206,7 +208,6 @@ export default class GroupCard extends Component {
       }
     }
     if (value === "No" && e.target.administrator === undefined) {
-      console.log("In the conditional");
       fetch(baseUrl + `/requests/${this.state.request.id}`, {
         method: "PATCH",
         body: JSON.stringify({ status: "Denied" }),
