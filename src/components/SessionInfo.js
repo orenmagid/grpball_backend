@@ -52,6 +52,10 @@ export default class SessionInfo extends Component {
       return user.id === session.creator_id;
     });
 
+    console.log("acceptedRsvps", acceptedRsvps);
+    console.log("declinedRsvps", declinedRsvps);
+    console.log("delayedRsvps", delayedRsvps);
+
     let label;
 
     switch (session.status) {
@@ -83,6 +87,7 @@ export default class SessionInfo extends Component {
       default:
         return null;
     }
+
     return (
       <React.Fragment>
         <i className="window close icon" onClick={handleCloseClick} />
