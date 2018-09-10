@@ -144,8 +144,9 @@ class MainContainer extends React.Component {
       : this.setState({ formToShow: "editProfile" });
   };
 
-  handlePatchUser = (e, user, address, latitude, longitude) => {
+  handlePatchUser = (e, user, address, latitude, longitude, experience) => {
     e.preventDefault();
+    console.log("experience", experience);
     let data = {
       user: {
         first_name: e.currentTarget.first_name.value,
@@ -158,8 +159,8 @@ class MainContainer extends React.Component {
         longitude: longitude,
         age: e.currentTarget.age.value,
         height_in_inches: e.currentTarget.height.value,
-        phone_number: e.currentTarget.phone.value
-        // experience: e.currentTarget.experience.value
+        phone_number: e.currentTarget.phone.value,
+        highest_experience: experience
       }
     };
     let token = localStorage.getItem("token");

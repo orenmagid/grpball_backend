@@ -8,11 +8,14 @@ import PlacesAutocomplete, {
 export default class LocationSearchInput extends React.Component {
   constructor(props) {
     super(props);
+
     this.state = {
       address: "",
       formatted_address: "",
       errorMessage: "",
-      suggestion: ""
+      suggestion: "",
+      latitude: "",
+      longitude: ""
     };
   }
 
@@ -68,6 +71,14 @@ export default class LocationSearchInput extends React.Component {
                       Update your homecourt or city{" "}
                     </h5>{" "}
                     <h6 className="ui inverted header">
+                      Currently, it's {this.props.currentLocation}
+                    </h6>
+                  </React.Fragment>
+                ) : null}
+                {this.props.type === "edit_group" ? (
+                  <React.Fragment>
+                    <h5 className="ui header">Update this group's location </h5>{" "}
+                    <h6 className="ui header">
                       Currently, it's {this.props.currentLocation}
                     </h6>
                   </React.Fragment>

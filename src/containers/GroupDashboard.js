@@ -69,7 +69,7 @@ class GroupDashboard extends Component {
     }
   };
 
-  handleNewGroupSubmit = (e, address) => {
+  handleNewGroupSubmit = (e, latitude, longitude, address) => {
     e.preventDefault();
 
     let newGroupName = e.target.groupname.value;
@@ -77,6 +77,8 @@ class GroupDashboard extends Component {
     let data = {
       name: newGroupName,
       location: address,
+      latitude: latitude,
+      longitude: longitude,
       user_id: this.props.user.id
     };
     e.target.reset();
@@ -92,6 +94,35 @@ class GroupDashboard extends Component {
       .then(response => response.json())
       .then(jsonData => {
         this.setState({ activeIndex: newGroupName, activeItem: newGroupName });
+        this.props.handleForceUserUpdate();
+      });
+  };
+
+  handlePatchGroupSubmit = (e, group_id, latitude, longitude, address) => {
+    e.preventDefault();
+
+    let groupName = e.target.groupname.value;
+
+    let data = {
+      name: groupName,
+      location: address,
+      latitude: latitude,
+      longitude: longitude,
+      user_id: this.props.user.id
+    };
+    e.target.reset();
+    let token = localStorage.getItem("token");
+    fetch(baseUrl + `/groups/${group_id}`, {
+      method: "PATCH",
+      body: JSON.stringify(data),
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`
+      }
+    })
+      .then(response => response.json())
+      .then(jsonData => {
+        this.setState({ group: jsonData });
         this.props.handleForceUserUpdate();
       });
   };
@@ -179,6 +210,7 @@ class GroupDashboard extends Component {
                         handleItemClick={this.handleItemClick}
                         handleFetchGroup={this.fetchGroup}
                         handleFetchGroups={this.props.handleFetchGroups}
+                        handlePatchGroupSubmit={this.handlePatchGroupSubmit}
                       />
                     </React.Fragment>
                   ) : null
@@ -218,6 +250,7 @@ class GroupDashboard extends Component {
                         handleItemClick={this.handleItemClick}
                         handleFetchGroup={this.fetchGroup}
                         handleFetchGroups={this.props.handleFetchGroups}
+                        handlePatchGroupSubmit={this.handlePatchGroupSubmit}
                       />
                     </React.Fragment>
                   ) : null

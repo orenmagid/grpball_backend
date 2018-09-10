@@ -6,6 +6,7 @@ import AddUserFormCard from "./AddUserFormCard";
 import GrantAdminStatusCard from "./GrantAdminStatusCard";
 import ReviewRequestCard from "./ReviewRequestCard";
 import MediaQuery from "react-responsive";
+import EditGroup from "./EditGroup";
 
 import { baseUrl } from "../constants";
 
@@ -41,6 +42,13 @@ export default class GroupCard extends Component {
     });
   };
 
+  handleEditGroupClick = e => {
+    e.preventDefault();
+    this.setState({
+      formToShow: "editGroup"
+    });
+  };
+
   fetchGroup = () => {
     console.log("fetching group");
     let token = localStorage.getItem("token");
@@ -58,7 +66,7 @@ export default class GroupCard extends Component {
             users: group.users
           });
         })
-        .catch(e => console.error(e));
+        .catch(e => alert(e));
     }
   };
 
@@ -93,7 +101,7 @@ export default class GroupCard extends Component {
           this.props.handleForceUserUpdate();
           this.fetchGroup();
         })
-        .catch(e => console.error(e));
+        .catch(e => alert(e));
     }
   };
 
@@ -110,13 +118,13 @@ export default class GroupCard extends Component {
     });
   };
 
-  handleAddToGroupSubmit = (e, value = "No") => {
+  handleAddToGroupSubmit = (e, value = "Yes") => {
     console.log("e.target.administrator", e.target.administrator);
     console.log("value", value);
     e.preventDefault();
     let data;
     let token = localStorage.getItem("token");
-    if (value === "No" && e.target.administrator) {
+    if (value === "Yes" && e.target.administrator) {
       let username = e.target.username.value;
       let administrator = e.target.administrator.checked;
 
@@ -144,29 +152,29 @@ export default class GroupCard extends Component {
               formToShow: "none"
             });
           })
-          .catch(e => console.error(e));
+          .catch(e => alert(e));
 
-        fetch(baseUrl + `/requests/${this.state.request.id}`, {
-          method: "PATCH",
-          body: JSON.stringify({ status: "Accepted" }),
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`
-          }
-        })
-          .then(response => response.json())
-          .then(request => {
-            this.setState({
-              request: request,
-              formToShow: "none"
-            });
-            this.props.handleForceUserUpdate();
-          })
-          .catch(e => console.error(e));
+        // fetch(baseUrl + `/requests/${this.state.request.id}`, {
+        //   method: "PATCH",
+        //   body: JSON.stringify({ status: "Accepted" }),
+        //   headers: {
+        //     "Content-Type": "application/json",
+        //     Authorization: `Bearer ${token}`
+        //   }
+        // })
+        //   .then(response => response.json())
+        //   .then(request => {
+        //     this.setState({
+        //       request: request,
+        //       formToShow: "none"
+        //     });
+        //     this.props.handleForceUserUpdate();
+        //   })
+        //   .catch(e => alert(e));
       }
     }
 
-    if (value === "Yes") {
+    if (value === "Yes" && e.target.administrator === undefined) {
       let user_id = this.state.request.user_id;
       let administrator = false;
 
@@ -192,8 +200,9 @@ export default class GroupCard extends Component {
               group: group,
               users: group.users,
               formToShow: "none"
-            }).catch(e => console.error(e));
+            }).catch(e => alert(e));
           });
+
         fetch(baseUrl + `/requests/${this.state.request.id}`, {
           method: "PATCH",
           body: JSON.stringify({ status: "Accepted" }),
@@ -210,10 +219,10 @@ export default class GroupCard extends Component {
             });
             this.props.handleForceUserUpdate();
           })
-          .catch(e => console.error(e));
+          .catch(e => alert(e));
       }
     }
-    if (value === "No" && e.target.administrator === undefined) {
+    if (value === "No") {
       fetch(baseUrl + `/requests/${this.state.request.id}`, {
         method: "PATCH",
         body: JSON.stringify({ status: "Denied" }),
@@ -229,7 +238,7 @@ export default class GroupCard extends Component {
             formToShow: "none"
           });
         })
-        .catch(e => console.error(e));
+        .catch(e => alert(e));
       this.props.handleForceUserUpdate();
     }
     this.fetchGroup();
@@ -347,11 +356,17 @@ export default class GroupCard extends Component {
                 })}
               </List>
               {users.length > 1 ? (
-                <div className="ui two column grid">
+                <div className="ui three column grid">
                   <div className="column">
                     <a href="add_user" onClick={this.handleOpenAddUserClick}>
                       <Icon name="add square" />
                       Add User
+                    </a>
+                  </div>
+                  <div className="column">
+                    <a href="edit_group" onClick={this.handleEditGroupClick}>
+                      <Icon name="write" />
+                      Edit Group Info
                     </a>
                   </div>
                   <div className="column">
@@ -362,10 +377,20 @@ export default class GroupCard extends Component {
                   </div>
                 </div>
               ) : (
-                <a href="add_user" onClick={this.handleOpenAddUserClick}>
-                  <Icon name="add square" />
-                  Add User
-                </a>
+                <div className="ui two column grid">
+                  <div className="column">
+                    <a href="add_user" onClick={this.handleOpenAddUserClick}>
+                      <Icon name="add square" />
+                      Add User
+                    </a>
+                  </div>
+                  <div className="column">
+                    <a href="edit_group" onClick={this.handleEditGroupClick}>
+                      <Icon name="write" />
+                      Edit Group Info
+                    </a>
+                  </div>
+                </div>
               )}
             </Message>
           ) : null}
@@ -473,6 +498,14 @@ export default class GroupCard extends Component {
               request={this.state.request}
               user={this.props.user}
               handleAddToGroupSubmit={this.handleAddToGroupSubmit}
+            />
+          ) : null}
+          {this.state.formToShow === "editGroup" ? (
+            <EditGroup
+              handleCloseClick={this.handleCloseClick}
+              group={group}
+              user={this.props.user}
+              handlePatchGroupSubmit={this.props.handlePatchGroupSubmit}
             />
           ) : null}
         </Card.Content>

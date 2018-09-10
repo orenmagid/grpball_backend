@@ -1,26 +1,46 @@
 import React, { Component } from "react";
 import { Redirect } from "react-router-dom";
 import { Button, Form, Segment } from "semantic-ui-react";
+import PlacesAutocomplete, {
+  geocodeByAddress,
+  getLatLng
+} from "react-places-autocomplete";
 import LocationSearchInput from "./LocationSearchInput";
 
 export default class NewUserForm extends Component {
   state = {
-    address: ""
+    address: "",
+    experience: "",
+    latitude: "",
+    longitude: ""
   };
 
   captureAddress = address => {
-    this.setState({ address: address });
+    geocodeByAddress(address)
+      .then(results => getLatLng(results[0]))
+      .then(latLng =>
+        this.setState({
+          address: address,
+          latitude: latLng.latitude,
+          longitude: latLng.longitude
+        })
+      )
+
+      .catch(error => console.error("Error", error));
   };
+
+  handleChange = (e, { value }) => this.setState({ experience: value });
+
   render() {
     let { handleCreateOrEditUser, displayNewUserForm } = this.props;
-    // const options = [
-    //   { key: "tb", text: "Total Beginner", value: "Total Beginner" },
-    //   { key: "pu", text: "Only Pickup", value: "Only Pickup" },
-    //   { key: "ob", text: "Some Organized Ball", value: "Some Organized Ball" },
-    //   { key: "hs", text: "High School Ball", value: "High School Ball" },
-    //   { key: "cb", text: "College Ball", value: "College Ball" },
-    //   { key: "pb", text: "Professional Ball", value: "Professional Ball" }
-    // ];
+    const options = [
+      { key: "tb", text: "Total Beginner", value: "Total Beginner" },
+      { key: "pu", text: "Only Pickup", value: "Only Pickup" },
+      { key: "ob", text: "Some Organized Ball", value: "Some Organized Ball" },
+      { key: "hs", text: "High School Ball", value: "High School Ball" },
+      { key: "cb", text: "College Ball", value: "College Ball" },
+      { key: "pb", text: "Professional Ball", value: "Professional Ball" }
+    ];
 
     let token = localStorage.getItem("token");
     if (token) {
@@ -31,7 +51,15 @@ export default class NewUserForm extends Component {
         <Segment inverted>
           <Form
             inverted
-            onSubmit={e => handleCreateOrEditUser(e, this.state.address)}
+            onSubmit={e =>
+              handleCreateOrEditUser(
+                e,
+                this.state.address,
+                this.state.latitude,
+                this.state.longitude,
+                this.state.experience
+              )
+            }
           >
             <Form.Group widths="equal">
               <Form.Input
@@ -101,14 +129,15 @@ export default class NewUserForm extends Component {
                 type="number"
               />
             </Form.Group>
-            {/* <Form.Group widths="equal">
+            <Form.Group widths="equal">
               <Form.Select
                 name="experience"
                 label="Highest Level of Experience"
                 options={options}
                 placeholder="Highest Level of Experience"
+                onChange={this.handleChange}
               />
-            </Form.Group> */}
+            </Form.Group>
             {/* <Form.Checkbox label="I agree to the Terms and Conditions" /> */}
             <Button inverted secondary basic type="submit">
               Submit

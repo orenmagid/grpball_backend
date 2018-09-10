@@ -1,6 +1,10 @@
 import React, { Component } from "react";
 import { Redirect } from "react-router-dom";
 import { Button, Form, Segment } from "semantic-ui-react";
+import PlacesAutocomplete, {
+  geocodeByAddress,
+  getLatLng
+} from "react-places-autocomplete";
 import LocationSearchInput from "./LocationSearchInput";
 
 export default class EditUserProfile extends Component {
@@ -13,12 +17,27 @@ export default class EditUserProfile extends Component {
     phone: "",
     age: "",
     height: "",
-    address: ""
+    address: "",
+    experience: "",
+    latitude: "",
+    longitude: ""
   };
 
   captureAddress = address => {
-    this.setState({ address: address });
+    geocodeByAddress(address)
+      .then(results => getLatLng(results[0]))
+      .then(latLng =>
+        this.setState({
+          address: address,
+          latitude: latLng.latitude,
+          longitude: latLng.longitude
+        })
+      )
+
+      .catch(error => console.error("Error", error));
   };
+
+  handleChange = e => this.setState({ [e.target.name]: e.target.value });
 
   componentDidMount() {
     this.setState({
@@ -29,11 +48,10 @@ export default class EditUserProfile extends Component {
       phone: this.props.user.phone_number,
       location: this.props.user.location,
       age: this.props.user.age,
-      height: this.props.user.height_in_inches
+      height: this.props.user.height_in_inches,
+      experience: this.props.user.highest_experience
     });
   }
-
-  handleChange = e => this.setState({ [e.target.name]: e.target.value });
 
   render() {
     let {
@@ -41,14 +59,14 @@ export default class EditUserProfile extends Component {
       handleCreateOrEditUser,
       displayNewUserForm
     } = this.props;
-    // const options = [
-    //   { key: "tb", text: "Total Beginner", value: "Total Beginner" },
-    //   { key: "pu", text: "Only Pickup", value: "Only Pickup" },
-    //   { key: "ob", text: "Some Organized Ball", value: "Some Organized Ball" },
-    //   { key: "hs", text: "High School Ball", value: "High School Ball" },
-    //   { key: "cb", text: "College Ball", value: "College Ball" },
-    //   { key: "pb", text: "Professional Ball", value: "Professional Ball" }
-    // ];
+    const options = [
+      { key: "tb", text: "Total Beginner", value: "Total Beginner" },
+      { key: "pu", text: "Only Pickup", value: "Only Pickup" },
+      { key: "ob", text: "Some Organized Ball", value: "Some Organized Ball" },
+      { key: "hs", text: "High School Ball", value: "High School Ball" },
+      { key: "cb", text: "College Ball", value: "College Ball" },
+      { key: "pb", text: "Professional Ball", value: "Professional Ball" }
+    ];
 
     if (!displayNewUserForm && !localStorage.getItem("token")) {
       return <Redirect to="/" />;
@@ -60,7 +78,14 @@ export default class EditUserProfile extends Component {
           <Form
             inverted
             onSubmit={e =>
-              handleCreateOrEditUser(e, this.props.user, this.state.address)
+              handleCreateOrEditUser(
+                e,
+                this.props.user,
+                this.state.address,
+                this.state.latitude,
+                this.state.longitude,
+                this.state.experience
+              )
             }
           >
             <Form.Group widths="equal">
@@ -141,14 +166,15 @@ export default class EditUserProfile extends Component {
                 onChange={this.handleChange}
               />
             </Form.Group>
-            {/* <Form.Group widths="equal">
+            <Form.Group widths="equal">
               <Form.Select
                 name="experience"
                 label="Highest Level of Experience"
                 options={options}
                 placeholder="Highest Level of Experience"
+                onChange={this.handleChange}
               />
-            </Form.Group> */}
+            </Form.Group>
             {/* <Form.Checkbox label="I agree to the Terms and Conditions" /> */}
             <Button inverted secondary basic type="submit">
               Submit
