@@ -51,11 +51,14 @@ class Api::V1::GroupsController < ApplicationController
       end
       if params[:username] || params[:user_id]
         @group.users << @user
-        @group.save
+         if @group.save
 
-        @group.user_groups.last.update(is_administrator: params[:is_administrator])
+           @group.user_groups.last.update(is_administrator: params[:is_administrator])
 
-        render json: @group, status: :accepted
+           render json: @group, status: :accepted
+         else
+         else
+           render json: { errors: @group.errors.full_messages }, status: :unprocessible_entity
       end
     end
 
