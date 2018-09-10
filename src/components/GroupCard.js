@@ -57,7 +57,8 @@ export default class GroupCard extends Component {
             group: group,
             users: group.users
           });
-        });
+        })
+        .catch(e => console.error(e));
     }
   };
 
@@ -91,7 +92,8 @@ export default class GroupCard extends Component {
           });
           this.props.handleForceUserUpdate();
           this.fetchGroup();
-        });
+        })
+        .catch(e => console.error(e));
     }
   };
 
@@ -141,7 +143,8 @@ export default class GroupCard extends Component {
               users: group.users,
               formToShow: "none"
             });
-          });
+          })
+          .catch(e => console.error(e));
         fetch(baseUrl + `/requests/${this.state.request.id}`, {
           method: "PATCH",
           body: JSON.stringify({ status: "Accepted" }),
@@ -157,7 +160,8 @@ export default class GroupCard extends Component {
               formToShow: "none"
             });
             this.props.handleForceUserUpdate();
-          });
+          })
+          .catch(e => console.error(e));
       }
     }
 
@@ -187,7 +191,7 @@ export default class GroupCard extends Component {
               group: group,
               users: group.users,
               formToShow: "none"
-            });
+            }).catch(e => console.error(e));
           });
         fetch(baseUrl + `/requests/${this.state.request.id}`, {
           method: "PATCH",
@@ -204,7 +208,8 @@ export default class GroupCard extends Component {
               formToShow: "none"
             });
             this.props.handleForceUserUpdate();
-          });
+          })
+          .catch(e => console.error(e));
       }
     }
     if (value === "No" && e.target.administrator === undefined) {
@@ -222,7 +227,8 @@ export default class GroupCard extends Component {
             request: null,
             formToShow: "none"
           });
-        });
+        })
+        .catch(e => console.error(e));
       this.props.handleForceUserUpdate();
     }
     this.fetchGroup();
