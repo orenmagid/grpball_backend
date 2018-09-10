@@ -290,6 +290,7 @@ export default class GroupCard extends Component {
 
     console.log("nonUserAdmins", nonUserAdmins);
     console.log("users", users);
+    console.log("newRequests", newRequests);
 
     return (
       <Card fluid>
@@ -364,8 +365,7 @@ export default class GroupCard extends Component {
 
           {newRequests &&
           newRequests.length > 0 &&
-          userGroup.is_administrator &&
-          this.state.request ? (
+          userGroup.is_administrator ? (
             <Message info>
               <Message.Header>You have new requests.</Message.Header>
               <List horizontal>
