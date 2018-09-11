@@ -13,7 +13,7 @@ require 'geocoder'
 oren = User.create(first_name: "Oren", last_name: "Magid", username: "odog", email: "autoimpedicis@gmail.com", password: "test", phone_number: "347-422-7852", location: "Washington, DC", highest_experience: "Pickup", height_in_inches: 72, age: 40)
 
 
-70.times do
+80.times do
   latitude = rand(30..50)
   longitude = rand(-123.75583..-80.01197)
   address = Geocoder.search([latitude, longitude]).first.address
@@ -35,7 +35,7 @@ end
 
 
 x = 1
-10.times  do
+15.times  do
   y = 1
   5.times do
     User.find(x).groups << Group.find(y)
@@ -44,8 +44,8 @@ x = 1
   x += 1
 end
 
-x = 11
-10.times  do
+x = 16
+15.times  do
   y = 6
   5.times do
     User.find(x).groups << Group.find(y)
@@ -54,8 +54,8 @@ x = 11
   x += 1
 end
 
-x = 21
-10.times  do
+x = 31
+15.times  do
   y = 11
   5.times do
     User.find(x).groups << Group.find(y)
@@ -64,8 +64,8 @@ x = 21
   x += 1
 end
 
-x = 31
-10.times  do
+x = 46
+15.times  do
   y = 16
   5.times do
     User.find(x).groups << Group.find(y)
@@ -74,8 +74,8 @@ x = 31
   x += 1
 end
 
-x = 41
-10.times  do
+x = 61
+15.times  do
   y = 21
   5.times do
     User.find(x).groups << Group.find(y)
@@ -110,12 +110,14 @@ while x <=  20  do
 
   group = Group.find(x)
   Session.create(group_id: x, creator_id: group.users[0].id, date: Time.now + x.days, expiration_date_time: Time.now + (x-1).days, min_players: 6, latitude: latitude, longitude: longitude, location: address, status: "Pending")
+  session.users << User.find(group.users[0].id)
+  session.rsvps.last.update(status: "Accepted")
   x += 1
 
 end
 
-x = 1
 
+x = 1
 while x <  6  do
   y = 1
     while y < 16 do
@@ -123,20 +125,21 @@ while x <  6  do
       group = session.group
 
         Rsvp.create(user_id: group.users[x], session_id: y, status: "Accepted")
-        Rsvp.create(user_id: group.users[x + 7], session_id: y, status: "Declined")
+        Rsvp.create(user_id: group.users[x + 6], session_id: y, status: "Declined")
         y += 1
     end
 
   x += 1
 end
 
-while x <  6  do
+x = 1
+while x <  3  do
   y = 1
-    while y < 3 do
+    while y < 16 do
       session = Session.find(y)
         group = session.group
 
-        Rsvp.create(user_id: group.users[x + 7], session_id: y, status: "Delayed")
+        Rsvp.create(user_id: group.users[x + 12], session_id: y, status: "Delayed")
         y += 1
     end
 
