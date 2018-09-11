@@ -126,7 +126,7 @@ x = 1
 
         Rsvp.create(user_id: group.users[x].id, session_id: y, status: "Accepted")
         Rsvp.create(user_id: group.users[x + 6].id, session_id: y, status: "Declined")
-        Rsvp.create(user_id: group.users[x + 12].id, session_id: y, status: "Delayed")
+        # Rsvp.create(user_id: group.users[x + 12].id, session_id: y, status: "Delayed")
         y += 1
     end
 
