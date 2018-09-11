@@ -26,7 +26,7 @@ end
   longitude = rand(-123.75583..-80.01197)
   address = Geocoder.search([latitude, longitude]).first.address
 
-  Group.create(name: Faker::Company.name, latitude: latitude, longitude: longitude, location: address)
+  Group.create(name: Faker::Team.name, latitude: latitude, longitude: longitude, location: address)
 
 
 end
@@ -124,8 +124,8 @@ x = 1
       session = Session.find(y)
       group = Group.find(session.group_id)
 
-        Rsvp.create(user_id: group.users[x].id, session_id: y, status: "Accepted")
-        Rsvp.create(user_id: group.users[x + 6].id, session_id: y, status: "Declined")
+        Rsvp.create(user_id: group.users[x].id, session_id: y, status: "Accepted", other_text: Faker::DumbAndDumber.quote)
+        Rsvp.create(user_id: group.users[x + 6].id, session_id: y, status: "Declined", other_text: Faker::FamousLastWords.last_words)
         # Rsvp.create(user_id: group.users[x + 12].id, session_id: y, status: "Delayed")
         y += 1
     end
