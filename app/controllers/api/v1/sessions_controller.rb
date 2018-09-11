@@ -54,14 +54,6 @@ class Api::V1::SessionsController < ApplicationController
      @session = Session.find(params[:id])
    end
 
-   def update_session_status
-     Session.all.each do |session|
-        if session.expiration_date_time.past? && session.status == "Pending"
-          session.update(status: "Cancelled")
-          session.save
 
-        end
-     end
-   end
 
 end

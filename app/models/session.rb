@@ -11,16 +11,16 @@ class Session < ApplicationRecord
   # include StreamRails::Activity
   # as_activity
   #
-  #   def self.update_session_status
-  #     Session.all.each do |session|
-  #        if session.expiration_date_time.past? && session.status == "Pending"
-  #          session.update(status: "Cancelled")
-  #          session.save
-  #
-  #        end
-  #     end
-  #
-  #   end
+    def self.update_session_status
+      Session.all.each do |session|
+         if session.expiration_date_time.past? && session.status == "Pending"
+           session.update(status: "Cancelled")
+           session.save
+
+         end
+      end
+
+    end
   #
   #   def activity_actor
   #     User.find(self.creator_id)
