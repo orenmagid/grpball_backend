@@ -26,7 +26,7 @@ end
   longitude = rand(-123.75583..-80.01197)
   address = Geocoder.search([latitude, longitude]).first.address
 
-  Group.create(name: Faker::Team.name, latitude: latitude, longitude: longitude, location: address)
+  Group.create(name: Faker::Team.name.titleize, latitude: latitude, longitude: longitude, location: address)
 
 
 end
