@@ -37,15 +37,16 @@ export default class EditGroup extends Component {
 
         <form
           className="ui form"
-          onSubmit={e =>
+          onSubmit={e => {
             this.props.handlePatchGroupSubmit(
               e,
               this.props.group.id,
               this.state.latitude,
               this.state.longitude,
-              this.state.address
-            )
-          }
+              this.state.address ? this.state.address : this.props.address
+            );
+            this.props.handleCloseClick();
+          }}
         >
           <div className="field">
             <label>Group Name</label>

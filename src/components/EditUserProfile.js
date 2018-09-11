@@ -81,7 +81,7 @@ export default class EditUserProfile extends Component {
               handleCreateOrEditUser(
                 e,
                 this.props.user,
-                this.state.address,
+                this.state.address ? this.state.address : this.props.address,
                 this.state.latitude,
                 this.state.longitude,
                 this.state.experience

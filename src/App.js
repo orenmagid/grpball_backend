@@ -29,7 +29,10 @@ class App extends Component {
     fetch(baseUrl + "/sessions")
       .then(res => res.json())
       .then(sessions => {
-        this.setState({ sessions: sessions });
+        {
+          console.log(sessions);
+          this.setState({ sessions: sessions });
+        }
       })
       .catch(e => {
         alert(e);

@@ -107,8 +107,7 @@ class GroupDashboard extends Component {
       name: groupName,
       location: address,
       latitude: latitude,
-      longitude: longitude,
-      user_id: this.props.user.id
+      longitude: longitude
     };
     e.target.reset();
     let token = localStorage.getItem("token");

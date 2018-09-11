@@ -506,6 +506,7 @@ export default class GroupCard extends Component {
               group={group}
               user={this.props.user}
               handlePatchGroupSubmit={this.props.handlePatchGroupSubmit}
+              handleCloseClick={this.handleCloseClick}
             />
           ) : null}
         </Card.Content>
