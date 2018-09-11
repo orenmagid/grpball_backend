@@ -14,16 +14,16 @@ oren = User.create(first_name: "Oren", last_name: "Magid", username: "odog", ema
 
 
 70.times do
-  latitude = rand(20..64)
-  longitude = rand(-161.75583..-68.01197)
+  latitude = rand(30..50)
+  longitude = rand(-123.75583..-80.01197)
   address = Geocoder.search([latitude, longitude]).first.address
 
   User.create(first_name: Faker::Name.first_name, last_name: Faker::Name.last_name, username: Faker::Internet.username, email: Faker::Internet.email, password: "test", phone_number: Faker::PhoneNumber.cell_phone, latitude: latitude, longitude: longitude, location: address, highest_experience: "Pickup", height_in_inches: Faker::Number.between(50, 80), age: Faker::Number.between(14, 60))
 end
 
 25.times do
-  latitude = rand(20..64)
-  longitude = rand(-161.75583..-68.01197)
+  latitude = rand(30..50)
+  longitude = rand(-123.75583..-80.01197)
   address = Geocoder.search([latitude, longitude]).first.address
 
   Group.create(name: Faker::Company.name, latitude: latitude, longitude: longitude, location: address)
@@ -68,8 +68,8 @@ end
 x = 1
 
 while x <=  20  do
-  latitude = rand(20..64)
-  longitude = rand(-161.75583..-68.01197)
+  latitude = rand(30..50)
+  longitude = rand(-123.75583..-80.01197)
   address = Geocoder.search([latitude, longitude]).first.address
   Session.create(group_id: x, creator_id: x, date: Time.now + x.days, expiration_date_time: Time.now + (x-1).days, min_players: 6, latitude: latitude, longitude: longitude, location: address, status: "Pending")
   x += 1
