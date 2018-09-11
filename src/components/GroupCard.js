@@ -195,12 +195,12 @@ export default class GroupCard extends Component {
         })
           .then(response => response.json())
           .then(group => {
-            this.props.handleForceUserUpdate();
             this.setState({
               group: group,
               users: group.users,
               formToShow: "none"
             }).catch(e => alert(e));
+            this.props.handleForceUserUpdate();
           });
 
         fetch(baseUrl + `/requests/${this.state.request.id}`, {

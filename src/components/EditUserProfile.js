@@ -137,14 +137,14 @@ export default class EditUserProfile extends Component {
               />
             </Form.Group>
 
-            <Form.Group widths="equal">
-              <br />
-              <LocationSearchInput
-                type="user_edit"
-                currentLocation={this.state.location}
-                captureAddress={this.captureAddress}
-              />
-            </Form.Group>
+            <br />
+            <LocationSearchInput
+              type="user_edit"
+              currentLocation={this.state.location}
+              captureAddress={this.captureAddress}
+            />
+            <br />
+
             <Form.Group widths="equal">
               <Form.Input
                 name="age"

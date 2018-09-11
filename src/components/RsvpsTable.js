@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Table } from "semantic-ui-react";
+import { Table, List, Segment } from "semantic-ui-react";
 
 export default class RsvpsTable extends Component {
   userRsvpd = user => {
@@ -51,31 +51,23 @@ export default class RsvpsTable extends Component {
     }
     if (statusToDisplay === "none") {
       return (
-        <Table compact fixed striped singleLine size="small">
-          <Table.Header>
-            <Table.Row>
-              <Table.HeaderCell>Name</Table.HeaderCell>
-              <Table.HeaderCell>Status</Table.HeaderCell>
-            </Table.Row>
-          </Table.Header>
-
-          <Table.Body>
+        <Segment>
+          <List horizontal>
             {users
               .filter(user => {
                 return !rsvps.find(rsvp => rsvp.user_id === user.id);
               })
               .map(user => {
                 return (
-                  <Table.Row key={user.id}>
-                    <Table.Cell>
+                  <List.Item key={user.id}>
+                    <List.Content>
                       {user.first_name + " " + user.last_name}
-                    </Table.Cell>
-                    <Table.Cell>Total Loser</Table.Cell>
-                  </Table.Row>
+                    </List.Content>
+                  </List.Item>
                 );
               })}
-          </Table.Body>
-        </Table>
+          </List>
+        </Segment>
       );
     }
     return null;

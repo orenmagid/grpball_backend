@@ -106,12 +106,13 @@ export default class NewUserForm extends Component {
                 type="Phone Number"
               />
             </Form.Group>
-            <Form.Group widths="equal">
-              <LocationSearchInput
-                type="user"
-                captureAddress={this.captureAddress}
-              />
-            </Form.Group>
+
+            <LocationSearchInput
+              type="user"
+              captureAddress={this.captureAddress}
+            />
+            <br />
+
             <Form.Group widths="equal">
               <Form.Input
                 name="age"

@@ -187,18 +187,6 @@ class ChatComponent extends React.Component {
             ) : null}
           </div>
         </MediaQuery>
-        {conversations.length === 0 && user.groups.length === 0 ? (
-          <div className="ui card sixteen wide column">
-            <Message>
-              <Message.Header>
-                Join a group to enable conversations
-              </Message.Header>
-              <p>
-                Once you join a group, you'll be able to chat with them here.
-              </p>
-            </Message>
-          </div>
-        ) : null}
       </div>
     );
   };

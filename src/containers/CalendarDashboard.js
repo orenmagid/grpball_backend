@@ -1,6 +1,13 @@
 import React, { Component } from "react";
 import Calendar from "react-big-calendar";
-import { Segment, Message, Icon } from "semantic-ui-react";
+import {
+  Segment,
+  Message,
+  Icon,
+  Checkbox,
+  Grid,
+  Header
+} from "semantic-ui-react";
 import moment from "moment";
 import CalendarSessionInfo from "../components/CalendarSessionInfo";
 import InteractiveSegment from "../components/InteractiveSegment";
@@ -14,7 +21,7 @@ import { baseUrl } from "../constants";
 
 Calendar.setLocalizer(Calendar.momentLocalizer(moment));
 
-class CalendarDashboard extends Component {
+export default class CalendarDashboard extends Component {
   state = {
     start: "",
     end: "",
@@ -24,7 +31,46 @@ class CalendarDashboard extends Component {
     formToShow: "none",
     groupUsers: [],
     showWarning: false,
-    warning: ""
+    warning: "",
+    whatToDisplayOnCalendar: "yourSessions"
+  };
+
+  handleToggle = whatToDisplay => {
+    if (this.state.whatToDisplayOnCalendar === "") {
+      this.setState({
+        whatToDisplayOnCalendar: whatToDisplay,
+        selectedEvent: null,
+        selectedGroup: null,
+        formToShow: ""
+      });
+    } else if (
+      this.state.whatToDisplayOnCalendar === "yourSessions" &&
+      whatToDisplay === "yourSessions"
+    ) {
+      this.setState({
+        whatToDisplayOnCalendar: "allSessions",
+        selectedEvent: null,
+        selectedGroup: null,
+        formToShow: ""
+      });
+    } else if (
+      this.state.whatToDisplayOnCalendar === "allSessions" &&
+      whatToDisplay === "allSessions"
+    ) {
+      this.setState({
+        whatToDisplayOnCalendar: "yourSessions",
+        selectedEvent: null,
+        selectedGroup: null,
+        formToShow: ""
+      });
+    } else {
+      this.setState({
+        whatToDisplayOnCalendar: whatToDisplay,
+        selectedEvent: null,
+        selectedGroup: null,
+        formToShow: ""
+      });
+    }
   };
 
   handleSelect = ({ start, end }) => {
@@ -211,7 +257,20 @@ class CalendarDashboard extends Component {
   };
 
   render() {
-    console.log("selectedGroup", this.state.selectedGroup);
+    let sessions;
+
+    switch (this.state.whatToDisplayOnCalendar) {
+      case "allSessions":
+        sessions = this.props.sessions;
+        break;
+      case "yourSessions":
+        let groupIds = this.props.user.groups.map(group => group.id);
+        groupIds = groupIds.filter(groupId => groupId !== "undefined");
+        sessions = this.props.sessions.filter(session => {
+          return groupIds.includes(session.group_id);
+        });
+    }
+
     return (
       <React.Fragment>
         {this.state.showWarning && this.state.warning === "memberOfGroup" ? (
@@ -303,6 +362,25 @@ class CalendarDashboard extends Component {
           />
         ) : null}
         <Segment>
+          <div className="ui two column grid container segment">
+            <div className="column">
+              <Checkbox
+                slider
+                label="All Sessions"
+                onChange={() => this.handleToggle("allSessions")}
+                checked={this.state.whatToDisplayOnCalendar === "allSessions"}
+              />
+            </div>
+            <div className="column">
+              <Checkbox
+                slider
+                label="Your Sessions"
+                onChange={() => this.handleToggle("yourSessions")}
+                checked={this.state.whatToDisplayOnCalendar === "yourSessions"}
+              />
+            </div>
+          </div>
+
           <Calendar
             startAccessor={({ date }) => new Date(moment(date))}
             endAccessor={({ date }) => new Date(moment(date).add(3, "hours"))}
@@ -313,7 +391,7 @@ class CalendarDashboard extends Component {
             popup
             defaultDate={new Date()}
             defaultView="month"
-            events={this.props.sessions}
+            events={sessions}
             style={{ height: "80vh", padding: "5px" }}
             onSelectEvent={this.handleSelectEvent}
             onSelectSlot={this.handleSelect}
@@ -323,5 +401,3 @@ class CalendarDashboard extends Component {
     );
   }
 }
-
-export default CalendarDashboard;

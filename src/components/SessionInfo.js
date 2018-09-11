@@ -96,7 +96,8 @@ export default class SessionInfo extends Component {
 
           <Card.Content>
             <Card.Header>
-              {moment(session.date).format("MMMM Do YYYY, [at] h:mm a")}, at{" "}
+              {moment(session.date).format("MMMM Do YYYY, [at] h:mm a")}
+              <br />
               {session.location}
             </Card.Header>
             <Card.Meta>

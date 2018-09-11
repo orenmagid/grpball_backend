@@ -14,6 +14,10 @@ export default class CalendarSessionInfo extends Component {
   };
 
   componentDidMount() {
+    this.fetchGroup();
+  }
+
+  fetchGroup = () => {
     let token = localStorage.getItem("token");
     if (token) {
       fetch(baseUrl + `/groups/${this.props.group.id}`, {
@@ -29,7 +33,7 @@ export default class CalendarSessionInfo extends Component {
           });
         });
     }
-  }
+  };
 
   handleShowStatus = (e, statusToDisplay, rsvps = []) => {
     e.preventDefault();
@@ -134,22 +138,20 @@ export default class CalendarSessionInfo extends Component {
           <Card.Content>
             <Card.Header>
               Group:{" "}
-              {
-                (memberOfGroup =
-                  -1 && !rsvp ? (
-                    <a
-                      href="group"
-                      onClick={e => handleShowGroupFromSession(e, group)}
-                    >
-                      {group.name}
-                    </a>
-                  ) : (
-                    group.name
-                  ))
-              }
+              {memberOfGroup === -1 && !rsvp ? (
+                <a
+                  href="group"
+                  onClick={e => handleShowGroupFromSession(e, group)}
+                >
+                  {group.name}
+                </a>
+              ) : (
+                group.name
+              )}
             </Card.Header>
             <Card.Header>
-              {moment(session.date).format("MMMM Do YYYY, [at] h:mm a")}, at{" "}
+              {moment(session.date).format("MMMM Do YYYY, [at] h:mm a")}
+              <br />
               {session.location}
             </Card.Header>
             {/* <Card.Meta>

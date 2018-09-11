@@ -13,6 +13,7 @@ export default class SessionScheduler extends Component {
   state = {
     date: "",
     expiration: "",
+    min_players: "",
     group_id: "",
     address: ""
   };
@@ -35,7 +36,11 @@ export default class SessionScheduler extends Component {
     });
   };
 
-  handleChange = (e, { value }) => this.setState({ group_id: value });
+  handleGroupChange = (e, { value }) => this.setState({ group_id: value });
+
+  handlePlayersChange = (e, { value }) => this.setState({ min_players: value });
+
+  // handleChange = e => this.setState({ [e.target.name]: e.target.value });
 
   handleSubmit = e => {
     console.log("Inside handleSubmit");
@@ -47,7 +52,7 @@ export default class SessionScheduler extends Component {
         date: this.props.date ? moment(this.props.date) : this.state.date,
         status: "Pending",
         location: this.state.address,
-        min_players: 6,
+        min_players: this.state.min_players,
         expiration_date_time: this.state.expiration,
         creator_id: this.props.user.id
       }
@@ -56,7 +61,10 @@ export default class SessionScheduler extends Component {
     e.target.reset();
     this.setState({
       date: "",
-      expiration: ""
+      expiration: "",
+      location: "",
+      min_players: "",
+      address: ""
     });
     let token = localStorage.getItem("token");
     if (token) {
@@ -81,13 +89,23 @@ export default class SessionScheduler extends Component {
   render() {
     const { date, group, user } = this.props;
 
-    const options = user.groups.map(group => {
+    const groupOptions = user.groups.map(group => {
       return {
         key: `${group.id}`,
         text: `${group.name}`,
         value: `${group.id}`
       };
     });
+
+    const playersOptions = [
+      { key: "4", text: "4", value: 4 },
+      { key: "5", text: "5", value: 5 },
+      { key: "6", text: "6", value: 6 },
+      { key: "7", text: "7", value: 7 },
+      { key: "8", text: "8", value: 8 },
+      { key: "9", text: "9", value: 9 },
+      { key: "10", text: "10", value: 10 }
+    ];
 
     return (
       <Segment>
@@ -131,14 +149,22 @@ export default class SessionScheduler extends Component {
             <Form.Field
               control={Select}
               label="Group"
-              options={options}
+              options={groupOptions}
               placeholder="Group"
-              onChange={this.handleChange}
+              onChange={this.handleGroupChange}
             />
           )}
           <LocationSearchInput
             type="session"
             captureAddress={this.captureAddress}
+          />
+          <br />
+          <Form.Field
+            control={Select}
+            label="Minimum Number of Players"
+            options={playersOptions}
+            placeholder="Minimum Number of Players"
+            onChange={this.handlePlayersChange}
           />
 
           <Form.Button secondary basic>
