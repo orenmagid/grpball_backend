@@ -40,8 +40,15 @@ class Api::V1::GroupsController < ApplicationController
         @user = User.find_by(username: params[:username])
       end
 
-
-    
+      if params[:user_id] || params[:username]
+        @group.users << @user
+        @group.save
+        render json: @group, status: :accepted
+      else
+        render json: { errors: @group.errors.full_messages }, status: :unprocessible_entity
+      end
+        
+      else
         @group.update(group_params)
          if @group.save
            render json: @group, status: :accepted
