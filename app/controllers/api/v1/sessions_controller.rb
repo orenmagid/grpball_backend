@@ -5,7 +5,7 @@ class Api::V1::SessionsController < ApplicationController
   before_action :find_session, only: [:show, :update]
 
    def index
-     Session.update_session_status
+     # Session.update_session_status
      @sessions = Session.all
      render json: @sessions
    end

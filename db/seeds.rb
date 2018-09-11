@@ -71,6 +71,7 @@ while x <=  20  do
   latitude = rand(30..50)
   longitude = rand(-123.75583..-80.01197)
   address = Geocoder.search([latitude, longitude]).first.address
+  
   Session.create(group_id: x, creator_id: x, date: Time.now + x.days, expiration_date_time: Time.now + (x-1).days, min_players: 6, latitude: latitude, longitude: longitude, location: address, status: "Pending")
   x += 1
 
