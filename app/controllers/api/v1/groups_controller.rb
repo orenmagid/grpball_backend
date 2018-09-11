@@ -59,6 +59,7 @@ class Api::V1::GroupsController < ApplicationController
          end
 
       end
+    end
 
       # if params[:username] || params[:user_id]
       #   @group.users << @user
