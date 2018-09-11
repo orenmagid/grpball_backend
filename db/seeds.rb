@@ -35,7 +35,7 @@ end
 
 
 x = 1
-5.times  do
+10.times  do
   y = 1
   5.times do
     User.find(x).groups << Group.find(y)
@@ -44,8 +44,8 @@ x = 1
   x += 1
 end
 
-x = 6
-5.times  do
+x = 11
+10.times  do
   y = 6
   5.times do
     User.find(x).groups << Group.find(y)
@@ -54,8 +54,8 @@ x = 6
   x += 1
 end
 
-x = 11
-5.times  do
+x = 21
+10.times  do
   y = 11
   5.times do
     User.find(x).groups << Group.find(y)
@@ -64,8 +64,8 @@ x = 11
   x += 1
 end
 
-x = 16
-5.times  do
+x = 31
+10.times  do
   y = 16
   5.times do
     User.find(x).groups << Group.find(y)
@@ -74,8 +74,8 @@ x = 16
   x += 1
 end
 
-x = 21
-5.times  do
+x = 41
+10.times  do
   y = 21
   5.times do
     User.find(x).groups << Group.find(y)
@@ -109,7 +109,7 @@ while x <=  20  do
   address = Geocoder.search([latitude, longitude]).first.address
 
   group = Group.find(x)
-  Session.create(group_id: x, creator_id: group.users[0], date: Time.now + x.days, expiration_date_time: Time.now + (x-1).days, min_players: 6, latitude: latitude, longitude: longitude, location: address, status: "Pending")
+  Session.create(group_id: x, creator_id: group.users[0].id, date: Time.now + x.days, expiration_date_time: Time.now + (x-1).days, min_players: 6, latitude: latitude, longitude: longitude, location: address, status: "Pending")
   x += 1
 
 end
