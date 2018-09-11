@@ -16,7 +16,7 @@ class Session < ApplicationRecord
          if session.expiration_date_time.past? && session.status == "Pending"
            session.update(status: "Cancelled")
            session.save
-
+         
          end
       end
 
