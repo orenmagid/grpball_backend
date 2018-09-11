@@ -5,7 +5,7 @@ class Api::V1::SessionsController < ApplicationController
   before_action :find_session, only: [:show, :update]
 
    def index
-     # Session.update_session_status
+     Session.update_session_status
      @sessions = Session.all
      render json: @sessions
    end
@@ -52,6 +52,16 @@ class Api::V1::SessionsController < ApplicationController
 
    def find_session
      @session = Session.find(params[:id])
+   end
+
+   def update_session_status
+     Session.all.each do |session|
+        if session.expiration_date_time.past? && session.status == "Pending"
+          session.update(status: "Cancelled")
+          session.save
+
+        end
+     end
    end
 
 end
