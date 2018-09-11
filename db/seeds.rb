@@ -1,4 +1,5 @@
 require 'faker'
+require 'Geocoder'
 
 # This file should contain all the record creation needed to seed the database with its default values.
 # The data can then be loaded with the rails db:seed command (or created alongside the database with db:setup).
@@ -13,11 +14,19 @@ oren = User.create(first_name: "Oren", last_name: "Magid", username: "odog", ema
 
 
 70.times do
-  User.create(first_name: Faker::Name.first_name, last_name: Faker::Name.last_name, username: Faker::Internet.username, email: Faker::Internet.email, password: "test", phone_number: Faker::PhoneNumber.cell_phone, location: "#{Faker::Address.city}, #{Faker::Address.zip}", highest_experience: "Pickup", height_in_inches: Faker::Number.between(50, 80), age: Faker::Number.between(14, 60))
+  latitude = Faker::Address.latitude
+  longitude = Faker::Address.longitude
+  address = Geocoder.search([latitude, longitude]).first.address
+
+  User.create(first_name: Faker::Name.first_name, last_name: Faker::Name.last_name, username: Faker::Internet.username, email: Faker::Internet.email, password: "test", phone_number: Faker::PhoneNumber.cell_phone, latitude: latitude, longitude: longitude, location: address, highest_experience: "Pickup", height_in_inches: Faker::Number.between(50, 80), age: Faker::Number.between(14, 60))
 end
 
 25.times do
-  Group.create(name: Faker::Company.name, location: "#{Faker::Address.city}")
+  latitude = Faker::Address.latitude
+  longitude = Faker::Address.longitude
+  address = Geocoder.search([latitude, longitude]).first.address
+
+  Group.create(name: Faker::Company.name, latitude: latitude, longitude: longitude, location: address)
 
 
 end
@@ -59,7 +68,10 @@ end
 x = 1
 
 while x <=  20  do
-  Session.create(group_id: x, creator_id: x, date: Time.now + x.days, expiration_date_time: Time.now + (x-1).days, min_players: 6, location: Faker::Address.city, status: "Pending")
+  latitude = Faker::Address.latitude
+  longitude = Faker::Address.longitude
+  address = Geocoder.search([latitude, longitude]).first.address
+  Session.create(group_id: x, creator_id: x, date: Time.now + x.days, expiration_date_time: Time.now + (x-1).days, min_players: 6, latitude: latitude, longitude: longitude, location: address, status: "Pending")
   x += 1
 
 end
