@@ -8,31 +8,31 @@ class Session < ApplicationRecord
   geocoded_by :location
   after_validation :geocode
 
-  include StreamRails::Activity
-  as_activity
-
-    def self.update_session_status
-      Session.all.each do |session|
-         if session.expiration_date_time.past? && session.status == "Pending"
-           session.update(status: "Cancelled")
-           session.save
-
-         end
-      end
-
-    end
-
-    def activity_actor
-      User.find(self.creator_id)
-    end
-
-    def activity_object
-      self
-    end
-
-    def activity_verb
-      "proposed a session"
-    end
+  # include StreamRails::Activity
+  # as_activity
+  #
+  #   def self.update_session_status
+  #     Session.all.each do |session|
+  #        if session.expiration_date_time.past? && session.status == "Pending"
+  #          session.update(status: "Cancelled")
+  #          session.save
+  #
+  #        end
+  #     end
+  #
+  #   end
+  #
+  #   def activity_actor
+  #     User.find(self.creator_id)
+  #   end
+  #
+  #   def activity_object
+  #     self
+  #   end
+  #
+  #   def activity_verb
+  #     "proposed a session"
+  #   end
 
 
     # def activity_notify

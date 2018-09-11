@@ -3,20 +3,20 @@ class Rsvp < ApplicationRecord
   belongs_to :user, optional: true
 
 
-  include StreamRails::Activity
-  as_activity
-
-    def activity_actor
-      self.user
-    end
-
-    def activity_object
-      self.session
-    end
-
-    def activity_verb
-      "rsvp'd"
-    end
+  # include StreamRails::Activity
+  # as_activity
+  #
+  #   def activity_actor
+  #     self.user
+  #   end
+  #
+  #   def activity_object
+  #     self.session
+  #   end
+  #
+  #   def activity_verb
+  #     "rsvp'd"
+  #   end
 
 
 
