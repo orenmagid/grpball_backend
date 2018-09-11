@@ -13,6 +13,7 @@ export default class NotificationsDashboard extends Component {
   componentDidMount() {
     this.props.handleFetchGroups();
   }
+
   handleCloseClick = request => {
     let token = localStorage.getItem("token");
     fetch(baseUrl + `/requests/${request.id}`, {
@@ -25,8 +26,10 @@ export default class NotificationsDashboard extends Component {
     })
       .then(response => response.json())
       .then(request => {
-        this.props.handleForceUserUpdate();
+        console.log(request);
       });
+    this.props.handleFetchGroups();
+    this.props.handleForceUserUpdate();
   };
 
   render() {

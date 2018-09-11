@@ -145,12 +145,13 @@ export default class GroupCard extends Component {
         })
           .then(response => response.json())
           .then(group => {
-            this.props.handleForceUserUpdate();
             this.setState({
               group: group,
               users: group.users,
               formToShow: "none"
             });
+            this.fetchGroup();
+            this.props.handleFetchGroups();
           })
           .catch(e => alert(e));
 
@@ -199,9 +200,11 @@ export default class GroupCard extends Component {
               group: group,
               users: group.users,
               formToShow: "none"
-            }).catch(e => alert(e));
-            this.props.handleForceUserUpdate();
-          });
+            });
+            this.fetchGroup();
+            this.props.handleFetchGroups();
+          })
+          .catch(e => alert(e));
 
         fetch(baseUrl + `/requests/${this.state.request.id}`, {
           method: "PATCH",
@@ -217,7 +220,8 @@ export default class GroupCard extends Component {
               request: null,
               formToShow: "none"
             });
-            this.props.handleForceUserUpdate();
+            this.fetchGroup();
+            this.props.handleFetchGroups();
           })
           .catch(e => alert(e));
       }
@@ -237,12 +241,11 @@ export default class GroupCard extends Component {
             request: null,
             formToShow: "none"
           });
+          this.fetchGroup();
+          this.props.handleFetchGroups();
         })
         .catch(e => alert(e));
-      this.props.handleForceUserUpdate();
     }
-    this.fetchGroup();
-    this.props.handleFetchGroups();
   };
 
   handleLeaveGroup = (group, user) => {
