@@ -27,7 +27,7 @@ export default class RsvpsTable extends Component {
             <Table.Row>
               <Table.HeaderCell>Name</Table.HeaderCell>
               <Table.HeaderCell>Status</Table.HeaderCell>
-              <Table.HeaderCell>Other</Table.HeaderCell>
+              <Table.HeaderCell>Other Response</Table.HeaderCell>
             </Table.Row>
           </Table.Header>
 
