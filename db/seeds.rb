@@ -118,33 +118,22 @@ end
 
 
 x = 1
-while x <  6  do
+5.times  do
   y = 1
-    while y < 16 do
+    15.times do
       session = Session.find(y)
-      group = session.group
+      group = Group.find(session.group_id)
 
-        Rsvp.create(user_id: group.users[x], session_id: y, status: "Accepted")
-        Rsvp.create(user_id: group.users[x + 6], session_id: y, status: "Declined")
+        Rsvp.create(user_id: group.users[x].id, session_id: y, status: "Accepted")
+        Rsvp.create(user_id: group.users[x + 6].id, session_id: y, status: "Declined")
+        Rsvp.create(user_id: group.users[x + 12].id, session_id: y, status: "Delayed")
         y += 1
     end
 
   x += 1
 end
 
-x = 1
-while x <  3  do
-  y = 1
-    while y < 16 do
-      session = Session.find(y)
-        group = session.group
 
-        Rsvp.create(user_id: group.users[x + 12], session_id: y, status: "Delayed")
-        y += 1
-    end
-
-  x += 1
-end
 
 
 
