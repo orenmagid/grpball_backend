@@ -41,10 +41,12 @@ class Api::V1::GroupsController < ApplicationController
       end
 
       if params[:user_id] || params[:username]
-        if params[:name] == @group.name
+          
           @group.users << @user
           @group.save
           render json: @group, status: :accepted
+
+
         else
           render json: { errors: @group.errors.full_messages }, status: :unprocessible_entity
         end
