@@ -109,7 +109,7 @@ while x <=  20  do
   address = Geocoder.search([latitude, longitude]).first.address
 
   group = Group.find(x)
-  Session.create(group_id: x, creator_id: groups.users[0], date: Time.now + x.days, expiration_date_time: Time.now + (x-1).days, min_players: 6, latitude: latitude, longitude: longitude, location: address, status: "Pending")
+  Session.create(group_id: x, creator_id: group.users[0], date: Time.now + x.days, expiration_date_time: Time.now + (x-1).days, min_players: 6, latitude: latitude, longitude: longitude, location: address, status: "Pending")
   x += 1
 
 end
