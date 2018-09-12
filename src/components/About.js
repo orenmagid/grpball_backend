@@ -54,8 +54,8 @@ export default class About extends Component {
             </MediaQuery>
             <MediaQuery minWidth={767}>
               <p>
-                Search for local groups and request to join them on the{" "}
-                <strong>Map</strong> tab above
+                Search for local groups and request to join them by clicking on
+                the <strong>Map</strong> tab above
               </p>{" "}
               <Divider />
               <p>
@@ -102,23 +102,23 @@ export default class About extends Component {
             </MediaQuery>
             <MediaQuery minWidth={767}>
               <p>
-                Chat with other members of your group on the{" "}
+                Chat with other members of your group by clicking on the{" "}
                 <strong>Conversations</strong> tab
               </p>
               <Divider />
               <p>
-                Schedule games on the <strong>Your Groups</strong> and{" "}
-                <strong>Calendar </strong> tabs
+                Schedule games by clicking on the <strong>Your Groups</strong>{" "}
+                and <strong>Calendar </strong> tabs
               </p>{" "}
               <Divider />
               <p>
-                RSVP for games also on the <strong>Your Groups</strong> and{" "}
-                <strong>Calendar</strong> tabs
+                RSVP for games by clicking on the <strong>Your Groups</strong>{" "}
+                and <strong>Calendar</strong> tabs
               </p>
               <Divider />
               <p>
-                Find more local players and invite them to join your group on{" "}
-                <strong>Map </strong> tab
+                Find more local players and invite them to join your group by
+                clicking on <strong>Map </strong> tab
               </p>
             </MediaQuery>
           </Accordion.Content>

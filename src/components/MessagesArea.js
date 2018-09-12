@@ -4,13 +4,13 @@ import moment from "moment";
 
 export default class MessagesArea extends Component {
   componentDidMount() {
-    var el = this.refs.wrap;
-    el.scrollTop = el.scrollHeight;
+    let chatwindow = this.refs.wrap;
+    chatwindow.scrollTop = chatwindow.scrollHeight;
   }
 
   componentDidUpdate() {
-    var el = this.refs.wrap;
-    el.scrollTop = el.scrollHeight;
+    let chatwindow = this.refs.wrap;
+    chatwindow.scrollTop = chatwindow.scrollHeight;
   }
 
   render() {
