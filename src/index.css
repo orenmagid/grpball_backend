@@ -153,9 +153,9 @@ i.window.close.icon {
     background-color: #1a2533;
   }
 
-  /* .rbc-event-content {
-    color: #7c948d;
-  } */
+  .rbc-event-content {
+    font-size: 0.75em;
+  }
 }
 
 .chat-window {
