@@ -118,7 +118,7 @@ export default class About extends Component {
               <Divider />
               <p>
                 Find more local players and invite them to join your group by
-                clicking on <strong>Map </strong> tab
+                clicking on the <strong>Map </strong> tab
               </p>
             </MediaQuery>
           </Accordion.Content>

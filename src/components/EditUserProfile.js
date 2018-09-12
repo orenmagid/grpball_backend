@@ -39,6 +39,9 @@ export default class EditUserProfile extends Component {
 
   handleChange = e => this.setState({ [e.target.name]: e.target.value });
 
+  handleExperienceChange = (e, { value }) =>
+    this.setState({ experience: value });
+
   componentDidMount() {
     this.setState({
       first_name: this.props.user.first_name,
@@ -172,7 +175,7 @@ export default class EditUserProfile extends Component {
                 label="Highest Level of Experience"
                 options={options}
                 placeholder="Highest Level of Experience"
-                onChange={this.handleChange}
+                onChange={this.handleExperienceChange}
               />
             </Form.Group>
             {/* <Form.Checkbox label="I agree to the Terms and Conditions" /> */}
