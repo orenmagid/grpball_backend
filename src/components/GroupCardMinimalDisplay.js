@@ -105,15 +105,12 @@ export default class GroupCardMinimalDisplay extends Component {
     console.log("group.user_groups", group.user_groups);
     //
     // debugger;
-
-    if (
-      group &&
-      group.user_groups.length > 0 &&
-      localStorage.getItem("token")
-    ) {
-      userGroup = group.user_groups.find(user_group => {
-        return user_group.user_id === user.id;
-      });
+    if (group && group.user_groups && localStorage.getItem("token")) {
+      if (group.user_groups.length > 0) {
+        userGroup = group.user_groups.find(user_group => {
+          return user_group.user_id === user.id;
+        });
+      }
     }
 
     userHasRequested = user.requests.filter(request => {
