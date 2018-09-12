@@ -183,7 +183,7 @@ export default class UserMenu extends Component {
                 basic
                 trigger={
                   <Menu.Item
-                    name="about_grpball"
+                    name="about"
                     active={activeItem === "about "}
                     onClick={this.handleItemClick}
                   >
