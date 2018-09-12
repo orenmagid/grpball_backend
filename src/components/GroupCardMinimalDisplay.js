@@ -96,15 +96,15 @@ export default class GroupCardMinimalDisplay extends Component {
 
     console.log("group", group);
 
-    if (group && group.user_groups > 0 && localStorage.getItem("token")) {
+    if (group && users.length > 0 && localStorage.getItem("token")) {
       userGroup = group.user_groups.find(user_group => {
         return user_group.user_id === user.id;
       });
-
-      userHasRequested = user.requests.filter(request => {
-        return request.group_id === group.id;
-      });
     }
+
+    userHasRequested = user.requests.filter(request => {
+      return request.group_id === group.id;
+    });
 
     console.log("this.props", this.props);
     console.log("userHasRequested", userHasRequested);
@@ -168,8 +168,9 @@ export default class GroupCardMinimalDisplay extends Component {
           <div className="row centered">
             {(!userGroup &&
               localStorage.getItem("token") &&
-              (userHasRequested.length > 0 &&
-                userHasRequested[0].status === "New")) ||
+              ((userHasRequested.length > 0 &&
+                userHasRequested[0].status === "New") ||
+                userHasRequested[0].status === "Resolved")) ||
             hasRequested === true ? (
               <Message warning>
                 <Message.Header>Pending</Message.Header>
