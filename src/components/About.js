@@ -48,7 +48,7 @@ export default class About extends Component {
               </p>{" "}
               <Divider />
               <p>
-                When they've responded, you'll be notified on the{" "}
+                When a group has responded, you'll be notified on the{" "}
                 <Icon name="alarm" /> tab above
               </p>{" "}
             </MediaQuery>
@@ -59,7 +59,7 @@ export default class About extends Component {
               </p>{" "}
               <Divider />
               <p>
-                When they've responded, you'll be notified on the{" "}
+                When a group has responded, you'll be notified on the{" "}
                 <strong>Notifications</strong> tab above
               </p>{" "}
             </MediaQuery>
