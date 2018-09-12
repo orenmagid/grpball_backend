@@ -32,6 +32,7 @@ body {
   color: white;
   position: relative;
   bottom: 0;
+
   width: 100%;
 }
 
@@ -102,7 +103,7 @@ i.window.close.icon {
 }
 
 .ui.raised.container.map.segment {
-  min-height: 60vh;
+  min-height: 50vh;
 }
 
 .rbc-toolbar {

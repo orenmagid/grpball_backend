@@ -238,8 +238,8 @@ class App extends Component {
             />
           )}
         </div>
-
-        <footer className="ui footer segment" />
+        {/* 
+        <footer className="ui footer segment" /> */}
       </div>
     );
   }
