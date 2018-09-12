@@ -74,7 +74,7 @@ export default class EditUserProfile extends Component {
     return (
       <div className="ui container">
         <Segment inverted>
-          <i className="window close icon" onClick={handleCloseClick} />
+          <i className="window close outline icon" onClick={handleCloseClick} />
           <Form
             inverted
             onSubmit={e =>

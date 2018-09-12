@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Table, List, Segment } from "semantic-ui-react";
+import { Table, List, Segment, Popup } from "semantic-ui-react";
 
 export default class RsvpsTable extends Component {
   userRsvpd = user => {
@@ -22,7 +22,7 @@ export default class RsvpsTable extends Component {
       statusToDisplay === "delayed"
     ) {
       return (
-        <Table compact fixed striped singleLine size="small">
+        <Table compact fixed striped size="small">
           <Table.Header>
             <Table.Row>
               <Table.HeaderCell>Name</Table.HeaderCell>
@@ -39,9 +39,13 @@ export default class RsvpsTable extends Component {
                   <Table.Cell>
                     {user ? user.first_name + " " + user.last_name : null}
                   </Table.Cell>
-                  <Table.Cell>{rsvp.status}</Table.Cell>
+                  <Table.Cell>
+                    {rsvp.status === "Accepted" ? "Attending" : null}
+                    {rsvp.status === "Declined" ? "Not Attending" : null}
+                    {rsvp.status === "Delayed" ? "Not Sure" : null}
+                  </Table.Cell>
 
-                  <Table.Cell>{rsvp.other_text}</Table.Cell>
+                  <Table.Cell>{rsvp.other_text} </Table.Cell>
                 </Table.Row>
               );
             })}

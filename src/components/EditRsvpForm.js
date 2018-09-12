@@ -17,7 +17,7 @@ export default class RsvpForm extends Component {
     return (
       <React.Fragment>
         <i
-          className="window close icon"
+          className="window close outline icon"
           onClick={this.props.handleCloseClick}
         />
         <div className="ui header">

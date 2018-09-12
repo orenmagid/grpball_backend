@@ -9,6 +9,7 @@ import NotificationsDashboard from "./NotificationsDashboard";
 import CalendarDashboard from "./CalendarDashboard";
 import MapDashboard from "./MapDashboard";
 import ConversationsDashboard from "./ConversationsDashboard";
+import About from "../components/About";
 
 import UserFeed from "../components/UserFeed";
 import { Segment, Loader } from "semantic-ui-react";
@@ -44,31 +45,6 @@ class MainContainer extends React.Component {
           this.setState({ user: data });
         })
         .catch(e => console.error(e));
-      // Fetch user feed
-      // fetch(baseUrlForFeed + "/me", {
-      //   headers: {
-      //     Authorization: `Bearer ${token}`
-      //   }
-      // })
-      //   .then(res => res.json())
-      //   .then(userFeed => {
-      //     console.log("userFeed", userFeed);
-      //     this.setState({ userFeed: userFeed });
-      //   })
-      //   .catch(e => console.error(e));
-      //
-      // // Fetch user notifications
-      // fetch(baseUrlForFeed + "/notification_user", {
-      //   headers: {
-      //     Authorization: `Bearer ${token}`
-      //   }
-      // })
-      //   .then(res => res.json())
-      //   .then(userNotifications => {
-      //     console.log("userNotifications", userNotifications);
-      //     this.setState({ userNotifications: userNotifications });
-      //   })
-      //   .catch(e => console.error(e));
     }
   };
 
@@ -87,31 +63,6 @@ class MainContainer extends React.Component {
           this.setState({ user: data });
         })
         .catch(e => console.error(e));
-      // Fetch user feed
-      // fetch(baseUrlForFeed + "/me", {
-      //   headers: {
-      //     Authorization: `Bearer ${token}`
-      //   }
-      // })
-      //   .then(res => res.json())
-      //   .then(userFeed => {
-      //     console.log("userFeed", userFeed);
-      //     this.setState({ userFeed: userFeed });
-      //   })
-      //   .catch(e => console.error(e));
-      //
-      // // Fetch user notifications
-      // fetch(baseUrlForFeed + "/notification_user", {
-      //   headers: {
-      //     Authorization: `Bearer ${token}`
-      //   }
-      // })
-      //   .then(res => res.json())
-      //   .then(userNotifications => {
-      //     console.log("userNotifications", userNotifications);
-      //     this.setState({ userNotifications: userNotifications });
-      //   })
-      //   .catch(e => console.error(e));
 
       // fetch all users
       fetch(baseUrl + `/users`, {
@@ -203,11 +154,25 @@ class MainContainer extends React.Component {
   };
 
   render() {
+    // let activeItem;
+    //
+    // if (window.location.href.includes("group")) {
+    //   activeItem === "group_dashboard";
+    // }
+    //
+    // console.log("activeItem", activeItem);
+    // console.log("window.location.href", window.location.href);
+
     return (
       <div className="ui container">
         <Route
           path="/"
-          render={routerProps => <UserMenu user={this.state.user} />}
+          render={routerProps => (
+            <UserMenu
+              user={this.state.user}
+              // activeItem={activeItem}
+            />
+          )}
         />
 
         {this.state.user ? (
@@ -311,6 +276,10 @@ class MainContainer extends React.Component {
               />
             )}
           />
+        ) : null}
+
+        {this.state.user ? (
+          <Route exact path="/about" render={routerProps => <About />} />
         ) : null}
       </div>
     );

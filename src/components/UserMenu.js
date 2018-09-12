@@ -4,7 +4,9 @@ import { Menu, Icon, Popup } from "semantic-ui-react";
 import MediaQuery from "react-responsive";
 
 export default class UserMenu extends Component {
-  state = { activeItem: "you" };
+  state = {
+    activeItem: this.props.activeItem ? this.props.activeItem : "your_profile"
+  };
 
   handleItemClick = (e, { name }) => this.setState({ activeItem: name });
 
@@ -32,6 +34,11 @@ export default class UserMenu extends Component {
     if (window.location.href.includes("notifications")) {
       this.setState({
         activeItem: "notifications"
+      });
+    }
+    if (window.location.href.includes("about")) {
+      this.setState({
+        activeItem: "about"
       });
     }
   }
@@ -168,6 +175,25 @@ export default class UserMenu extends Component {
                 content="Here's where you'll be notified of incoming requests, and see a record of your outgoing requests and their current status."
               />
             </Link>
+            <Link to={`/about`}>
+              <Popup
+                key="you"
+                size="small"
+                inverted
+                basic
+                trigger={
+                  <Menu.Item
+                    name="about_grpball"
+                    active={activeItem === "about "}
+                    onClick={this.handleItemClick}
+                  >
+                    <Icon name="question" />
+                  </Menu.Item>
+                }
+                header="About"
+                content="So what is this site anyway?"
+              />
+            </Link>
           </Menu>
         </MediaQuery>
         <MediaQuery minWidth={767}>
@@ -267,6 +293,22 @@ export default class UserMenu extends Component {
                   />
                 }
                 content="Here's where you'll be notified of incoming requests, and see a record of your outgoing requests and their current status."
+              />
+            </Link>
+            <Link to={`/about`}>
+              <Popup
+                key="you"
+                size="small"
+                inverted
+                basic
+                trigger={
+                  <Menu.Item
+                    name="about"
+                    active={activeItem === "about"}
+                    onClick={this.handleItemClick}
+                  />
+                }
+                content="So what is this site anyway?"
               />
             </Link>
           </Menu>

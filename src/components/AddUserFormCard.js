@@ -6,7 +6,7 @@ export default class AddUserFormCard extends Component {
     return (
       <Card centered>
         <i
-          className="window close icon"
+          className="window close outline icon"
           onClick={this.props.handleCloseClick}
         />
         <Card.Content>

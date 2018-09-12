@@ -81,7 +81,7 @@ export default class MapLandingSessionInfo extends Component {
     }
     return (
       <React.Fragment>
-        <i className="window close icon" onClick={handleCloseClick} />
+        <i className="window close outline icon" onClick={handleCloseClick} />
         <Card fluid>
           {label}
 

@@ -90,8 +90,8 @@ export default class SessionInfo extends Component {
 
     return (
       <React.Fragment>
-        <i className="window close icon" onClick={handleCloseClick} />
         <Card fluid>
+          <i className="window close outline icon" onClick={handleCloseClick} />
           {label}
 
           <Card.Content>
@@ -192,7 +192,9 @@ export default class SessionInfo extends Component {
             {rsvp && session.status !== "Cancelled" ? (
               <a href="rsvp" onClick={e => handleRsvpClick(e, rsvp)}>
                 <Icon name="write" />
-                {rsvp.status}
+                {rsvp.status === "Accepted" ? "Attending" : null}
+                {rsvp.status === "Declined" ? "Not Attending" : null}
+                {rsvp.status === "Delayed" ? "Not Sure" : null}
               </a>
             ) : null}
             {!rsvp && session.status !== "Cancelled" ? (

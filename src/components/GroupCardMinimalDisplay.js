@@ -111,7 +111,7 @@ export default class GroupCardMinimalDisplay extends Component {
 
     return (
       <Card fluid>
-        <i className="window close icon" onClick={handleCloseClick} />
+        <i className="window close outline icon" onClick={handleCloseClick} />
 
         <Card.Content extra>
           <div className="ui two column grid">

@@ -110,7 +110,7 @@ export default class SessionScheduler extends Component {
     return (
       <Segment>
         <i
-          className="window close icon"
+          className="window close outline icon"
           onClick={this.props.handleCloseClick}
         />
 

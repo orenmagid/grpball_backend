@@ -45,7 +45,7 @@ export default class GrantAdminStatusCard extends Component {
 
     return (
       <Card centered>
-        <i className="window close icon" onClick={handleCloseClick} />
+        <i className="window close outline icon" onClick={handleCloseClick} />
         <Card.Content>
           <Form onSubmit={() => handleGrantAdminSubmit(this.state.group_id)}>
             <Form.Select

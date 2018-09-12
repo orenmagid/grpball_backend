@@ -52,7 +52,7 @@ export default class NotificationsDashboard extends Component {
             return (
               <Message warning key={request.id}>
                 <i
-                  className="window close icon"
+                  className="window close outline icon"
                   onClick={e => this.handleCloseClick(request)}
                 />
                 <Message.Header>
@@ -68,7 +68,7 @@ export default class NotificationsDashboard extends Component {
             return (
               <Message positive key={request.id}>
                 <i
-                  className="window close icon"
+                  className="window close outline icon"
                   onClick={e => this.handleCloseClick(request)}
                 />
                 <Message.Header>
@@ -86,7 +86,7 @@ export default class NotificationsDashboard extends Component {
             return (
               <Message negative key={request.id}>
                 <i
-                  className="window close icon"
+                  className="window close outline icon"
                   onClick={e => this.handleCloseClick(request)}
                 />
                 <Message.Header>
@@ -133,7 +133,7 @@ export default class NotificationsDashboard extends Component {
               return (
                 <Message info key={request.id}>
                   <i
-                    className="window close icon"
+                    className="window close outline icon"
                     onClick={e => this.handleCloseClick(request)}
                   />
                   <Message.Header>

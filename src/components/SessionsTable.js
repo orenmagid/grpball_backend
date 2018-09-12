@@ -64,7 +64,13 @@ export default class SessionsTable extends Component {
                                 onClick={e => handleShowSession(e, session)}
                                 href="session"
                               >
-                                {rsvp.status}
+                                {rsvp.status === "Accepted"
+                                  ? "Attending"
+                                  : null}
+                                {rsvp.status === "Declined"
+                                  ? "Not Attending"
+                                  : null}
+                                {rsvp.status === "Delayed" ? "Not Sure" : null}
                               </a>
                             );
                           }
