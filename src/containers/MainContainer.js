@@ -154,24 +154,21 @@ class MainContainer extends React.Component {
   };
 
   render() {
-    // let activeItem;
-    //
-    // if (window.location.href.includes("group")) {
-    //   activeItem === "group_dashboard";
-    // }
-    //
-    // console.log("activeItem", activeItem);
-    // console.log("window.location.href", window.location.href);
+    let activeItem;
+
+    if (window.location.href.includes("group_dashboard")) {
+      activeItem = "your_groups";
+    }
+
+    console.log("activeItem", activeItem);
+    console.log("window.location.href", window.location.href);
 
     return (
       <div className="ui container">
         <Route
           path="/"
           render={routerProps => (
-            <UserMenu
-              user={this.state.user}
-              // activeItem={activeItem}
-            />
+            <UserMenu user={this.state.user} activeItem={activeItem} />
           )}
         />
 

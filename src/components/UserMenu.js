@@ -5,7 +5,7 @@ import MediaQuery from "react-responsive";
 
 export default class UserMenu extends Component {
   state = {
-    activeItem: this.props.activeItem ? this.props.activeItem : "your_profile"
+    activeItem: "your_profile"
   };
 
   handleItemClick = (e, { name }) => this.setState({ activeItem: name });
@@ -43,6 +43,15 @@ export default class UserMenu extends Component {
     }
   }
 
+  componentDidUpdate(prevProps, prevState) {
+    if (
+      this.props.activeItem &&
+      this.state.activeItem !== this.props.activeItem
+    ) {
+      this.setState({ activeItem: this.props.activeItem });
+    }
+  }
+
   render() {
     const { activeItem } = this.state;
     let width =
@@ -58,7 +67,7 @@ export default class UserMenu extends Component {
     return (
       <React.Fragment>
         <MediaQuery maxWidth={767}>
-          <Menu tabular size="small">
+          <Menu tabular size="mini">
             <Link to={`/`}>
               <Popup
                 key="you"

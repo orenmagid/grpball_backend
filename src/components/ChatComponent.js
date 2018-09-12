@@ -74,6 +74,11 @@ class ChatComponent extends React.Component {
   //   this.setState({ activeConversation: id });
   // };
 
+  componentDidUpdate() {
+    var el = this.refs.wrap;
+    el.scrollTop = el.scrollHeight;
+  }
+
   handleReceivedConversation = response => {
     const { conversation } = response;
     this.setState({
@@ -160,7 +165,7 @@ class ChatComponent extends React.Component {
           />
         ) : null}
         <MediaQuery minWidth={767}>
-          <div className="ui card twelve wide column">
+          <div className="ui card twelve wide column" ref="wrap">
             {activeConversation && conversations.length > 0 ? (
               <MessagesArea
                 user={this.props.user}
@@ -174,7 +179,7 @@ class ChatComponent extends React.Component {
           </div>
         </MediaQuery>
         <MediaQuery maxWidth={767}>
-          <div className="ui card sixteen wide column">
+          <div className="ui card sixteen wide column" ref="wrap">
             {activeConversation && conversations.length > 0 ? (
               <MessagesArea
                 user={this.props.user}
