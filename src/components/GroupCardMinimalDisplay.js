@@ -112,10 +112,11 @@ export default class GroupCardMinimalDisplay extends Component {
         });
       }
     }
-
-    userHasRequested = user.requests.filter(request => {
-      return request.group_id === group.id;
-    });
+    if (localStorage.getItem("token")) {
+      userHasRequested = user.requests.filter(request => {
+        return request.group_id === group.id;
+      });
+    }
 
     return (
       <Card fluid>
