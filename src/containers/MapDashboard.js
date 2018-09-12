@@ -22,7 +22,9 @@ export class MapDashboard extends Component {
     userPosition: null,
     currentRsvp: "",
     formToShow: "none",
-    whatToDisplayOnMap: "yourSessions",
+    whatToDisplayOnMap: this.props.user.sessions
+      ? "yourSessions"
+      : "allSessions",
     groupUsers: [],
     activeMarker: {},
     showingInfoWindow: false,

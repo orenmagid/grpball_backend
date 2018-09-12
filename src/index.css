@@ -83,6 +83,12 @@ body {
   margin: 15px;
 }
 
+.ui.divider {
+  width: 25%;
+  margin-left: auto;
+  margin-right: auto;
+}
+
 .react-datepicker__time-container
   .react-datepicker__time
   .react-datepicker__time-box

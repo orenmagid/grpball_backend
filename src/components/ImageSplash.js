@@ -16,7 +16,7 @@ const ButtonExampleSize = ({ createNewUser }) => (
       </div>
     </div>
     <div className="ui vertical masthead center aligned segment">
-      <Image src="../grpball-splash.png" />
+      <Image src="../grpball-splash.png" size="huge" centered />
     </div>
     <div className="ui vertical stripe segment">
       <div className="ui middle aligned stackable grid container">

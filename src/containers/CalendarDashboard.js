@@ -32,7 +32,9 @@ export default class CalendarDashboard extends Component {
     groupUsers: [],
     showWarning: false,
     warning: "",
-    whatToDisplayOnCalendar: "yourSessions"
+    whatToDisplayOnCalendar: this.props.user.sessions
+      ? "yourSessions"
+      : "allSessions"
   };
 
   handleToggle = whatToDisplay => {
