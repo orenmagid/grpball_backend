@@ -43,7 +43,7 @@ class LoginForm extends React.Component {
       // </Form>
       <React.Fragment>
         <div className="ui middle aligned center aligned grid">
-          <div className="column">
+          <div className="login column">
             <h2 className="ui custom image header">
               <img src="../grpball-splash.png" className="image" />
               <div className="content">Log-in to your account</div>

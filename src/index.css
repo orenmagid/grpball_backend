@@ -36,6 +36,11 @@ body {
   width: 100%;
 }
 
+.login.column {
+  max-width: 450px;
+  margin-top: 50px;
+}
+
 .ui.huge.primary.button {
   /* background-color: #c5d5ea; */
   background-color: #1a2533;
