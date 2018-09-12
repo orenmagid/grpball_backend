@@ -87,16 +87,30 @@ export default class GroupCardMinimalDisplay extends Component {
 
   render() {
     const { user, handleAccordianDisplay, handleCloseClick } = this.props;
-    let group = this.props.group;
-    let users = this.props.users ? this.props.users : this.state.users;
+
     let hasRequested = this.state.hasRequested;
+
+    const group = this.state.group
+      ? this.state.group.id !== this.props.group.id
+        ? this.props.group
+        : this.state.group
+      : this.props.group;
+
+    const users = this.state.users ? this.state.users : this.props.group.users;
 
     let userGroup;
     let userHasRequested = [];
 
     console.log("group", group);
+    console.log("group.user_groups", group.user_groups);
+    //
+    // debugger;
 
-    if (group && group.user_groups > 0 && localStorage.getItem("token")) {
+    if (
+      group &&
+      group.user_groups.length > 0 &&
+      localStorage.getItem("token")
+    ) {
       userGroup = group.user_groups.find(user_group => {
         return user_group.user_id === user.id;
       });
@@ -105,10 +119,6 @@ export default class GroupCardMinimalDisplay extends Component {
     userHasRequested = user.requests.filter(request => {
       return request.group_id === group.id;
     });
-
-    console.log("this.props", this.props);
-    console.log("userGroup", userGroup);
-    console.log("userHasRequested", userHasRequested);
 
     return (
       <Card fluid>
