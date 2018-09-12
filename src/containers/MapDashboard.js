@@ -313,7 +313,7 @@ export class MapDashboard extends Component {
     e.target.reset();
     let token = localStorage.getItem("token");
     fetch(baseUrl + `/rsvps/${this.state.currentRsvp.id}`, {
-      method: "alert",
+      method: "PATCH",
       body: JSON.stringify(data),
       headers: {
         "Content-Type": "application/json",
