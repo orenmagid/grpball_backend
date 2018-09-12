@@ -1,28 +1,37 @@
-import React from "react";
+import React, { Component } from "react";
 import NewMessageForm from "./NewMessageForm";
 import moment from "moment";
 
-const MessagesArea = props => {
-  let id = props.conversation.id;
-  let title = props.conversation.title;
-  let messages = props.conversation.messages;
-  let user = props.user;
-  let users = props.users;
+export default class MessagesArea extends Component {
+  componentDidMount() {
+    var el = this.refs.wrap;
+    el.scrollTop = el.scrollHeight;
+  }
 
-  return (
-    <React.Fragment>
-      <h2 className="ui header">{title}</h2>
+  componentDidUpdate() {
+    var el = this.refs.wrap;
+    el.scrollTop = el.scrollHeight;
+  }
 
-      <div className="ui raised segment chat-window">
-        <ul>{orderedMessages(messages, users)}</ul>
-      </div>
+  render() {
+    let id = this.props.conversation.id;
+    let title = this.props.conversation.title;
+    let messages = this.props.conversation.messages;
+    let user = this.props.user;
+    let users = this.props.users;
+    return (
+      <React.Fragment>
+        <h2 className="ui header">{title}</h2>
 
-      <NewMessageForm user={user} conversation_id={id} />
-    </React.Fragment>
-  );
-};
+        <div className="ui raised segment chat-window" ref="wrap">
+          <ul>{orderedMessages(messages, users)}</ul>
+        </div>
 
-export default MessagesArea;
+        <NewMessageForm user={user} conversation_id={id} />
+      </React.Fragment>
+    );
+  }
+}
 
 // helpers
 
