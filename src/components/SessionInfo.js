@@ -101,6 +101,10 @@ export default class SessionInfo extends Component {
               {session.location}
             </Card.Header>
             <Card.Meta>
+              Automatic Expiration Date:{" "}
+              {moment(session.expiration).format("MMMM Do YYYY, [at] h:mm a")}
+            </Card.Meta>
+            <Card.Meta>
               {" "}
               Created by:{" "}
               {sessionCreator.id === user.id

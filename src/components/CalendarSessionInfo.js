@@ -154,6 +154,10 @@ export default class CalendarSessionInfo extends Component {
               <br />
               {session.location}
             </Card.Header>
+            <Card.Meta>
+              Automatic Expiration Date:{" "}
+              {moment(session.expiration).format("MMMM Do YYYY, [at] h:mm a")}
+            </Card.Meta>
             {/* <Card.Meta>
               {" "}
               Created by:{" "}
