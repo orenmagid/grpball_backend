@@ -24,7 +24,6 @@ export class MapLandingPage extends Component {
   };
 
   captureAddress = latLng => {
-    console.log("latLng", latLng);
     this.setState({
       searchPosition: {
         lat: latLng.lat,
@@ -34,7 +33,6 @@ export class MapLandingPage extends Component {
   };
 
   captureZoomType = resultsTypes => {
-    console.log("resultsTypes", resultsTypes);
     this.setState({
       zoomType: resultsTypes
     });
@@ -204,8 +202,6 @@ export class MapLandingPage extends Component {
         });
         break;
     }
-
-    console.log("markers", markers);
 
     let zoom;
     if (this.state.zoomType) {

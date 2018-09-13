@@ -50,7 +50,6 @@ export default class GroupCard extends Component {
   };
 
   fetchGroup = () => {
-    console.log("fetching group");
     let token = localStorage.getItem("token");
     if (token) {
       fetch(baseUrl + `/groups/${this.props.group.id}`, {
@@ -60,7 +59,6 @@ export default class GroupCard extends Component {
       })
         .then(res => res.json())
         .then(group => {
-          console.log("group", group);
           this.setState({
             group: group,
             users: group.users
@@ -72,12 +70,8 @@ export default class GroupCard extends Component {
 
   handleGrantAdminSubmit = userId => {
     let userGroup = this.state.group.user_groups.find(ug => {
-      console.log("ug.user_id", ug.user_id);
-      console.log("userId", userId);
       return parseInt(ug.user_id) === parseInt(userId);
     });
-
-    console.log(userGroup);
 
     let data = {
       is_administrator: true
@@ -119,8 +113,6 @@ export default class GroupCard extends Component {
   };
 
   handleAddToGroupSubmit = (e, value = "Yes") => {
-    console.log("e.target.administrator", e.target.administrator);
-    console.log("value", value);
     e.preventDefault();
     let data;
     let token = localStorage.getItem("token");
@@ -306,10 +298,6 @@ export default class GroupCard extends Component {
     if (group) {
       newRequests = group.requests.filter(request => request.status === "New");
     }
-
-    console.log("nonUserAdmins", nonUserAdmins);
-    console.log("users", users);
-    console.log("newRequests", newRequests);
 
     return (
       <Card fluid>

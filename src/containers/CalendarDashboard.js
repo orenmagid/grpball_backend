@@ -102,9 +102,6 @@ export default class CalendarDashboard extends Component {
   };
 
   handleSelectEvent = event => {
-    console.log("inside handleSelectEvent");
-    console.log("event", event);
-    console.log("this.state.selectedEvent", this.state.selectedEvent);
     if (this.state.selectedEvent && this.state.selectedEvent.id === event.id) {
       this.setState({ selectedEvent: null });
     } else {
@@ -148,7 +145,6 @@ export default class CalendarDashboard extends Component {
   };
 
   handleNewRsvp = (e, sessionId) => {
-    console.log("Inside handleNewRsvp");
     e.preventDefault();
 
     let data = {
@@ -176,7 +172,6 @@ export default class CalendarDashboard extends Component {
   };
 
   handleEditRsvp = (e, sessionId, otherText) => {
-    console.log("Inside handleEditRsvp");
     e.preventDefault();
 
     let data = {
@@ -234,7 +229,6 @@ export default class CalendarDashboard extends Component {
 
   handleShowGroupFromSession = (e, group) => {
     e.preventDefault();
-    console.log("group", group);
     if (this.state.selectedGroup && this.state.selectedGroup.id === group.id) {
       this.setState({
         selectedEvent: null,

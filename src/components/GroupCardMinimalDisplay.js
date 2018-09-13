@@ -76,9 +76,7 @@ export default class GroupCardMinimalDisplay extends Component {
         }
       })
         .then(response => response.json())
-        .then(newRequest => {
-          console.log(newRequest);
-        });
+        .then(newRequest => {});
     }
     this.fetchGroup(group);
     this.setState({ hasRequested: true });
@@ -101,10 +99,6 @@ export default class GroupCardMinimalDisplay extends Component {
     let userGroup;
     let userHasRequested = [];
 
-    console.log("group", group);
-    console.log("group.user_groups", group.user_groups);
-    //
-    // debugger;
     if (group && group.user_groups && localStorage.getItem("token")) {
       if (group.user_groups.length > 0) {
         userGroup = group.user_groups.find(user_group => {

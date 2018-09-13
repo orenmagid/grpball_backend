@@ -30,7 +30,6 @@ class App extends Component {
       .then(res => res.json())
       .then(sessions => {
         {
-          console.log(sessions);
           this.setState({ sessions: sessions });
         }
       })
@@ -58,8 +57,6 @@ class App extends Component {
   handleLogin = e => {
     e.preventDefault();
 
-    console.log("inside handleLogin");
-
     let params = {
       username: e.currentTarget.username.value,
       password: e.currentTarget.password.value
@@ -77,7 +74,6 @@ class App extends Component {
     })
       .then(res => res.json())
       .then(data => {
-        console.log(data);
         if (data.success) {
           localStorage.setItem("token", data.token);
 
@@ -98,7 +94,6 @@ class App extends Component {
 
   handleCreateUser = (e, address, latitude, longitude, experience) => {
     e.preventDefault();
-    console.log("experience", experience);
 
     let data = {
       user: {
@@ -126,8 +121,6 @@ class App extends Component {
     })
       .then(response => response.json())
       .then(newUser => {
-        console.log(newUser);
-
         if (newUser.errors) {
           this.displayErrors(newUser.errors);
         } else {
@@ -238,7 +231,7 @@ class App extends Component {
             />
           )}
         </div>
-        {/* 
+        {/*
         <footer className="ui footer segment" /> */}
       </div>
     );

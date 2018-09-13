@@ -26,7 +26,6 @@ export default class GrantAdminStatusCard extends Component {
       }
       return true;
     });
-    console.log("nonAdminUsers", nonAdminUsers);
     let newNonAdminUsers = nonAdminUsers.filter(nonAdminUser => {
       return nonAdminUser.id !== user.id;
     });
@@ -38,10 +37,6 @@ export default class GrantAdminStatusCard extends Component {
         value: `${user.id}`
       };
     });
-
-    console.log("users", users);
-    console.log("nonAdminUsers", nonAdminUsers);
-    console.log("newNonAdminUsers", newNonAdminUsers);
 
     return (
       <Card centered>

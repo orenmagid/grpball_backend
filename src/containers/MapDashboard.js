@@ -33,7 +33,6 @@ export class MapDashboard extends Component {
   };
 
   captureAddress = latLng => {
-    console.log("latLng", latLng);
     this.setState({
       searchPosition: {
         lat: latLng.lat,
@@ -43,7 +42,6 @@ export class MapDashboard extends Component {
   };
 
   captureZoomType = resultsTypes => {
-    console.log("resultsTypes", resultsTypes);
     this.setState({
       zoomType: resultsTypes
     });
@@ -65,7 +63,6 @@ export class MapDashboard extends Component {
   }
 
   fetchGroup = group => {
-    console.log("Inside fetchGroup");
     let token = localStorage.getItem("token");
     if (token) {
       fetch(baseUrl + `/groups/${group.id}`, {
@@ -86,8 +83,6 @@ export class MapDashboard extends Component {
     }
   };
   onMarkerClick = (props, marker, e) => {
-    console.log("Inside onMarkerClick");
-    console.log("props", props);
     if (props.session) {
       if (
         this.state.selectedEvent &&
@@ -273,7 +268,6 @@ export class MapDashboard extends Component {
   };
 
   handleNewRsvp = (e, sessionId) => {
-    console.log("Inside handleNewRsvp");
     e.preventDefault();
 
     let data = {
@@ -301,7 +295,6 @@ export class MapDashboard extends Component {
   };
 
   handleEditRsvp = (e, sessionId, otherText) => {
-    console.log("Inside handleEditRsvp");
     e.preventDefault();
 
     let data = {

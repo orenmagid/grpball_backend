@@ -23,14 +23,12 @@ export default class SessionScheduler extends Component {
   };
 
   handleDateChange = date => {
-    console.log("inside handleSelect, date:", date);
     this.setState({
       date: date
     });
   };
 
   handleExpirationChange = date => {
-    console.log("inside handleSelect, date:", date);
     this.setState({
       expiration: date
     });
@@ -43,7 +41,6 @@ export default class SessionScheduler extends Component {
   // handleChange = e => this.setState({ [e.target.name]: e.target.value });
 
   handleSubmit = e => {
-    console.log("Inside handleSubmit");
     e.preventDefault();
 
     let data = {

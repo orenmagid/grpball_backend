@@ -30,7 +30,6 @@ class MainContainer extends React.Component {
   };
 
   handleForceUserUpdate = () => {
-    console.log("inside handleForceUpdate");
     let token = localStorage.getItem("token");
     if (token) {
       // Fetch user information
@@ -41,7 +40,6 @@ class MainContainer extends React.Component {
       })
         .then(res => res.json())
         .then(data => {
-          console.log(data);
           this.setState({ user: data });
         })
         .catch(e => console.error(e));
@@ -59,7 +57,6 @@ class MainContainer extends React.Component {
       })
         .then(res => res.json())
         .then(data => {
-          console.log(data);
           this.setState({ user: data });
         })
         .catch(e => console.error(e));
@@ -97,7 +94,6 @@ class MainContainer extends React.Component {
 
   handlePatchUser = (e, user, address, latitude, longitude, experience) => {
     e.preventDefault();
-    console.log("experience", experience);
     let data = {
       user: {
         first_name: e.currentTarget.first_name.value,
@@ -126,8 +122,6 @@ class MainContainer extends React.Component {
       })
         .then(response => response.json())
         .then(updatedUser => {
-          console.log(updatedUser);
-
           if (updatedUser.errors) {
             this.displayErrors(updatedUser.errors);
           } else {
@@ -159,9 +153,6 @@ class MainContainer extends React.Component {
     if (window.location.href.includes("group_dashboard")) {
       activeItem = "your_groups";
     }
-
-    console.log("activeItem", activeItem);
-    console.log("window.location.href", window.location.href);
 
     return (
       <div className="ui container">

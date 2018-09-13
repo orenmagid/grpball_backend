@@ -25,9 +25,7 @@ export default class NotificationsDashboard extends Component {
       }
     })
       .then(response => response.json())
-      .then(request => {
-        console.log(request);
-      });
+      .then(request => {});
     this.props.handleFetchGroups();
     this.props.handleForceUserUpdate();
   };
@@ -107,24 +105,15 @@ export default class NotificationsDashboard extends Component {
       return user_group.is_administrator;
     });
 
-    console.log("adminUserGroups", adminUserGroups);
-
     let adminGroups;
-    console.log("groups", groups);
 
     if (adminUserGroups && groups.length > 0) {
       adminGroups = adminUserGroups.map(adminUserGroup => {
-        console.log("adminUserGroup.group_id", adminUserGroup.group_id);
-        console.log("groups", groups);
         let group = groups.find(group => {
-          console.log("group.id", group.id);
-
           return group.id === adminUserGroup.group_id;
         });
         return group;
       });
-
-      console.log("adminGroups", adminGroups);
 
       let unfilteredRequestsReceivedMessages = adminGroups.map(adminGroup => {
         return adminGroup.requests.map(request => {
@@ -157,10 +146,7 @@ export default class NotificationsDashboard extends Component {
           }
         });
       });
-      console.log(
-        "unfilteredRequestsReceivedMessages",
-        unfilteredRequestsReceivedMessages
-      );
+
       requestsReceivedMessages = unfilteredRequestsReceivedMessages.filter(
         message => {
           return (
@@ -173,18 +159,10 @@ export default class NotificationsDashboard extends Component {
       );
     }
 
-    console.log(
-      "unfilteredRequestsSentMessages",
-      unfilteredRequestsSentMessages
-    );
-
     requestsSentMessages = unfilteredRequestsSentMessages.filter(message => {
-      console.log("message", message);
       return message !== undefined;
     });
 
-    console.log("requestsReceivedMessages", requestsReceivedMessages);
-    console.log("requestsSentMessages", requestsSentMessages);
     return (
       <React.Fragment>
         {requestsReceivedMessages ? requestsReceivedMessages : null}

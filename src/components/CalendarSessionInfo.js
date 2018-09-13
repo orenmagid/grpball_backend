@@ -69,12 +69,9 @@ export default class CalendarSessionInfo extends Component {
       ? this.state.users
       : this.props.group.users;
 
-    console.log("groupUsers", groupUsers);
     let memberOfGroup = groupUsers.findIndex(groupUser => {
       return groupUser.id === user.id;
     });
-
-    console.log("memberOfGroup", memberOfGroup);
 
     const acceptedRsvps = session.rsvps.filter(rsvp => {
       return rsvp.status === "Accepted";
@@ -93,10 +90,6 @@ export default class CalendarSessionInfo extends Component {
     const sessionCreator = groupUsers.find(user => {
       return user.id === session.creator_id;
     });
-
-    console.log("acceptedRsvps", acceptedRsvps);
-    console.log("declinedRsvps", declinedRsvps);
-    console.log("delayedRsvps", delayedRsvps);
 
     let label;
 

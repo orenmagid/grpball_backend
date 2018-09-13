@@ -42,7 +42,6 @@ class GroupDashboard extends Component {
 
   handleJoinGroupSubmit = e => {
     e.preventDefault();
-    console.log("inside handleJoinGroupSubmit");
     let groupName = e.target.groupname.value;
     let groupId = e.target.groupid.value;
     e.target.reset();
@@ -63,7 +62,6 @@ class GroupDashboard extends Component {
       })
         .then(response => response.json())
         .then(jsonData => {
-          console.log(jsonData);
           this.props.handleForceUserUpdate();
         });
     }

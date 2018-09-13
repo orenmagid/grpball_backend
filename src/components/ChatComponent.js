@@ -60,7 +60,6 @@ class ChatComponent extends React.Component {
             });
         }
 
-        console.log("conversations", conversations);
         this.setState({
           conversations: conversations,
           activeConversation: conversations[0].id,
@@ -100,8 +99,7 @@ class ChatComponent extends React.Component {
     let conversations = this.state.conversations.filter(
       conversation => userGroupIds.indexOf(conversation.group.id) >= 0
     );
-    console.log("activeConversation", activeConversation);
-    console.log("conversations", conversations);
+
     return (
       <div className="ui divided grid ">
         {activeConversation && conversations.length > 0 ? (

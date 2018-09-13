@@ -30,7 +30,6 @@ export default class LocationSearchInput extends React.Component {
       .catch(error => console.error("Error", error));
 
     geocodeByAddress(address).then(results => {
-      console.log(results);
       this.setState({
         formatted_address: results[0].formatted_address,
         address: ""

@@ -13,9 +13,6 @@ export default class RsvpsTable extends Component {
       return !this.userRsvpd(user);
     });
 
-    console.log("noRsvpUsers", noRsvpUsers);
-    console.log("rsvps", rsvps);
-
     if (
       statusToDisplay === "accepted" ||
       statusToDisplay === "declined" ||

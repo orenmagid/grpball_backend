@@ -104,10 +104,8 @@ export default class GroupSubDashboard extends Component {
   };
 
   handleShowSession = (e, currentSession) => {
-    console.log("currentSession", currentSession);
     e.preventDefault();
     // if (this.state.currentSession) {
-    //   console.log("here we are!");
     //   this.setState({ currentSession: null });
     // } else {
     let token = localStorage.getItem("token");
@@ -122,7 +120,6 @@ export default class GroupSubDashboard extends Component {
           let myRsvp = session.rsvps.find(
             rsvp => rsvp.user_id === this.props.user.id
           );
-          console.log("myRsvp", myRsvp);
           this.setState({
             currentSession: session,
             currentRsvp: myRsvp,

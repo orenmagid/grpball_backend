@@ -25,7 +25,6 @@ class NewMessageForm extends React.Component {
         user_id: this.props.user.id
       }
     };
-    console.log("data", data);
     fetch(`${API_ROOT}/messages`, {
       method: "POST",
       headers: HEADERS,

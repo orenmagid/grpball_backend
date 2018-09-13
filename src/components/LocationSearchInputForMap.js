@@ -38,7 +38,6 @@ export default class LocationSearchInputForMap extends React.Component {
   };
 
   handleError = (status, clearSuggestions) => {
-    console.log("Error from Google Maps API", status);
     this.setState({ errorMessage: status });
   };
 

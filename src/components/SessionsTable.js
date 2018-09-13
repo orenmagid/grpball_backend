@@ -16,9 +16,6 @@ export default class SessionsTable extends Component {
       (a, b) => moment(a.date) - moment(b.date)
     );
 
-    console.log("sessions", sessions);
-    console.log("sortedSessions", sortedSessions);
-
     return (
       <React.Fragment>
         {sortedSessions.length > 0 ? (

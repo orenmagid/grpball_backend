@@ -51,7 +51,6 @@ const orderedMessages = (messages, users) => {
     let messageAuthor;
     if (users) {
       messageAuthor = users.find(user => user.id === message.user_id);
-      console.log("messageAuthor", messageAuthor);
     }
 
     return (
