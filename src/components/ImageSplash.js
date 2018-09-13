@@ -1,6 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { Image, Reveal, Segment } from "semantic-ui-react";
+import MediaQuery from "react-responsive";
 
 const ButtonExampleSize = ({ createNewUser }) => (
   <React.Fragment>
@@ -45,7 +46,10 @@ const ButtonExampleSize = ({ createNewUser }) => (
           <div className="center aligned column">
             <Link to={`/map_splash`}>
               <a className="ui huge primary button">
-                See Who's Playing Near You <i className="right arrow icon" />
+                See Who's Playing Near You{" "}
+                <MediaQuery minWidth={776}>
+                  <i className="right arrow icon" />
+                </MediaQuery>
               </a>
             </Link>
           </div>
