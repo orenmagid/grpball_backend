@@ -14,11 +14,19 @@ export default class MessagesArea extends Component {
   }
 
   render() {
-    let id = this.props.conversation.id;
-    let title = this.props.conversation.title;
-    let messages = this.props.conversation.messages;
-    let user = this.props.user;
-    let users = this.props.users;
+    let id;
+    let title;
+    let messages = [];
+    let user;
+    let users;
+    if (this.props.conversation && this.props.user && this.props.users) {
+      id = this.props.conversation.id;
+      title = this.props.conversation.title;
+      messages = this.props.conversation.messages;
+      user = this.props.user;
+      users = this.props.users;
+    }
+
     return (
       <React.Fragment>
         <h2 className="ui header">{title}</h2>
