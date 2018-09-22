@@ -10,7 +10,7 @@ require 'geocoder'
 #   Character.create(name: 'Luke', movie: movies.first)
 
 
-oren = User.create(first_name: "Oren", last_name: "Magid", username: "odog", email: "autoimpedicis@gmail.com", password: "test", phone_number: "347-422-7852", location: "Washington, DC", highest_experience: "Pickup", height_in_inches: 72, age: 40)
+demo = User.create(first_name: "Demo", last_name: "User", username: "demo", email: "demo_user@gmail.com", password: "test", phone_number: "555-555-7852", location: "Washington, DC", highest_experience: "Pickup", height_in_inches: 72, age: 40)
 
 
 80.times do
