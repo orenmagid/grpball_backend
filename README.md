@@ -9,6 +9,17 @@ The frontend repository is available <a href="https://github.com/orenmagid/grpba
 
 You can check it out at https://grpball.herokuapp.com/. Because Heroku's <a href="https://devcenter.heroku.com/articles/free-dyno-hours">free dyno hours</a> <a href="https://devcenter.heroku.com/articles/free-dyno-hours#dyno-sleeping">go to sleep</a> if the app hasn't been used in thirty minutes, the app may be unresponsive for about 30 secs when you first attempt to use it. Unfortunately, this applies to the frontend and the backend. So, it may be about thirty seconds before the webpage loads, and then another delay before the database is responsive.
 
+Feel free to use this dummy username and password combination to look around:
+
+<ul> 
+  
+  <li>Username: demo</li>
+  <li><Password: test</li>
+
+</ul>
+
+
+
 ## Credits
 
 This project uses code from several open source packages. I've listed the non-obvious ones (i.e. not Rails, React, or their dependencies) below.
