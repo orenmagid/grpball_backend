@@ -14,7 +14,7 @@ Feel free to use this dummy username and password combination to look around:
 <ul> 
   
   <li>Username: demo</li>
-  <li><Password: test</li>
+  <li>Password: test</li>
 
 </ul>
 
