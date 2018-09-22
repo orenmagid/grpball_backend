@@ -13,9 +13,9 @@ This project uses code from several open source packages. I've listed the non-ob
 On the backend:
 <ul> 
   
-  <li><a href="https://github.com/codahale/bcrypt-ruby">bcrypt</a></li>
-  <li><a href="https://github.com/jwt/ruby-jwt">jwt</a></li>
-  <li><a href="https://github.com/laserlemon/figaro">figaro</a></li>
-  <li><a href="https://github.com/alexreisner/geocoder">geocoder</a></li>
+  <li><a href="https://github.com/codahale/bcrypt-ruby" target="_blank">bcrypt</a></li>
+  <li><a href="https://github.com/jwt/ruby-jwt" target="_blank">jwt</a></li>
+  <li><a href="https://github.com/laserlemon/figaro" target="_blank">figaro</a></li>
+  <li><a href="https://github.com/alexreisner/geocoder" target="_blank">geocoder</a></li>
 
 </ul>
