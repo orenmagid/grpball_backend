@@ -13,9 +13,23 @@ This project uses code from several open source packages. I've listed the non-ob
 On the backend:
 <ul> 
   
-  <li><a href="https://github.com/codahale/bcrypt-ruby" target="_blank">bcrypt</a></li>
-  <li><a href="https://github.com/jwt/ruby-jwt" target="_blank">jwt</a></li>
-  <li><a href="https://github.com/laserlemon/figaro" target="_blank">figaro</a></li>
-  <li><a href="https://github.com/alexreisner/geocoder" target="_blank">geocoder</a></li>
+  <li><a href="https://github.com/codahale/bcrypt-ruby">bcrypt</a></li>
+  <li><a href="https://github.com/jwt/ruby-jwt">jwt</a></li>
+  <li><a href="https://github.com/laserlemon/figaro">figaro</a></li>
+  <li><a href="https://github.com/alexreisner/geocoder">geocoder</a></li>
+
+</ul>
+
+On the frontend:
+<ul> 
+  
+  <li><a href="https://github.com/fullstackreact/google-maps-react">google-maps-react</a></li>
+  <li><a href="https://momentjs.com/">moment</a></li>
+  <li><a href="https://github.com/cpunion/react-actioncable-provider">react-actioncable-provider</a></li>
+  <li><a href="https://github.com/intljusticemission/react-big-calendar">react-big-calendar</a></li>
+  <li><a href="https://github.com/Hacker0x01/react-datepicker">react-datepicker</a></li>
+  <li><a href="https://github.com/hibiken/react-places-autocomplete">react-places-autocomplete</a></li>
+  <li><a href="https://github.com/contra/react-responsive">react-responsive</a></li>
+  <li><a href="https://semantic-ui.com/">semantic-ui</a></li>
 
 </ul>
