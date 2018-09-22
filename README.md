@@ -1,24 +1,9 @@
-# README
+# GRPBALL
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+This was my final project for the Flatiron School's Immersive Software Engineering Bootcamp: a React app for scheduling and organizing pickup basketball, as well as discovering other local players and groups of players.
 
-Things you may want to cover:
+## Demo
 
-* Ruby version
+You can check it out at https://grpball.herokuapp.com/. Because Heroku's <a href="https://devcenter.heroku.com/articles/free-dyno-hours">free dyno hours</a> <a href="https://devcenter.heroku.com/articles/free-dyno-hours#dyno-sleeping">go to sleep</a> if the app hasn't been used in thirty minutes, the app may be unresponsive for about 30 secs when you first attempt to use it.
 
-* System dependencies
-
-* Configuration
-
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+## Credits
