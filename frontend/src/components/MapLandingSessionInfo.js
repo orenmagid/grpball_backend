@@ -45,9 +45,8 @@ export default class MapLandingSessionInfo extends Component {
       return rsvp.status === "Delayed";
     });
 
-    console.log("acceptedRsvps", acceptedRsvps);
-    console.log("declinedRsvps", declinedRsvps);
     console.log("delayedRsvps", delayedRsvps);
+    console.log("session.rsvps", session.rsvps);
 
     const numOfPlayersNeeded = session.min_players - acceptedRsvps.length;
     const playerOrPlayers = numOfPlayersNeeded > 1 ? "players" : "player";
@@ -116,11 +115,11 @@ export default class MapLandingSessionInfo extends Component {
                 <Statistic.Value>{declinedRsvps.length}</Statistic.Value>
               </Statistic>
 
-              {/* <Statistic size="mini">
+              <Statistic size="mini">
                 <Statistic.Label>Not Sure</Statistic.Label>
                 <Statistic.Value> {delayedRsvps.length}</Statistic.Value>
               </Statistic>
-              <Statistic size="mini">
+              {/* <Statistic size="mini">
                 <Statistic.Label>No Response</Statistic.Label>
                 <Statistic.Value>
                   <Icon name="question" />{" "}
