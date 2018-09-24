@@ -98,6 +98,8 @@ GEM
     minitest (5.11.3)
     msgpack (1.2.4)
     multipart-post (2.0.0)
+    nexmo (5.3.0)
+      jwt (~> 2)
     nio4r (2.3.1)
     nokogiri (1.8.4)
       mini_portile2 (~> 2.3.0)
@@ -182,6 +184,7 @@ DEPENDENCIES
   geocoder
   jwt
   listen (>= 3.0.5, < 3.2)
+  nexmo
   pg (>= 0.18, < 2.0)
   pry
   puma (~> 3.11)

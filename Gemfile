@@ -27,7 +27,7 @@ gem 'stream_rails'
 gem "stream-ruby"
 
 gem "geocoder"
-
+gem 'nexmo'
 
 
 # Use ActiveStorage variant
