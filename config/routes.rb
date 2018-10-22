@@ -20,13 +20,6 @@ Rails.application.routes.draw do
    end
  end
 
- get '/me', to: 'feeds#user'
- get '/notification_user', to: 'feeds#notification_user'
- get '/notification_group/:id', to: 'feeds#notification_group'
- get '/flat', to: 'feeds#flat'
- get '/aggregated', to: 'feeds#aggregated'
- get '/group/:id', to: 'feeds#group'
-
  mount ActionCable.server => '/cable'
 
 
