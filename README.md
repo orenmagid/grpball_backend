@@ -1,11 +1,21 @@
 # GRPBALL
 
-This is the backend repository for my final project for the Flatiron School's Immersive Software Engineering Bootcamp: an app for scheduling and organizing pickup basketball, as well as discovering other local players and groups of players.
+This is the backend repository for my final project for the Flatiron School's Immersive Software Engineering Bootcamp. The frontend repository is available <a href="https://github.com/orenmagid/grpball_frontend">here</a>. 
 
+GRPBALL is an app for scheduling and organizing pickup basketball, as well as discovering other local players and groups of players.
 
-The frontend repository is available <a href="https://github.com/orenmagid/grpball_frontend">here</a>.
+Users can create their own groups, or search for local groups and request to join. When a group has responded, they will receive a notification. Once a user joins a group, users can engage with that group in a variety of ways: 
+
+<ul> 
+  <li>Users can chat with other group members</li>
+  <li>Users can schedule games, or "sessions" of games</li>
+  <li>Users can RSVP for sessions</li>
+  <li>If a user is an administrator of a group, that user can search for other local players and invite them to join the group</li>
+</ul> 
 
 <a href="https://medium.com/@autoimpedicis/reflecting-about-my-final-project-917223a9fa17">Here</a>'s a short blog post about the project.
+
+
 
 ## Demo
 
