@@ -20,7 +20,7 @@ demo = User.create(first_name: "Demo", last_name: "User", username: "demo", emai
   longitude = rand(-123.75583..-80.01197)
   address = Geocoder.search([latitude, longitude]).first.address
 
-  User.create(first_name: Faker::Name.first_name, last_name: Faker::Name.last_name, username: Faker::Internet.username, email: Faker::Internet.email, password: "test", phone_number: Faker::PhoneNumber.cell_phone, latitude: latitude, longitude: longitude, location: address, highest_experience: "Pickup", height_in_inches: Faker::Number.between(50, 80), age: Faker::Number.between(14, 60))
+  User.create(first_name: Faker::Name.first_name, last_name: Faker::Name.last_name, username: Faker::Internet.username, email: Faker::Internet.email, password: "test", phone_number: Faker::PhoneNumber.cell_phone, latitude: latitude, longitude: longitude, location: address, highest_experience: "Only Pickup", height_in_inches: Faker::Number.between(50, 80), age: Faker::Number.between(14, 60))
 end
 
 25.times do
